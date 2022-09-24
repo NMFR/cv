@@ -52,7 +52,7 @@
       "name": "Rui Madaleno, IT Architect @ Açoreana"
     },
     {
-      "reference": "Nuno is THE BEST software engineer I have ever had the pleasure of working with. Period. He is the best! We worked on two big BPM projects. One of the projects was an award winning IBM BPM Application for the Insurance industry. Probably the most advanced IBM BPM application worldwide (I would bet on it). Nuno was the mastermind behind that awesome piece of technology. Top noch! He knows everything about software, architecture, programming languages, he is incredibly tallented, he coaches young developers, he loves his code, he loves quality, he breathes software, and best of all he is funny as hell, the type that brings up the vibe of a team and that makes you want to go to work the next day. I recommend him unconditionally to any Software Architect role, any day. He's the best. Trust me, he's the man! I would hire him tomorrow without a blink.",
+      "reference": "Nuno is THE BEST software engineer I have ever had the pleasure of working with. Period. He is the best! We worked on two big BPM projects. One of the projects was an award winning IBM BPM Application for the Insurance industry. Probably the most advanced IBM BPM application worldwide (I would bet on it). Nuno was the mastermind behind that awesome piece of technology. Top notch! He knows everything about software, architecture, programming languages, he is incredibly talented, he coaches young developers, he loves his code, he loves quality, he breathes software, and best of all he is funny as hell, the type that brings up the vibe of a team and that makes you want to go to work the next day. I recommend him unconditionally to any Software Architect role, any day. He's the best. Trust me, he's the man! I would hire him tomorrow without a blink.",
       "name": "Pietro Casella, Senior Manager @ KPMG"
     },
     {
@@ -115,14 +115,14 @@
       "position": "Tech lead / Full stack developer",
       "startDate": "2019-03-12",
       "highlights": [
-        "Implemented a kubernetes hard multi-tenancy service",
+        "Implemented a Kubernetes hard multi-tenancy service",
         "Researched and designed cloud compute services",
         "Coached team members.",
         "Worked with Golang / Java, PostgreSQL / MongoDb, Docker / Kubernetes and React / Redux."
       ]
     },
     {
-      "summary": "A service provided to online news media companies to automatically place beautiful, contextual charts in their articles. Articles are automatically parsed and analysed, the Frames curated charts database is searched, if a chart is found that matches the context of the article it is automatically placed in the article.",
+      "summary": "A service provided to online news media companies to automatically place beautiful, contextual charts in their articles. Articles are automatically parsed and analyzed, the Frames curated charts database is searched, if a chart is found that matches the context of the article it is automatically placed in the article.",
       "website": "https://frames.news/",
       "company": "Frames™",
       "location": "Lisbon",

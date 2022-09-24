@@ -2,7 +2,7 @@ FROM node:18.9.0-bullseye-slim@sha256:f3ecbc009558021098b634afe45ee6179aaa80a655
 
 RUN apt-get update && \
   # TODO: lock_versions to ensure deterministic behaviour
-  apt-get install -y git curl make
+  apt-get install -y git curl make hunspell tidy
 
 FROM base as dev-container
 
