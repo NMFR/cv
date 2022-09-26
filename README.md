@@ -45,7 +45,7 @@ From within the [container](./Dockerfile) the following commands can be run:
 
 [Hunspell](http://hunspell.github.io/) is very sensitive to the HTML formatting, particularly to HTML empty tags without the closing `/`.
 If the HTML file is not complaint with the XHTML format, [Hunspell](http://hunspell.github.io/) will not properly parse the file.
-To fix this, the HTML generated CV is formatted to XHTML with [tidy](https://linux.die.net/man/1/tidy) before being parsed by [Hunspell](http://hunspell.github.io/) to spell check its contents.
+To fix this, the CV HTML file is formatted to XHTML with [tidy](https://linux.die.net/man/1/tidy) before being parsed by [Hunspell](http://hunspell.github.io/) to spell check its contents.
 
 The [`spell-check-exclude.dic`](./spell-check-exclude.dic) dictionary file is used to exclude spell checker errors.
 If [Hunspell](http://hunspell.github.io/) is reporting false spelling errors, add the words to this file to fix the errors.
