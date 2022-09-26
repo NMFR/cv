@@ -44,15 +44,15 @@
       "name": "Leo Xavier, CTO @ Observador, Founder @ Frames"
     },
     {
-      "reference": "Nuno is one of the best software engineers that I've worked with. He is highly dedicated, creative and intelligent and as his team leader, I always trusted that he would always present the best solution for our customer. He is a great team member, always available to help and coach other team members, even if it requires an extra effort. Despite his great skills, Nuno is very humble and he is always trying to learn new things. Nuno is a person that every project manager wants in his team. I feel very privileged to have met Nuno and to have worked with him, it was a very enriching experience.",
+      "reference": "Nuno is one of the best software engineers that I have worked with. He is highly dedicated, creative and intelligent and as his team leader, I always trusted that he would always present the best solution for our customer. He is a great team member, always available to help and coach other team members, even if it requires an extra effort. Despite his great skills, Nuno is very humble and he is always trying to learn new things. Nuno is a person that every project manager wants in his team. I feel very privileged to have met Nuno and to have worked with him, it was a very enriching experience.",
       "name": "Andreia Melo, Manager @ KPMG"
     },
     {
       "reference": "Nuno is an highly motivated and focused developer but this is not enough for him ! He is also good in gathering business requirement, support, troubleshooting and everything else Murphy laws can throw in a project.",
-      "name": "Rui Madaleno, IT Architect @ Açoreana"
+      "name": "Rui Madaleno, IT Architect @ Acoreana"
     },
     {
-      "reference": "Nuno is THE BEST software engineer I have ever had the pleasure of working with. Period. He is the best! We worked on two big BPM projects. One of the projects was an award winning IBM BPM Application for the Insurance industry. Probably the most advanced IBM BPM application worldwide (I would bet on it). Nuno was the mastermind behind that awesome piece of technology. Top noch! He knows everything about software, architecture, programming languages, he is incredibly tallented, he coaches young developers, he loves his code, he loves quality, he breathes software, and best of all he is funny as hell, the type that brings up the vibe of a team and that makes you want to go to work the next day. I recommend him unconditionally to any Software Architect role, any day. He's the best. Trust me, he's the man! I would hire him tomorrow without a blink.",
+      "reference": "Nuno is THE BEST software engineer I have ever had the pleasure of working with. Period. He is the best! We worked on two big BPM projects. One of the projects was an award winning IBM BPM Application for the Insurance industry. Probably the most advanced IBM BPM application worldwide (I would bet on it). Nuno was the mastermind behind that awesome piece of technology. Top notch! He knows everything about software, architecture, programming languages, he is incredibly talented, he coaches young developers, he loves his code, he loves quality, he breathes software, and best of all he is funny as hell, the type that brings up the vibe of a team and that makes you want to go to work the next day. I recommend him unconditionally to any Software Architect role, any day. He's the best. Trust me, he's the man! I would hire him tomorrow without a blink.",
       "name": "Pietro Casella, Senior Manager @ KPMG"
     },
     {
@@ -108,21 +108,21 @@
   ],
   "work": [
     {
-      "summary": "cloudmobility provides a single-purpose-cloud seeekkpppels that enables mobility & transportation products. Cloudmobility offers specialized tools for customers building and maintaining mobility applications",
+      "summary": "Cloudmobility provides a single-purpose-cloud that enables mobility & transportation products. Cloudmobility offers specialized tools for customers building and maintaining mobility applications",
       "website": "https://cloudmobility.io/",
-      "company": "cloudmobility via KI labs",
+      "company": "Cloudmobility via KI labs",
       "location": "Lisbon",
       "position": "Tech lead / Full stack developer",
       "startDate": "2019-03-12",
       "highlights": [
-        "Implemented a kubernetes hard multi-tenancy service",
+        "Implemented a Kubernetes hard multi-tenancy service",
         "Researched and designed cloud compute services",
         "Coached team members.",
         "Worked with Golang / Java, PostgreSQL / MongoDb, Docker / Kubernetes and React / Redux."
       ]
     },
     {
-      "summary": "A service provided to online news media companies to automatically place beautiful, contextual charts in their articles. Articles are automatically parsed and analysed, the Frames curated charts database is searched, if a chart is found that matches the context of the article it is automatically placed in the article.",
+      "summary": "A service provided to online news media companies to automatically place beautiful, contextual charts in their articles. Articles are automatically parsed and analyzed, the Frames curated charts database is searched, if a chart is found that matches the context of the article it is automatically placed in the article.",
       "website": "https://frames.news/",
       "company": "Frames™",
       "location": "Lisbon",
