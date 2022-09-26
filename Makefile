@@ -3,6 +3,7 @@
 SHELL := /bin/bash
 
 export PROJECT_ROOT=$(shell pwd)
+export DOCKER_IMAGE_NAME=nmfr/cv
 
 # make help # Display available commands.
 # Only comments starting with "# make " will be printed.
@@ -41,3 +42,8 @@ spell-check-readme:
 .PHONY: spell-check-format-exclude-file
 spell-check-format-exclude-file:
 	SPELL_CHECK_FORMAT_RESULT=$$(cat spell-check-exclude.dic | egrep . | sort | uniq) && echo "$${SPELL_CHECK_FORMAT_RESULT}" > spell-check-exclude.dic
+
+.PHONY: ci-spell-check
+ci-spell-check:
+	docker build --target build -t $${DOCKER_IMAGE_NAME} .
+	docker run $${DOCKER_IMAGE_NAME} make spell-check
