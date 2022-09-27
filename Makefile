@@ -1,9 +1,9 @@
 .DEFAULT_GOAL := help
 
 SHELL := /bin/bash
+DOCKER_IMAGE_NAME ?= nmfr/cv
 
 export PROJECT_ROOT=$(shell pwd)
-export DOCKER_IMAGE_NAME=nmfr/cv
 
 # make help # Display available commands.
 # Only comments starting with "# make " will be printed.
@@ -45,5 +45,5 @@ spell-check-format-exclude-file:
 
 .PHONY: ci-spell-check
 ci-spell-check:
-	docker build --target build -t $${DOCKER_IMAGE_NAME} .
-	docker run $${DOCKER_IMAGE_NAME} make spell-check
+	docker build --target build -t $(DOCKER_IMAGE_NAME) --cache-from=docker.pkg.github.com/$(DOCKER_IMAGE_NAME) .
+	docker run $(DOCKER_IMAGE_NAME) make spell-check
