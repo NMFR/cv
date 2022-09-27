@@ -46,8 +46,8 @@ spell-check-format-exclude-file:
 .PHONY: ci-spell-check
 ci-spell-check:
 # Use Github container registry as a container build image cache
-	docker pull docker.pkg.github.com/$DOCKER_IMAGE_NAME || true
+	docker pull docker.pkg.github.com/$(DOCKER_IMAGE_NAME) || true
 	docker build --target build -t $(DOCKER_IMAGE_NAME) --cache-from=docker.pkg.github.com/$(DOCKER_IMAGE_NAME) .
-	docker push docker.pkg.github.com/$DOCKER_IMAGE_NAME || true
+	docker push docker.pkg.github.com/$(DOCKER_IMAGE_NAME) || true
 # Run the actual spell check inside the container
 	docker run $(DOCKER_IMAGE_NAME) make spell-check
