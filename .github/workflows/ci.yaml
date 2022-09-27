@@ -15,4 +15,4 @@ jobs:
       DOCKER_IMAGE_NAME: $GITHUB_REPOSITORY/ci
     steps:
       - uses: actions/checkout@v2
-      - run: echo "DOCKER_IMAGE_NAME: ${DOCKER_IMAGE_NAME}"
+      - run: echo \"DOCKER_IMAGE_NAME: ${DOCKER_IMAGE_NAME}\"
