@@ -16,4 +16,3 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo "DOCKER_IMAGE_NAME: ${DOCKER_IMAGE_NAME}"
-      # - run: make ci-spell-check
