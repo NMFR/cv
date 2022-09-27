@@ -15,5 +15,7 @@ jobs:
       DOCKER_IMAGE_NAME: docker.pkg.github.com/nmfr/cv/ci
     steps:
       - uses: actions/checkout@v2
-      - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+      - name: docker login
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+      - run: make ci-container-build
       - run: make ci-spell-check

@@ -43,11 +43,13 @@ spell-check-readme:
 spell-check-format-exclude-file:
 	SPELL_CHECK_FORMAT_RESULT=$$(cat spell-check-exclude.dic | egrep . | sort | uniq) && echo "$${SPELL_CHECK_FORMAT_RESULT}" > spell-check-exclude.dic
 
-.PHONY: ci-spell-check
-ci-spell-check:
+.PHONY: ci-container-build
+ci-container-build:
 # Use Github container registry as a container build image cache
 	docker pull $(DOCKER_IMAGE_NAME) || true
 	docker build --target build -t $(DOCKER_IMAGE_NAME) --cache-from=$(DOCKER_IMAGE_NAME) .
 	docker push $(DOCKER_IMAGE_NAME) || true
-# Run the actual spell check inside the container
+
+.PHONY: ci-spell-check
+ci-spell-check:
 	docker run $(DOCKER_IMAGE_NAME) make spell-check
