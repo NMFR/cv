@@ -16,6 +16,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
-      - run: docker pull docker.pkg.github.com/$DOCKER_IMAGE_NAME || true
       - run: make ci-spell-check
-      - run: docker push docker.pkg.github.com/$DOCKER_IMAGE_NAME || true
