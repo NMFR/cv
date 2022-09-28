@@ -11,3 +11,12 @@ RUN apt-get update && \
   apt-get install -y zsh less && \
   chsh -s $(which zsh) && \
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+FROM base as build
+
+WORKDIR /workspace
+
+COPY package.json package-lock.json /workspace/
+RUN npm install
+
+COPY . /workspace

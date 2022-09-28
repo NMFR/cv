@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := help
 
 SHELL := /bin/bash
+CI_CONTAINER_IMAGE_NAME ?= nmfr/cv
 
 export PROJECT_ROOT=$(shell pwd)
 
@@ -41,3 +42,17 @@ spell-check-readme:
 .PHONY: spell-check-format-exclude-file
 spell-check-format-exclude-file:
 	SPELL_CHECK_FORMAT_RESULT=$$(cat spell-check-exclude.dic | egrep . | sort | uniq) && echo "$${SPELL_CHECK_FORMAT_RESULT}" > spell-check-exclude.dic
+
+.PHONY: ci-container-build
+ci-container-build:
+# Use Github container registry as a container build image cache
+	docker pull $(CI_CONTAINER_IMAGE_NAME) || true
+	docker build --target build -t $(CI_CONTAINER_IMAGE_NAME) --cache-from=$(CI_CONTAINER_IMAGE_NAME) --build-arg BUILDKIT_INLINE_CACHE=1 .
+
+.PHONY: ci-container-push
+ci-container-push:
+	docker push $(CI_CONTAINER_IMAGE_NAME) || true
+
+.PHONY: ci-spell-check
+ci-spell-check:
+	docker run $(CI_CONTAINER_IMAGE_NAME) make spell-check
