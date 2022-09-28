@@ -1,10 +1,7 @@
-name: CI
+name: CD
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
     branches:
       - master
 
@@ -13,11 +10,11 @@ env:
   CI_CONTAINER_IMAGE_NAME: docker.pkg.github.com/nmfr/cv/ci
 
 jobs:
-  spell-check:
+  pus-ci-container-image:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: docker login
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
       - run: make ci-container-build
-      - run: make ci-spell-check
+      - run: make ci-container-push
