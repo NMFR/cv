@@ -8,14 +8,16 @@ on:
     branches:
       - master
 
+env:
+  CI_CONTAINER_IMAGE_NAME: docker.pkg.github.com/nmfr/cv/ci
+
 jobs:
   spell-check:
     runs-on: ubuntu-latest
-    env:
-      DOCKER_IMAGE_NAME: docker.pkg.github.com/nmfr/cv/ci
     steps:
       - uses: actions/checkout@v2
       - name: docker login
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
       - run: make ci-container-build
+      - run: make ci-container-push
       - run: make ci-spell-check
