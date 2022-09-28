@@ -9,6 +9,7 @@ on:
       - master
 
 env:
+  DOCKER_BUILDKIT: 1
   CI_CONTAINER_IMAGE_NAME: docker.pkg.github.com/nmfr/cv/ci
 
 jobs:
