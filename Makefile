@@ -47,7 +47,7 @@ spell-check-format-exclude-file:
 ci-container-build:
 # Use Github container registry as a container build image cache
 	docker pull $(CI_CONTAINER_IMAGE_NAME) || true
-	docker build --target build -t $(CI_CONTAINER_IMAGE_NAME) --cache-from=$(CI_CONTAINER_IMAGE_NAME) .
+	docker build --target build -t $(CI_CONTAINER_IMAGE_NAME) --cache-from=$(CI_CONTAINER_IMAGE_NAME) --build-arg BUILDKIT_INLINE_CACHE=1 .
 
 .PHONY: ci-container-push
 ci-container-push:
