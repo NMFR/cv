@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Nuno Rodrigues</title>
+    <meta name="description" content="I am a passionate tech lead / full stack software engineer that loves his job. I have broad experience in building stable and scalable products / services that users love. I always have been very curious and enthusiastic about technology. I love to learn, understand how things work and solve problems. I really like to see the big picture, break down problems and find solutions. I also really enjoy helping people learn and grow.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
+    <style>:root {
+  /* Colors */
+  --primaryColor: #212529;
+  --secondaryColor: #95a5a6;
+  --accentColor: #f1c40f;
+  --linkColor: #2ecc71;
+  --mutedColor: #f4f6f6;
+
+  /* Typography */
+  --ratio: 1.25;
+  --scale0: 1rem;
+  --scale1: calc(var(--scale0) * var(--ratio));
+  --scale2: calc(var(--scale1) * var(--ratio));
+  --scale3: calc(var(--scale2) * var(--ratio));
+  --scale4: calc(var(--scale3) * var(--ratio));
+  --scale5: calc(var(--scale4) * var(--ratio));
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  color: var(--primaryColor);
+  display: grid;
+  font: 1em/1.5 Lato, sans-serif;
+  gap: 2em;
+  grid-template-columns:
+    [full-start]
+    1fr
+    [main-start side-start]
+    minmax(min-content, 12em)
+    [side-end content-start]
+    minmax(min-content, 36em)
+    [main-end content-end]
+    1fr
+    [full-end];
+  grid-template-rows: auto [content] 0;
+  margin-bottom: 4em;
+}
+
+body::before {
+  content: '';
+  grid-column: full;
+  grid-row: content;
+}
+
+ol,
+ul {
+  padding-left: 1em;
+}
+
+li + li {
+  margin-top: 0.2em;
+}
+
+li::marker {
+  color: var(--mutedColor);
+}
+
+a {
+  color: var(--linkColor);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:focus,
+a:hover {
+  color: var(--accentColor);
+}
+
+h1,
+h2,
+h3,
+h5 {
+  font-weight: normal;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: var(--scale5);
+}
+
+h2 {
+  color: var(--secondaryColor);
+  font-size: var(--scale4);
+}
+
+h3 {
+  color: var(--accentColor);
+  font-size: var(--scale3);
+  grid-column: side;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  font-size: var(--scale2);
+}
+
+h5 {
+  font-size: var(--scale1);
+}
+
+h6 {
+  font-size: var(--scale0);
+}
+
+blockquote {
+  border-left: 0.2em solid var(--mutedColor);
+  padding-left: 1em;
+}
+
+cite {
+  color: var(--secondaryColor);
+  font-style: inherit;
+}
+
+cite::before {
+  content: '— ';
+}
+
+.masthead {
+  background: var(--mutedColor);
+  display: inherit;
+  gap: inherit;
+  grid-column: full;
+  grid-template-columns: inherit;
+  padding: 4em 0;
+  row-gap: 0;
+}
+
+.masthead > *,
+section {
+  grid-column: main;
+}
+
+article > * + *,
+blockquote > * + * {
+  margin-top: 0.6em;
+}
+
+.stack {
+  display: grid;
+  gap: 1.5em;
+}
+
+.grid-list {
+  display: grid;
+  gap: 1em;
+}
+
+.spaced-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spaced-list:first-child::before {
+  border-bottom: 1px solid var(--mutedColor);
+  content: '';
+  flex-grow: 1;
+  margin: 0 1em;
+  order: 1;
+}
+
+.spaced-list > :nth-child(2) {
+  order: 2;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+}
+
+.tag-list > li {
+  background: var(--mutedColor);
+  margin: 0 0.2em 0.2em 0;
+  padding: 0.2em 0.6em;
+}
+
+@media print, (min-width: 48em) {
+  h3 {
+    text-align: right;
+    margin-bottom: inherit;
+  }
+
+  .masthead > *,
+  section {
+    grid-column: content;
+  }
+
+  section {
+    display: contents;
+  }
+
+  .grid-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+  </head>
+  <body>
+      <header class="masthead">
+          <h1>Nuno Rodrigues</h1>
+          <h2>Tech lead / Full stack developer</h2>
+      </header>
+      <section id="contact">
+        <h3>Contact</h3>
+        <div class="grid-list">
+            <div>
+              <h4>Email</h4>
+              <a href="mailto:nunomr@gmail.com">nunomr@gmail.com</a>
+            </div>
+        </div>
+      </section>
+        <section id="about">
+          <h3>About</h3>
+          <article>
+            <p>I am a passionate tech lead / full stack software engineer that loves his job. I have broad experience in building stable and scalable products / services that users love. I always have been very curious and enthusiastic about technology. I love to learn, understand how things work and solve problems. I really like to see the big picture, break down problems and find solutions. I also really enjoy helping people learn and grow.</p>
+          </article>
+        </section>
+        <section id="profiles">
+          <h3>Profiles</h3>
+          <div class="grid-list">
+              <div>
+                  <h4>github</h4>
+                    <a href="https://github.com/NMFR">NMFR</a>
+              </div>
+              <div>
+                  <h4>twitter</h4>
+                    <a href="https://twitter.com/nfrodrigues">nfrodrigues</a>
+              </div>
+              <div>
+                  <h4>linkedin</h4>
+                    <a href="https://www.linkedin.com/in/nmfr">nmfr</a>
+              </div>
+          </div>
+        </section>
+
+      <section id="work">
+        <h3>Work</h3>
+        <div class="stack">
+            <article>
+              <header>
+                <div class="spaced-list">
+                  <h4></h4>
+                  <span>
+                    <time datetime="2019-03-12">Mar 2019</time> –
+                    Present
+                  </span>
+                </div>
+                <div class="spaced-list">
+                    <strong>Tech lead / Full stack developer</strong>
+                </div>
+              </header>
+                <p>Cloudmobility provides a single-purpose-cloud that enables mobility &amp; transportation products. Cloudmobility offers specialized tools for customers building and maintaining mobility applications</p>
+                <h5>Highlights</h5>
+                <ul>
+                    <li>Implemented a Kubernetes hard multi-tenancy service</li>
+                    <li>Researched and designed cloud compute services</li>
+                    <li>Coached team members.</li>
+                    <li>Worked with Golang / Java, PostgreSQL / MongoDb, Docker / Kubernetes and React / Redux.</li>
+                </ul>
+            </article>
+            <article>
+              <header>
+                <div class="spaced-list">
+                  <h4></h4>
+                  <span>
+                    <time datetime="2016-05-01">May 2016</time> –
+                    <time datetime="2019-01-01">Jan 2019</time>
+                  </span>
+                </div>
+                <div class="spaced-list">
+                    <strong>Engineering lead</strong>
+                </div>
+              </header>
+                <p>A service provided to online news media companies to automatically place beautiful, contextual charts in their articles. Articles are automatically parsed and analyzed, the Frames curated charts database is searched, if a chart is found that matches the context of the article it is automatically placed in the article.</p>
+                <h5>Highlights</h5>
+                <ul>
+                    <li>Responsible for everything tech at Frames, from architecture to implementation of the full tech stack.</li>
+                    <li>Leading and mentoring the tech team.</li>
+                    <li>Worked with Node.js, React / Redux, PostgreSQL / Elasticsearch, Docker / Kubernetes and AWS.</li>
+                </ul>
+            </article>
+            <article>
+              <header>
+                <div class="spaced-list">
+                  <h4></h4>
+                  <span>
+                    <time datetime="2015-08-01">Aug 2015</time> –
+                    <time datetime="2015-12-31">Dec 2015</time>
+                  </span>
+                </div>
+                <div class="spaced-list">
+                    <strong>Full stack developer</strong>
+                </div>
+              </header>
+                <p>Implemented observador.pt online newspaper user comment system.</p>
+                <h5>Highlights</h5>
+                <ul>
+                    <li>Worked with React / Redux / Webpack, Golang.</li>
+                </ul>
+            </article>
+            <article>
+              <header>
+                <div class="spaced-list">
+                  <h4></h4>
+                  <span>
+                    <time datetime="2012-03-01">Mar 2012</time> –
+                    <time datetime="2016-06-01">Jun 2016</time>
+                  </span>
+                </div>
+                <div class="spaced-list">
+                    <strong>Senior Software Engineer</strong>
+                </div>
+              </header>
+                <p>Worked in two KPMG consultancy projects. One for a UK based bank to build a complex financial product subscription application. Another one for an insurance company to build a accident management system.</p>
+                <h5>Highlights</h5>
+                <ul>
+                    <li>Responsible for training / coaching junior developers.</li>
+                    <li>Worked with JavaScript / IBM BPM.</li>
+                </ul>
+            </article>
+            <article>
+              <header>
+                <div class="spaced-list">
+                  <h4></h4>
+                  <span>
+                    <time datetime="2010-12-01">Dec 2010</time> –
+                    <time datetime="2012-02-28">Feb 2012</time>
+                  </span>
+                </div>
+                <div class="spaced-list">
+                    <strong>Software Developer</strong>
+                </div>
+              </header>
+                <p>Simple Solutions is a small consultancy company that provided tech services on the .Net stack.</p>
+                <h5>Highlights</h5>
+                <ul>
+                    <li>Worked with C#, ASP.Net, SQL Server, JavaScript, jQuery.</li>
+                </ul>
+            </article>
+        </div>
+      </section>
+      <section id="education">
+        <h3>Education</h3>
+        <div class="stack">
+            <article>
+              <header>
+                <div class="spaced-list">
+                  <h4>Instituto Superior de Engenharia de Lisboa</h4>
+                  <span>
+                    <time datetime="2004-09-01">Sep 2004</time> –
+                    <time datetime="2010-06-01">Jun 2010</time>
+                  </span>
+                </div>
+                <div class="spaced-list">
+                    <strong>Information Technology</strong>
+                    <a href="https://www.isel.pt/cursos/licenciaturas/engenharia-informatica-e-de-computadores">www.isel.pt/cursos/licenciaturas/engenharia-informatica-e-de-computadores</a>
+                </div>
+              </header>
+                <p>Bachelor + Master</p>
+            </article>
+        </div>
+      </section>
+      <section id="skills">
+        <h3>Skills</h3>
+        <div class="grid-list">
+            <div>
+                <h4>Frontend</h4>
+                <ul class="tag-list">
+                    <li>JavaScript / TypeScript</li>
+                    <li>React</li>
+                    <li>Redux</li>
+                    <li>SCSS / CSS / CSS in JS</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Mobile</h4>
+                <ul class="tag-list">
+                    <li>iOS Swift</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Backend</h4>
+                <ul class="tag-list">
+                    <li>Node.js</li>
+                    <li>Deno</li>
+                    <li>Golang</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Backend</h4>
+                <ul class="tag-list">
+                    <li>.Net / C#</li>
+                    <li>Java</li>
+                    <li>Rust</li>
+                    <li>Python</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Databases</h4>
+                <ul class="tag-list">
+                    <li>PostgreSQL</li>
+                    <li>Microsoft SQL Server</li>
+                    <li>Elasticsearch</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Infrastructure</h4>
+                <ul class="tag-list">
+                    <li>Docker</li>
+                    <li>Kubernetes</li>
+                    <li>Terraform</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Cloud Providers</h4>
+                <ul class="tag-list">
+                    <li>AWS</li>
+                    <li>Google Cloud Platform</li>
+                </ul>
+            </div>
+        </div>
+      </section>
+      <section id="interests">
+        <h3>Interests</h3>
+        <div class="grid-list">
+            <div>
+                <h4>Gaming</h4>
+            </div>
+            <div>
+                <h4>Science</h4>
+            </div>
+            <div>
+                <h4>Open Source</h4>
+            </div>
+            <div>
+                <h4>Movies/TV Series</h4>
+            </div>
+            <div>
+                <h4>Entrepreneurship</h4>
+            </div>
+        </div>
+      </section>
+      <section id="references">
+        <h3>References</h3>
+        <div class="stack">
+              <blockquote>
+                <p>Nuno carried the Frames product like no one else. From System Architecture to Quality Assurance, he handled the stack and everyone working with it with an impressive attention to detail and maintainability. Making sure the system scales and correctly responds the the rapid evolution of features is a number one priority that makes the life, as Nuno's manager, very easy. Highly recommended.</p>
+                  <p>
+                    <cite>Leo Xavier, CTO @ Observador, Founder @ Frames</cite>
+                  </p>
+              </blockquote>
+              <blockquote>
+                <p>Nuno is one of the best software engineers that I have worked with. He is highly dedicated, creative and intelligent and as his team leader, I always trusted that he would always present the best solution for our customer. He is a great team member, always available to help and coach other team members, even if it requires an extra effort. Despite his great skills, Nuno is very humble and he is always trying to learn new things. Nuno is a person that every project manager wants in his team. I feel very privileged to have met Nuno and to have worked with him, it was a very enriching experience.</p>
+                  <p>
+                    <cite>Andreia Melo, Manager @ KPMG</cite>
+                  </p>
+              </blockquote>
+              <blockquote>
+                <p>Nuno is an highly motivated and focused developer but this is not enough for him ! He is also good in gathering business requirement, support, troubleshooting and everything else Murphy laws can throw in a project.</p>
+                  <p>
+                    <cite>Rui Madaleno, IT Architect @ Acoreana</cite>
+                  </p>
+              </blockquote>
+              <blockquote>
+                <p>Nuno is THE BEST software engineer I have ever had the pleasure of working with. Period. He is the best! We worked on two big BPM projects. One of the projects was an award winning IBM BPM Application for the Insurance industry. Probably the most advanced IBM BPM application worldwide (I would bet on it). Nuno was the mastermind behind that awesome piece of technology. Top notch! He knows everything about software, architecture, programming languages, he is incredibly talented, he coaches young developers, he loves his code, he loves quality, he breathes software, and best of all he is funny as hell, the type that brings up the vibe of a team and that makes you want to go to work the next day. I recommend him unconditionally to any Software Architect role, any day. He's the best. Trust me, he's the man! I would hire him tomorrow without a blink.</p>
+                  <p>
+                    <cite>Pietro Casella, Senior Manager @ KPMG</cite>
+                  </p>
+              </blockquote>
+              <blockquote>
+                <p>Nuno is a highly skilled IT professional, a world-class developer. There are no unreachable goals, and everything he delivers is developed with robust solutions for complex problems. He is technically the best IT professional I ever worked. He is always ready to learn and improve his knowledge, and transfer that to every team colleague. Actively helps in creating a good working environment.</p>
+                  <p>
+                    <cite>Daniel Moura, Manager @ KPMG</cite>
+                  </p>
+              </blockquote>
+              <blockquote>
+                <p>It was an immense experience working with Nuno. One of the best professionals I have ever worked with. He is the real deal. Extremely productive and intelligent with strong architecture analysis skills. He is always available to help his colleagues and make us learn and evolve as professionals. This kind of availability is extremely rare. On the personal level... the guy must be the most well-humored IT professional on the planet! :)</p>
+                  <p>
+                    <cite>Andre Vieira, Software developer @ KPMG</cite>
+                  </p>
+              </blockquote>
+        </div>
+      </section>
+  </body>
+</html>
