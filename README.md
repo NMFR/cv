@@ -34,7 +34,7 @@ From within the [container](./Dockerfile) the following commands can be run:
 -   Format the [`spell-check-exclude.dic`](./spell-check-exclude.dic) dictionary file used to exclude spell checker errors:
 
     ```sh
-    make spell-check-format-exclude-file
+    make format-spell-check-exclude-file
     ```
 
     This will sort and remove duplicate lines from the file.
@@ -50,3 +50,15 @@ To fix this, the CV HTML file is formatted to XHTML with [tidy](https://linux.di
 The [`spell-check-exclude.dic`](./spell-check-exclude.dic) dictionary file is used to exclude spell checker errors.
 If [Hunspell](http://hunspell.github.io/) is reporting false spelling errors, add the words to this file to fix the errors.
 The file uses the format defined [here](https://man.archlinux.org/man/hunspell.5.en).
+
+## Continuous delivery
+
+Every push to ´master´ will trigger the [CD github workflow](.github/workflows/cd.yaml) to: 
+- Generate the CV in HTML format.
+- Copy the generated assets to the ´gh-pages´ folder.
+- Push the contents of the ´gh-pages´ folder to the ´gh-pages´ branch root.
+
+The ´gh-pages´ branch uses [Github pages](https://pages.github.com/) to expose the branch's content in https://nmfr.github.io/cv.
+The content is also available in https://cv.nunorodrigues.tech/ as a [Github pages](https://pages.github.com/) custom domain.
+
+Any additional static assets that should be exposed together with the CV should be placed in the ´gh-pages´ folder.

@@ -4,17 +4,31 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: write
 
 env:
   DOCKER_BUILDKIT: 1
   CI_CONTAINER_IMAGE_NAME: docker.pkg.github.com/nmfr/cv/ci
 
 jobs:
-  pus-ci-container-image:
+  cd:
     runs-on: ubuntu-latest
+    concurrency: ci-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: docker login
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
       - run: make ci-container-build
       - run: make ci-container-push
+      - run: make ci-spell-check
+      - run: make prepare-gh-pages
+      - name: Deploy github pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: gh-pages
