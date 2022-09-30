@@ -64,4 +64,4 @@ ci-spell-check:
 .PHONY: prepare-gh-pages
 prepare-gh-pages:
 	mv generated/cv.html generated/index.html
-	cp -rn generated/ gh-pages/
+	cp -rn generated/. gh-pages/
