@@ -1,10 +1,15 @@
 # CV
 
-Generate a CV (Curriculum Vitae) using [jsonresume](https://jsonresume.org/).
+This repository generates the CV (Curriculum Vitae) present in https://cv.nunorodrigues.tech/.
 
-The CV contents are present in the [`cv.json`](./cv.json) file.
+The CV contents are declared in the [`cv.json`](./cv.json) file.
+[jsonresume](https://jsonresume.org/) is used to generate the CV HTML from the [`cv.json`](./cv.json).
+[Github pages](https://pages.github.com/) is used to serve the CV HTML from the ´gh-pages´ branch on https://nmfr.github.io/cv.
+The [Github pages](https://pages.github.com/) is configured to use https://cv.nunorodrigues.tech/ as a [custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages).
 
 ## Getting started
+
+[VS Code](https://code.visualstudio.com/) using the [development container](https://code.visualstudio.com/docs/remote/containers) is the recommended IDE.
 
 From within the [container](./Dockerfile) the following commands can be run:
 
@@ -53,7 +58,7 @@ The file uses the format defined [here](https://man.archlinux.org/man/hunspell.5
 
 ## Continuous delivery
 
-Every push to ´master´ will trigger the [CD github workflow](.github/workflows/cd.yaml) to: 
+Every push to ´master´ will trigger the [CD github workflow](.github/workflows/cd.yaml) to:
 - Generate the CV in HTML format.
 - Copy the generated assets to the ´gh-pages´ folder.
 - Push the contents of the ´gh-pages´ folder to the ´gh-pages´ branch root.
