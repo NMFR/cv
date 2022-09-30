@@ -38,9 +38,9 @@ spell-check: generate-html
 spell-check-readme:
 	hunspell -d en_US -l -H -p spell-check-exclude.dic README.md
 
-# make spell-check-format-exclude-file # Format the spell-check-exclude.dic file used to exclude spell checker errors. This will sort and remove duplicate lines from the file.
-.PHONY: spell-check-format-exclude-file
-spell-check-format-exclude-file:
+# make format-spell-check-exclude-file # Format the spell-check-exclude.dic file used to exclude spell checker errors. This will sort and remove duplicate lines from the file.
+.PHONY: format-spell-check-exclude-file
+format-spell-check-exclude-file:
 	SPELL_CHECK_FORMAT_RESULT=$$(cat spell-check-exclude.dic | egrep . | sort | uniq) && echo "$${SPELL_CHECK_FORMAT_RESULT}" > spell-check-exclude.dic
 
 .PHONY: ci-container-build
@@ -53,6 +53,15 @@ ci-container-build:
 ci-container-push:
 	docker push $(CI_CONTAINER_IMAGE_NAME) || true
 
+# The generated CV will be available in the "generated/" folder.
 .PHONY: ci-spell-check
 ci-spell-check:
-	docker run $(CI_CONTAINER_IMAGE_NAME) make spell-check
+	@rm -rf generated
+	@mkdir -p generated
+	docker run -v ${PWD}/generated:/workspace/generated $(CI_CONTAINER_IMAGE_NAME) make spell-check
+
+# make prepare-gh-pages # Prepare the gh-pages folder to be deployed. This will copy the generated CV to the gh-pages folder making sure the HTML file is renamed to "index.html". Note that this command expects the contents of the `generated` folder to already be generated.
+.PHONY: prepare-gh-pages
+prepare-gh-pages:
+	mv generated/cv.html generated/index.html
+	cp -rn generated/. gh-pages/

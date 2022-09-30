@@ -1,10 +1,16 @@
 # CV
 
-Generate a CV (Curriculum Vitae) using [jsonresume](https://jsonresume.org/).
+This repository generates the CV (Curriculum Vitae) present in https://cv.nunorodrigues.tech/.
 
-The CV contents are present in the [`cv.json`](./cv.json) file.
+The CV contents are declared in the [`cv.json`](./cv.json) file.
+[jsonresume](https://jsonresume.org/) is used to generate the CV HTML from the [`cv.json`](./cv.json).
+Static assets to be added to the generated HTML should be placed in the ´gh-pages´ folder.
+[Github pages](https://pages.github.com/) is used to serve the CV HTML from the ´gh-pages´ branch on https://nmfr.github.io/cv.
+The [Github pages](https://pages.github.com/) is configured to use https://cv.nunorodrigues.tech/ as a [custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages).
 
 ## Getting started
+
+[VS Code](https://code.visualstudio.com/) using the [development container](https://code.visualstudio.com/docs/remote/containers) is the recommended IDE.
 
 From within the [container](./Dockerfile) the following commands can be run:
 
@@ -34,7 +40,7 @@ From within the [container](./Dockerfile) the following commands can be run:
 -   Format the [`spell-check-exclude.dic`](./spell-check-exclude.dic) dictionary file used to exclude spell checker errors:
 
     ```sh
-    make spell-check-format-exclude-file
+    make format-spell-check-exclude-file
     ```
 
     This will sort and remove duplicate lines from the file.
@@ -50,3 +56,15 @@ To fix this, the CV HTML file is formatted to XHTML with [tidy](https://linux.di
 The [`spell-check-exclude.dic`](./spell-check-exclude.dic) dictionary file is used to exclude spell checker errors.
 If [Hunspell](http://hunspell.github.io/) is reporting false spelling errors, add the words to this file to fix the errors.
 The file uses the format defined [here](https://man.archlinux.org/man/hunspell.5.en).
+
+## Continuous delivery
+
+Every push to ´master´ will trigger the [CD github workflow](.github/workflows/cd.yaml) to:
+- Generate the CV in HTML format.
+- Copy the generated assets to the ´gh-pages´ folder.
+- Push the contents of the ´gh-pages´ folder to the ´gh-pages´ branch root.
+
+The ´gh-pages´ branch uses [Github pages](https://pages.github.com/) to expose the branch's content in https://nmfr.github.io/cv.
+The content is also available in https://cv.nunorodrigues.tech/ as a [Github pages](https://pages.github.com/) custom domain.
+
+Any additional static assets that should be exposed together with the CV should be placed in the ´gh-pages´ folder.
