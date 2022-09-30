@@ -60,7 +60,7 @@ ci-spell-check:
 	@mkdir -p generated
 	docker run -v ${PWD}/generated:/workspace/generated $(CI_CONTAINER_IMAGE_NAME) make spell-check
 
-# make prepare-gh-pages # Prepare the gh-pages folder to be deployed. This will copy the generated CV to the gh-pages folder making sure the HTML file is renamed to "index.html".
+# make prepare-gh-pages # Prepare the gh-pages folder to be deployed. This will copy the generated CV to the gh-pages folder making sure the HTML file is renamed to "index.html". Note that this command expects the contents of the `generated` folder to already be generated.
 .PHONY: prepare-gh-pages
 prepare-gh-pages:
 	mv generated/cv.html generated/index.html

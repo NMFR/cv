@@ -4,6 +4,7 @@ This repository generates the CV (Curriculum Vitae) present in https://cv.nunoro
 
 The CV contents are declared in the [`cv.json`](./cv.json) file.
 [jsonresume](https://jsonresume.org/) is used to generate the CV HTML from the [`cv.json`](./cv.json).
+Static assets to be added to the generated HTML should be placed in the ´gh-pages´ folder.
 [Github pages](https://pages.github.com/) is used to serve the CV HTML from the ´gh-pages´ branch on https://nmfr.github.io/cv.
 The [Github pages](https://pages.github.com/) is configured to use https://cv.nunorodrigues.tech/ as a [custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/about-custom-domains-and-github-pages).
 
