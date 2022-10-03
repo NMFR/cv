@@ -2,7 +2,7 @@ basics:
   name: Nuno Rodrigues
   label: Engineering Lead / Full-stack Software Engineer
   image: https://avatars.githubusercontent.com/u/13484940
-  summary:
+  summary: >
     I am a passionate engineering lead / full-stack software engineer that loves his job.
     I have broad experience in building stable and scalable products / services that users love.
 
@@ -194,7 +194,7 @@ work:
       - Lead a team to create an internal application to collect data about the company so decisions could be made around facts.
       - Helped build an on premise cloud (Cloudmobility).
       - Worked with Golang / Rust, PostgreSQL, Kubernetes, Terraform and AWS / Azure.
-  - summary:
+  - summary: >
       Frames provides a service to online news media companies to automatically place beautiful, contextual charts in their articles.
       Articles are automatically parsed and analyzed, the Frames curated charts database is searched,
       if a chart is found that matches the context of the article it is automatically placed in the article.
