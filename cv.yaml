@@ -1,14 +1,15 @@
 basics:
   name: Nuno Rodrigues
-  label: Tech lead / Full stack developer
+  label: Engineering Lead / Full-stack Software Engineer
   image: https://avatars.githubusercontent.com/u/13484940
-  summary:
-    I am a passionate tech lead / full stack software engineer that loves his
-    job. I have broad experience in building stable and scalable products / services
-    that users love. I always have been very curious and enthusiastic about technology.
-    I love to learn, understand how things work and solve problems. I really like
-    to see the big picture, break down problems and find solutions. I also really
-    enjoy helping people learn and grow.
+  summary: >
+    I am a passionate engineering lead / full-stack software engineer that loves his job.
+    I have broad experience in building stable and scalable products / services that users love.
+
+    I always have been very curious and enthusiastic about technology.
+    I love to learn, understand how things work and solve problems.
+    I really like to design and build software.
+    I also really enjoy helping people learn and grow.
   email: nunomr@gmail.com
   website: https://nunorodrigues.tech/
   location:
@@ -18,9 +19,6 @@ basics:
     - url: https://github.com/NMFR
       username: NMFR
       network: github
-    - username: nfrodrigues
-      url: https://twitter.com/nfrodrigues
-      network: twitter
     - username: nmfr
       url: https://www.linkedin.com/in/nmfr
       network: linkedin
@@ -32,6 +30,26 @@ education:
     institution: Instituto Superior de Engenharia de Lisboa
     url: https://www.isel.pt/cursos/licenciaturas/engenharia-informatica-e-de-computadores
 references:
+  - reference:
+      I worked with Nuno for several months at Deliveroo.
+      Our team focused on delivering abstractions for deciding which primitives to run workloads on, networking and databases.
+      Nuno was exceptional at delivering results and was behind some great initiatives which largely helped our monitoring posture.
+      He lead the charge in investigating optimizations to our autoscaling strategies, built a non-urgent but high priority alerting system,
+      changed our development workflow to make more use of devcontainers with VS Code (which significantly improved setup time),
+      significantly improved our database monitoring with custom tooling and became our go-to Kubernetes expert.
+      Nuno has a keen focus on terse but high quality code and likes to take a data driven approach to decision making,
+      which makes him a great candidate for discussion around key decisions.
+      It was great working with Nuno - he's an excellent addition to any team!
+    name: Sanyia Saidova, Senior Software Engineer @ Deliveroo
+  - reference: >
+      Nuno is an experienced engineer who has been a pleasure to work with.
+      He has a combination of qualities valuable for any engineering team or project:
+      broad technical expertise, good people skills, and passion towards sharing his knowledge with others.
+      He showed ability to contribute to and lead projects with high degree of ambiguity,
+      independently learning a new problem space and proactively reaching out for guidance when necessary.
+      Nuno engages well with customers and other stakeholders, showing humility and compassion.
+      He quickly became a part of our team, showed high degree of initiative and regularly solicited feedback.
+    name: Anton Tolchanov, Engineering Manager @ Deliveroo
   - reference:
       Nuno carried the Frames product like no one else. From System Architecture
       to Quality Assurance, he handled the stack and everyone working with it with an
@@ -124,39 +142,73 @@ skills:
     keywords:
       - AWS
       - Google Cloud Platform
+      - Azure
 work:
-  - summary:
-      Cloudmobility provides a single-purpose-cloud that enables mobility & transportation
-      products. Cloudmobility offers specialized tools for customers building and maintaining
-      mobility applications
+  - summary: >
+      Deliveroo is a food takeout / groceries delivery service.
+      I was part of the platform engineering team.
+
+      Responsible for designing, implementing and maintaining infrastructure abstractions.
+      Enabling other teams to easily deploy their services (containers), load balancers, databases, message queues, ...
+      Abstracting infrastructure details, cloud providers, logging, monitoring, ... so other teams can focus only on their services and business goals.
+    website: https://deliveroo.co.uk/
+    company: Deliveroo (as a contractor)
+    location: Remote
+    position: Senior Software Engineer
+    startDate: "2021-09-14"
+    highlights:
+      - Created and maintained services using Golang and Deno.js to help collect and aggregate metrics.
+      - Created a slack bot using Golang to manage low priority alerts.
+      - Created and maintained terraform modules that provided compute, network and storage abstractions.
+      - Optimized autoscaling strategies.
+      - Worked with Golang / Terraform / Kubernetes / AWS / Deno.js / Node.js.
+  - summary: >
+      Building an on premise cloud for Daimler / Mercedez-Benz AG.
+
+      Tech lead of the Kubernetes multi tenant services team.
+      Helping break down product requirements.
+      Designing and building services.
+      Leading and mentoring the tech team.
     website: https://cloudmobility.io/
-    company: Cloudmobility via KI labs
-    location: Lisbon
+    company: Cloudmobility (Mercedez-Benz AG) via KI challengers
+    location: Remote
     position: Tech lead / Full stack developer
     startDate: "2019-03-12"
+    endDate: "2021-09-09"
     highlights:
-      - Implemented a Kubernetes hard multi-tenancy service
-      - Researched and designed cloud compute services
-      - Coached team members.
-      - Worked with Golang / Java, PostgreSQL / MongoDb, Docker / Kubernetes and React
-        / Redux.
-  - summary:
-      A service provided to online news media companies to automatically place
-      beautiful, contextual charts in their articles. Articles are automatically parsed
-      and analyzed, the Frames curated charts database is searched, if a chart is found
-      that matches the context of the article it is automatically placed in the article.
+      - Implemented a Kubernetes hard multi-tenancy service.
+      - Researched and designed cloud compute services.
+      - Mentored team members.
+      - Worked with Golang / Java / Python / Swift, PostgreSQL / MongoDb, Docker / Kubernetes and React / Redux.
+  - summary: >
+      KI challengers is a tech company incubator, building companies, their tech products and teams.
+
+      Most of my focus was on building the Cloudmobility (Mercedez-Benz AG) company.
+    website: https://ki-challengers.com/
+    company: KI challengers
+    location: Lisbon
+    position: Tech lead / Full stack developer
+    startDate: "2019-01-02"
+    endDate: "2021-09-09"
+    highlights:
+      - Lead a team to create an internal application to collect data about the company so decisions could be made around facts.
+      - Helped build an on premise cloud (Cloudmobility).
+      - Worked with Golang / Rust, PostgreSQL, Kubernetes, Terraform and AWS / Azure.
+  - summary: >
+      Frames provides a service to online news media companies to automatically place beautiful, contextual charts in their articles.
+      Articles are automatically parsed and analyzed, the Frames curated charts database is searched,
+      if a chart is found that matches the context of the article it is automatically placed in the article.
     website: https://frames.news/
     company: Frames™
-    location: Lisbon
+    location: Lisbon (remote in the first year)
     position: Engineering lead
     startDate: "2016-05-01"
     endDate: "2019-01-01"
     highlights:
-      - Responsible for everything tech at Frames, from architecture to implementation
-        of the full tech stack.
+      - Responsible for everything tech at Frames, from architecture to implementation of the full tech stack.
       - Leading and mentoring the tech team.
-      - Worked with Node.js, React / Redux, PostgreSQL / Elasticsearch, Docker / Kubernetes
-        and AWS.
+      - Helped create an incredible user experience.
+      - Worked with Node.js, React / Redux, PostgreSQL / Elasticsearch, Docker / Kubernetes and AWS.
   - summary: Implemented observador.pt online newspaper user comment system.
     website: https://observador.pt/
     company: observador.pt (as a contractor)
@@ -166,10 +218,11 @@ work:
     endDate: "2015-12-31"
     highlights:
       - Worked with React / Redux / Webpack, Golang.
-  - summary:
-      Worked in two KPMG consultancy projects. One for a UK based bank to build
-      a complex financial product subscription application. Another one for an insurance
-      company to build a accident management system.
+  - summary: >
+      Worked in two KPMG consultancy projects.
+
+      One for a UK based bank to build a complex financial product subscription application.
+      Another one for an insurance company to build a accident management system.
     website: https://home.kpmg/
     company: KPMG
     location: Lisbon
@@ -177,11 +230,11 @@ work:
     startDate: "2012-03-01"
     endDate: "2016-06-01"
     highlights:
+      - Lead developer designing and implementing BPM processes, web interfaces and integration services.
       - Responsible for training / coaching junior developers.
       - Worked with JavaScript / IBM BPM.
-  - summary:
-      Simple Solutions is a small consultancy company that provided tech services
-      on the .Net stack.
+  - summary: >
+      Simple Solutions is a small consultancy company that provided tech services on the .Net stack.
     website: https://www.simplesolutions.pt/
     company: Simple Solutions
     location: Lisbon
@@ -191,8 +244,9 @@ work:
     highlights:
       - Worked with C#, ASP.Net, SQL Server, JavaScript, jQuery.
 interests:
-  - name: Gaming
-  - name: Science
+  - name: Software development and anything tech
   - name: Open Source
-  - name: Movies/TV Series
+  - name: Science
+  - name: Movies / TV Series
   - name: Entrepreneurship
+  - name: Gaming
