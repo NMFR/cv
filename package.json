@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Generate a CV (Curriculum Vitae) using jsonresume (https://jsonresume.org/).",
   "scripts": {
-    "export-html": "resume export --resume cv.json generated/cv.html",
+    "export-html": "resume export --resume cv.yaml generated/cv.html",
     "serve": "resume serve"
   },
   "keywords": [],
