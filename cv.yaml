@@ -11,7 +11,7 @@ basics:
     I really like to design and build software.
     I also really enjoy helping people learn and grow.
   email: nunomr@gmail.com
-  website: https://nunorodrigues.tech/
+  website: https://cv.nunorodrigues.tech/
   location:
     city: Lisbon
     countryCode: PT
@@ -27,7 +27,7 @@ education:
     endDate: "2010-06-01"
     area: Information Technology
     studyType: Bachelor + Master
-    institution: Instituto Superior de Engenharia de Lisboa
+    institution: ISEL
     url: https://www.isel.pt/cursos/licenciaturas/engenharia-informatica-e-de-computadores
 references:
   - reference:
@@ -101,17 +101,6 @@ references:
       on the planet! :)
     name: Andre Vieira, Software developer @ KPMG
 skills:
-  - name: Frontend
-    level: Senior
-    keywords:
-      - JavaScript / TypeScript
-      - React
-      - Redux
-      - SCSS / CSS / CSS in JS
-  - name: Mobile
-    level: Junior
-    keywords:
-      - iOS Swift
   - name: Backend
     level: Senior
     keywords:
@@ -125,6 +114,13 @@ skills:
       - Java
       - Rust
       - Python
+  - name: Frontend
+    level: Senior
+    keywords:
+      - JavaScript / TypeScript
+      - React
+      - Redux
+      - SCSS / CSS / CSS in JS
   - name: Databases
     level: Senior
     keywords:
@@ -137,6 +133,10 @@ skills:
       - Docker
       - Kubernetes
       - Terraform
+  - name: Mobile
+    level: Medium
+    keywords:
+      - iOS Swift
   - name: Cloud Providers
     level: Medium
     keywords:
@@ -170,7 +170,7 @@ work:
       Designing and building services.
       Leading and mentoring the tech team.
     website: https://cloudmobility.io/
-    company: Cloudmobility (Mercedez-Benz AG) via KI challengers
+    company: Cloudmobility (Mercedez-Benz AG)
     location: Remote
     position: Tech lead / Full stack developer
     startDate: "2019-03-12"
@@ -244,7 +244,8 @@ work:
     highlights:
       - Worked with C#, ASP.Net, SQL Server, JavaScript, jQuery.
 interests:
-  - name: Software development and anything tech
+  - name: Software development
+  - name: Anything tech
   - name: Open Source
   - name: Science
   - name: Movies / TV Series
