@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "Generate a CV (Curriculum Vitae) using jsonresume (https://jsonresume.org/).",
   "scripts": {
-    "export-html": "resume export --resume cv.yaml generated/cv.html --theme flat",
+    "export-html": "resume export --resume cv.yaml generated/cv.html --theme even",
     "serve": "resume serve"
   },
   "keywords": [],
   "author": "Nuno Rodrigues",
   "dependencies": {
-    "jsonresume-theme-flat": "^0.3.7",
+    "jsonresume-theme-even": "^0.17.1",
     "resume-cli": "^3.0.7"
   }
 }
