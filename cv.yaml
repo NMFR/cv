@@ -1,7 +1,7 @@
 basics:
   name: Nuno Rodrigues
   label: Engineering Lead / Full-stack Software Engineer
-  image: https://avatars.githubusercontent.com/u/13484940
+  image: assets/avatar.jpg
   summary: >
     I am a passionate engineering lead / full-stack software engineer that loves his job.
     I have broad experience in building stable and scalable products / services that users love.
@@ -11,7 +11,7 @@ basics:
     I really like to design and build software.
     I also really enjoy helping people learn and grow.
   email: nunomr@gmail.com
-  website: https://cv.nunorodrigues.tech/
+  url: https://cv.nunorodrigues.tech/
   location:
     city: Lisbon
     countryCode: PT
@@ -151,10 +151,10 @@ work:
       Responsible for designing, implementing and maintaining infrastructure abstractions.
       Enabling other teams to easily deploy their services (containers), load balancers, databases, message queues, ...
       Abstracting infrastructure details, cloud providers, logging, monitoring, ... so other teams can focus only on their services and business goals.
-    website: https://deliveroo.co.uk/
-    company: Deliveroo (as a contractor)
+    url: https://deliveroo.co.uk/
+    name: Deliveroo
     location: Remote
-    position: Senior Software Engineer
+    position: Senior Software Engineer (contractor)
     startDate: "2021-09-14"
     highlights:
       - Created and maintained services using Golang and Deno.js to help collect and aggregate metrics.
@@ -169,8 +169,8 @@ work:
       Helping break down product requirements.
       Designing and building services.
       Leading and mentoring the tech team.
-    website: https://cloudmobility.io/
-    company: Cloudmobility (Mercedez-Benz AG)
+    url: https://cloudmobility.io/
+    name: Cloudmobility (Mercedez-Benz AG)
     location: Remote
     position: Tech lead / Full stack developer
     startDate: "2019-03-12"
@@ -184,8 +184,8 @@ work:
       KI challengers is a tech company incubator, building companies, their tech products and teams.
 
       Most of my focus was on building the Cloudmobility (Mercedez-Benz AG) company.
-    website: https://ki-challengers.com/
-    company: KI challengers
+    url: https://ki-challengers.com/
+    name: KI challengers
     location: Lisbon
     position: Tech lead / Full stack developer
     startDate: "2019-01-02"
@@ -198,8 +198,8 @@ work:
       Frames provides a service to online news media companies to automatically place beautiful, contextual charts in their articles.
       Articles are automatically parsed and analyzed, the Frames curated charts database is searched,
       if a chart is found that matches the context of the article it is automatically placed in the article.
-    website: https://frames.news/
-    company: Frames™
+    url: https://frames.news/
+    name: Frames™
     location: Lisbon (remote in the first year)
     position: Engineering lead
     startDate: "2016-05-01"
@@ -210,10 +210,10 @@ work:
       - Helped create an incredible user experience.
       - Worked with Node.js, React / Redux, PostgreSQL / Elasticsearch, Docker / Kubernetes and AWS.
   - summary: Implemented observador.pt online newspaper user comment system.
-    website: https://observador.pt/
-    company: observador.pt (as a contractor)
+    url: https://observador.pt/
+    name: observador.pt
     location: Lisbon
-    position: Full stack developer
+    position: Full stack developer (contractor)
     startDate: "2015-08-01"
     endDate: "2015-12-31"
     highlights:
@@ -223,8 +223,8 @@ work:
 
       One for a UK based bank to build a complex financial product subscription application.
       Another one for an insurance company to build a accident management system.
-    website: https://home.kpmg/
-    company: KPMG
+    url: https://home.kpmg/
+    name: KPMG
     location: Lisbon
     position: Senior Software Engineer
     startDate: "2012-03-01"
@@ -235,8 +235,8 @@ work:
       - Worked with JavaScript / IBM BPM.
   - summary: >
       Simple Solutions is a small consultancy company that provided tech services on the .Net stack.
-    website: https://www.simplesolutions.pt/
-    company: Simple Solutions
+    url: https://www.simplesolutions.pt/
+    name: Simple Solutions
     location: Lisbon
     position: Software Developer
     startDate: "2010-12-01"
