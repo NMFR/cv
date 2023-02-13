@@ -30,7 +30,7 @@ education:
     institution: ISEL
     url: https://www.isel.pt/cursos/licenciaturas/engenharia-informatica-e-de-computadores
 references:
-  - reference:
+  - reference: >
       I worked with Nuno for several months at Deliveroo.
       Our team focused on delivering abstractions for deciding which primitives to run workloads on, networking and databases.
       Nuno was exceptional at delivering results and was behind some great initiatives which largely helped our monitoring posture.
@@ -104,9 +104,9 @@ skills:
   - name: Backend
     level: Senior
     keywords:
+      - Golang
       - Node.js
       - Deno
-      - Golang
   - name: Backend
     level: Medium
     keywords:
@@ -120,7 +120,6 @@ skills:
       - JavaScript / TypeScript
       - React
       - Redux
-      - SCSS / CSS / CSS in JS
   - name: Databases
     level: Senior
     keywords:
@@ -144,6 +143,17 @@ skills:
       - Google Cloud Platform
       - Azure
 work:
+  - name: Mara
+    position: Full-stack Software Engineer (contractor)
+    url: https://www.mara.xyz/
+    location: Remote
+    startDate: "2022-11-10"
+    # endDate: "2023-02-10"
+    summary: >
+      Helping Mara build a cryptocurrency exchange.
+    highlights:
+      - Helped set the foundation of a cryptocurrency exchange from the order matching engine to the delivery of real time order book updates to the UI.
+      - Worked with Golang / gRCP / Kafka / React / serverless.
   - summary: >
       Deliveroo is a food takeout / groceries delivery service.
       I was part of the platform engineering team.
@@ -156,6 +166,7 @@ work:
     location: Remote
     position: Senior Software Engineer (contractor)
     startDate: "2021-09-14"
+    endDate: "2022-09-14"
     highlights:
       - Created and maintained services using Golang and Deno.js to help collect and aggregate metrics.
       - Created a slack bot using Golang to manage low priority alerts.
