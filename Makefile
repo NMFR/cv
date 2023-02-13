@@ -43,25 +43,16 @@ spell-check-readme:
 format-spell-check-exclude-file:
 	SPELL_CHECK_FORMAT_RESULT=$$(cat spell-check-exclude.dic | egrep . | sort | uniq) && echo "$${SPELL_CHECK_FORMAT_RESULT}" > spell-check-exclude.dic
 
-.PHONY: ci-container-build
-ci-container-build:
-# Use Github container registry as a container build image cache
-	docker pull $(CI_CONTAINER_IMAGE_NAME) || true
-	docker build --target build -t $(CI_CONTAINER_IMAGE_NAME) --cache-from=$(CI_CONTAINER_IMAGE_NAME) --build-arg BUILDKIT_INLINE_CACHE=1 .
-
-.PHONY: ci-container-push
-ci-container-push:
-	docker push $(CI_CONTAINER_IMAGE_NAME) || true
-
-# The generated CV will be available in the "generated/" folder.
-.PHONY: ci-spell-check
-ci-spell-check:
-	@rm -rf generated
-	@mkdir -p generated
-	docker run -v ${PWD}/generated:/workspace/generated $(CI_CONTAINER_IMAGE_NAME) make spell-check
-
 # make prepare-gh-pages # Prepare the gh-pages folder to be deployed. This will copy the generated CV to the gh-pages folder making sure the HTML file is renamed to "index.html". Note that this command expects the contents of the `generated` folder to already be generated.
 .PHONY: prepare-gh-pages
 prepare-gh-pages:
 	mv generated/cv.html generated/index.html
 	cp -rn generated/. gh-pages/
+
+# make container run="<command>" # Run a command from inside the container. Examples: `make container run="make spell-check"`.
+.PHONY: container
+container:
+# If caching is enabled attempt to pull the container from the registry to fill the cache before the build.
+	[[ "$$USE_CONTAINER_CACHE" == "true" ]] && (docker pull $(CI_CONTAINER_IMAGE_NAME)) || true
+	docker build --target ci --tag $(CI_CONTAINER_IMAGE_NAME) --cache-from=$(CI_CONTAINER_IMAGE_NAME) --build-arg BUILDKIT_INLINE_CACHE=1 .
+	docker run -v "$(CURDIR):/workspace" $(CI_CONTAINER_IMAGE_NAME) $(run)
