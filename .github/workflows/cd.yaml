@@ -5,25 +5,43 @@ on:
     branches:
       - master
 
-permissions:
-  contents: write
-
 env:
   DOCKER_BUILDKIT: 1
-  CI_CONTAINER_IMAGE_NAME: docker.pkg.github.com/nmfr/cv/ci
+  USE_CONTAINER_CACHE: true
+  CI_CONTAINER_REGISTRY: ghcr.io
+  CI_CONTAINER_IMAGE_NAME: ghcr.io/nmfr/cv/ci
 
 jobs:
-  cd:
+  cache-ci-container-image:
     runs-on: ubuntu-latest
-    concurrency: ci-${{ github.ref }}
+    permissions:
+      packages: write
     steps:
       - uses: actions/checkout@v3
       - name: docker login
-        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
-      - run: make ci-container-build
-      - run: make ci-container-push
-      - run: make ci-spell-check
-      - run: make prepare-gh-pages
+        continue-on-error: true
+        run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ${CI_CONTAINER_REGISTRY} -u ${GITHUB_ACTOR} --password-stdin)
+      - name: docker build
+        run: make container run="echo 'image built'"
+      - name: docker push
+        continue-on-error: true
+        run: docker push $CI_CONTAINER_IMAGE_NAME
+
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency: ci-${{ github.ref }}
+    needs: cache-ci-container-image
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: docker login
+        continue-on-error: true
+        run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ${CI_CONTAINER_REGISTRY} -u ${GITHUB_ACTOR} --password-stdin)
+      - name: spell check
+        run: make container run="make clean spell-check"
+      - name: prepare gh-pages folder
+        run: make prepare-gh-pages
       - name: Deploy github pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:

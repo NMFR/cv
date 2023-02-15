@@ -7,7 +7,9 @@ on:
 
 env:
   DOCKER_BUILDKIT: 1
-  CI_CONTAINER_IMAGE_NAME: docker.pkg.github.com/nmfr/cv/ci
+  USE_CONTAINER_CACHE: true
+  CI_CONTAINER_REGISTRY: ghcr.io
+  CI_CONTAINER_IMAGE_NAME: ghcr.io/nmfr/cv/ci
 
 jobs:
   spell-check:
@@ -15,6 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: docker login
-        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
-      - run: make ci-container-build
-      - run: make ci-spell-check
+        continue-on-error: true
+        run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ${CI_CONTAINER_REGISTRY} -u ${GITHUB_ACTOR} --password-stdin)
+      - run: make container run="make clean spell-check"
