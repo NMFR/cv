@@ -29,5 +29,3 @@ COPY package.json package-lock.json /workspace/
 RUN npm install
 
 COPY . /workspace
-
-USER node

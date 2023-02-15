@@ -15,6 +15,7 @@ help:
 .PHONY: generate-html
 generate-html:
 	@mkdir -p generated
+	@chmod o+rw generated
 	npm install
 	npm run export-html
 
@@ -23,6 +24,7 @@ generate-html:
 clean:
 	@rm -rf generated
 	@mkdir -p generated
+	@chmod o+rw generated
 
 # make spell-check # Spell check the CV HTML file.
 .PHONY: spell-check
