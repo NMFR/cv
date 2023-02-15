@@ -8,6 +8,7 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   USE_CONTAINER_CACHE: true
+  CI_CONTAINER_REGISTRY: ghcr.io
   CI_CONTAINER_IMAGE_NAME: ghcr.io/nmfr/cv/ci
 
 jobs:
@@ -16,5 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: docker login
-        run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin) || true
+        continue-on-error: true
+        run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ${CI_CONTAINER_REGISTRY} -u ${GITHUB_ACTOR} --password-stdin)
       - run: make container run="make clean spell-check"
