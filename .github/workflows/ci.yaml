@@ -18,3 +18,5 @@ jobs:
       - name: docker login
         run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin) || true
       - run: make container run="make clean spell-check"
+      - name: docker push
+        run: docker push $CI_CONTAINER_IMAGE_NAME
