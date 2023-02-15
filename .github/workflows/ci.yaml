@@ -20,3 +20,16 @@ jobs:
         continue-on-error: true
         run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ${CI_CONTAINER_REGISTRY} -u ${GITHUB_ACTOR} --password-stdin)
       - run: make container run="make clean spell-check"
+
+  cache-ci-container-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: docker login
+        continue-on-error: true
+        run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ${CI_CONTAINER_REGISTRY} -u ${GITHUB_ACTOR} --password-stdin)
+      - name: docker build
+        run: make container run="echo 'image built'"
+      - name: docker push
+        continue-on-error: true
+        run: docker push $CI_CONTAINER_IMAGE_NAME
