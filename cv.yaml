@@ -169,104 +169,104 @@ work:
     highlights:
       - Helped set the foundation of a cryptocurrency exchange from the order matching engine to the delivery of real time order book updates to the UI.
       - "Key technologies: Golang / gRCP / Kafka / React / serverless."
-  - summary: >
+  - name: Deliveroo
+    position: Senior Software Engineer (contractor)
+    url: https://deliveroo.co.uk/
+    location: Remote
+    startDate: "2021-09-14"
+    endDate: "2022-09-14"
+    summary: >
       Deliveroo is a food takeout / groceries delivery service.
       I was part of the platform engineering team.
 
       Responsible for designing, implementing and maintaining infrastructure abstractions.
       Enabling other teams to easily deploy their services (containers), load balancers, databases, message queues, ...
       Abstracting infrastructure details, cloud providers, logging, monitoring, ... so other teams can focus only on their services and business goals.
-    url: https://deliveroo.co.uk/
-    name: Deliveroo
-    location: Remote
-    position: Senior Software Engineer (contractor)
-    startDate: "2021-09-14"
-    endDate: "2022-09-14"
     highlights:
       - Created and maintained services using Golang and Deno.js to help collect and aggregate metrics.
       - Created a slack bot using Golang to manage low priority alerts.
       - Created and maintained terraform modules that provided compute, network and storage abstractions.
       - Optimized autoscaling strategies.
       - "Key technologies: Golang / Terraform / Kubernetes / AWS / Deno.js / Node.js."
-  - summary: >
+  - name: Cloudmobility (Mercedez-Benz AG)
+    position: Tech lead / Full stack developer
+    url: https://cloudmobility.io/
+    location: Remote
+    startDate: "2019-03-12"
+    endDate: "2021-09-09"
+    summary: >
       Building an on premise cloud for Daimler / Mercedez-Benz AG.
 
       Tech lead of the Kubernetes multi tenant services team.
       Helping break down product requirements.
       Designing and building services.
       Leading and mentoring the tech team.
-    url: https://cloudmobility.io/
-    name: Cloudmobility (Mercedez-Benz AG)
-    location: Remote
-    position: Tech lead / Full stack developer
-    startDate: "2019-03-12"
-    endDate: "2021-09-09"
     highlights:
       - Implemented a Kubernetes hard multi-tenancy service.
       - Researched and designed cloud compute services.
       - Mentored team members.
       - "Key technologies: Golang / Java / Python / Swift, PostgreSQL / MongoDb, Docker / Kubernetes and React / Redux."
-  - summary: >
+  - name: KI challengers
+    position: Tech lead / Full stack developer
+    url: https://ki-challengers.com/
+    location: Lisbon
+    startDate: "2019-01-02"
+    endDate: "2021-09-09"
+    summary: >
       KI challengers is a tech company incubator, building companies, their tech products and teams.
 
       Most of my focus was on building the Cloudmobility (Mercedez-Benz AG) company.
-    url: https://ki-challengers.com/
-    name: KI challengers
-    location: Lisbon
-    position: Tech lead / Full stack developer
-    startDate: "2019-01-02"
-    endDate: "2021-09-09"
     highlights:
       - Lead a team to create an internal application to collect data about the company so decisions could be made around facts.
       - Helped build an on premise cloud (Cloudmobility).
       - "Key technologies: Golang / Rust, PostgreSQL, Kubernetes, Terraform and AWS / Azure."
-  - summary: >
+  - name: Frames™
+    position: Engineering lead
+    url: https://frames.news/
+    location: Lisbon (remote in the first year)
+    startDate: "2016-05-01"
+    endDate: "2019-01-01"
+    summary: >
       Frames provides a service to online news media companies to automatically place beautiful, contextual charts in their articles.
       Articles are automatically parsed and analyzed, the Frames curated charts database is searched,
       if a chart is found that matches the context of the article it is automatically placed in the article.
-    url: https://frames.news/
-    name: Frames™
-    location: Lisbon (remote in the first year)
-    position: Engineering lead
-    startDate: "2016-05-01"
-    endDate: "2019-01-01"
     highlights:
       - Responsible for everything tech at Frames, from architecture to implementation of the full tech stack.
       - Leading and mentoring the tech team.
       - Helped create an incredible user experience.
       - "Key technologies: Node.js, React / Redux, PostgreSQL / Elasticsearch, Docker / Kubernetes and AWS."
-  - summary: Implemented observador.pt online newspaper user comment system.
-    url: https://observador.pt/
-    name: observador.pt
-    location: Lisbon
+  - name: observador.pt
     position: Full stack developer (contractor)
+    url: https://observador.pt/
+    location: Lisbon
     startDate: "2015-08-01"
     endDate: "2015-12-31"
+    summary: Implemented observador.pt online newspaper user comment system.
     highlights:
       - "Key technologies: React / Redux / Webpack, Golang."
-  - summary: >
+  - name: KPMG
+    position: Senior Software Engineer
+    url: https://home.kpmg/
+    location: Lisbon
+    startDate: "2012-03-01"
+    endDate: "2016-06-01"
+    summary: >
       Worked in two KPMG consultancy projects.
 
       One for a UK based bank to build a complex financial product subscription application.
       Another one for an insurance company to build a accident management system.
-    url: https://home.kpmg/
-    name: KPMG
-    location: Lisbon
-    position: Senior Software Engineer
-    startDate: "2012-03-01"
-    endDate: "2016-06-01"
     highlights:
       - Lead developer designing and implementing BPM processes, web interfaces and integration services.
       - Responsible for training / coaching junior developers.
       - "Key technologies: JavaScript / IBM BPM."
-  - summary: >
-      Simple Solutions is a small consultancy company that provided tech services on the .Net stack.
-    url: https://www.simplesolutions.pt/
-    name: Simple Solutions
-    location: Lisbon
+  - name: Simple Solutions
     position: Software Developer
+    url: https://www.simplesolutions.pt/
+    location: Lisbon
     startDate: "2010-12-01"
     endDate: "2012-02-28"
+    summary: >
+      Simple Solutions is a small consultancy company that provided tech services on the .Net stack.
     highlights:
       - "Key technologies: C#, ASP.Net, SQL Server, JavaScript, jQuery."
 interests:
