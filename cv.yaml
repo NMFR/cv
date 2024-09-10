@@ -153,10 +153,10 @@ work:
       Helping BP create and build internal products in the data space.
     highlights:
       - Created a proof of concept application to manage resources utilization and predict / project future demand.
-      - Upgraded a legacy Excel "application" with thousands of unique formulas to a modern application by building a code generator to ease the formula "translation".
-      - Helped build a data processing platform, built on top of Dagster, that used a declarative mind set to define data as code to increase consistency and reusability.
-      - Designed and improved the control and data plane communication from direct database access to a well defined GraphQL interface.
-      - Helped implement a data pipeline execution abstraction that allowed pipelines to be ran in different compute environments (Kubernetes, AWS ECS, bare metal) with ease.
+      - Upgraded a legacy Excel "application" with thousands of unique formulas to a modern application by building a code generator to facilitate the formula "translation".
+      - Helped build a data processing platform, built on top of Dagster, that defines data as code to increase consistency and reusability.
+      - Improved the Dagster control and data plane communication from direct database access to a well defined GraphQL interface.
+      - Helped implement a data pipeline execution abstraction that allows pipelines to be run in diverse compute environments (Kubernetes, AWS ECS, bare metal) with ease.
       - "Key technologies: Python / Dagster / GraphQL / React / Terraform / .Net / Kubernetes"
   - name: Mara
     position: Full-stack Software Engineer (contractor)
