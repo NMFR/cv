@@ -33,131 +33,6 @@ I also really enjoy helping people learn and grow.`,
       },
     ],
   },
-  education: [
-    {
-      startDate: new Date(`2004-09-01`),
-      endDate: new Date(`2010-06-01`),
-      area: `Information Technology`,
-      studyType: `Bachelor + Master`,
-      institution: `ISEL`,
-      url: `https://www.isel.pt/cursos/licenciaturas/engenharia-informatica-e-de-computadores`,
-    },
-  ],
-  references: [
-    {
-      reference: `I worked with Nuno for several months at Deliveroo.
-Our team focused on delivering abstractions for deciding which primitives to run workloads on, networking and databases.
-Nuno was exceptional at delivering results and was behind some great initiatives which largely helped our monitoring posture.
-He lead the charge in investigating optimizations to our autoscaling strategies, built a non-urgent but high priority alerting system,
-changed our development workflow to make more use of devcontainers with VS Code (which significantly improved setup time),
-significantly improved our database monitoring with custom tooling and became our go-to Kubernetes expert.
-Nuno has a keen focus on terse but high quality code and likes to take a data driven approach to decision making,
-which makes him a great candidate for discussion around key decisions.
-It was great working with Nuno - he's an excellent addition to any team!`,
-      name: `Sanyia Saidova, Senior Software Engineer @ Deliveroo`,
-    },
-    {
-      reference: `Nuno is an experienced engineer who has been a pleasure to work with.
-He has a combination of qualities valuable for any engineering team or project:
-broad technical expertise, good people skills, and passion towards sharing his knowledge with others.
-He showed ability to contribute to and lead projects with high degree of ambiguity,
-independently learning a new problem space and proactively reaching out for guidance when necessary.
-Nuno engages well with customers and other stakeholders, showing humility and compassion.
-He quickly became a part of our team, showed high degree of initiative and regularly solicited feedback.`,
-      name: `Anton Tolchanov, Engineering Manager @ Deliveroo`,
-    },
-
-    {
-      reference: `Nuno carried the Frames product like no one else. From System Architecture
-to Quality Assurance, he handled the stack and everyone working with it with an
-impressive attention to detail and maintainability. Making sure the system scales
-and correctly responds the the rapid evolution of features is a number one priority
-that makes the life, as Nuno's manager, very easy. Highly recommended.`,
-      name: `Leo Xavier, CTO @ Observador, Founder @ Frames`,
-    },
-    {
-      reference: `Nuno is one of the best software engineers that I have worked with. He
-is highly dedicated, creative and intelligent and as his team leader, I always
-trusted that he would always present the best solution for our customer. He is
-a great team member, always available to help and coach other team members, even
-if it requires an extra effort. Despite his great skills, Nuno is very humble
-and he is always trying to learn new things. Nuno is a person that every project
-manager wants in his team. I feel very privileged to have met Nuno and to have
-worked with him, it was a very enriching experience.`,
-      name: `Andreia Melo, Manager @ KPMG`,
-    },
-    {
-      reference: `Nuno is an highly motivated and focused developer but this is not enough
-for him ! He is also good in gathering business requirement, support, troubleshooting
-and everything else Murphy laws can throw in a project.`,
-      name: `Rui Madaleno, IT Architect @ Acoreana`,
-    },
-    {
-      reference: `Nuno is THE BEST software engineer I have ever had the pleasure of working
-with. Period. He is the best! We worked on two big BPM projects. One of the projects
-was an award winning IBM BPM Application for the Insurance industry. Probably
-the most advanced IBM BPM application worldwide (I would bet on it). Nuno was
-the mastermind behind that awesome piece of technology. Top notch! He knows everything
-about software, architecture, programming languages, he is incredibly talented,
-he coaches young developers, he loves his code, he loves quality, he breathes
-software, and best of all he is funny as hell, the type that brings up the vibe
-of a team and that makes you want to go to work the next day. I recommend him
-unconditionally to any Software Architect role, any day. He's the best. Trust
-me, he's the man! I would hire him tomorrow without a blink.`,
-      name: `Pietro Casella, Senior Manager @ KPMG`,
-    },
-    {
-      reference: `Nuno is a highly skilled IT professional, a world-class developer. There
-are no unreachable goals, and everything he delivers is developed with robust
-solutions for complex problems. He is technically the best IT professional I ever
-worked. He is always ready to learn and improve his knowledge, and transfer that
-to every team colleague. Actively helps in creating a good working environment.`,
-      name: `Daniel Moura, Manager @ KPMG`,
-    },
-    {
-      reference: `It was an immense experience working with Nuno. One of the best professionals
-I have ever worked with. He is the real deal. Extremely productive and intelligent
-with strong architecture analysis skills. He is always available to help his colleagues
-and make us learn and evolve as professionals. This kind of availability is extremely
-rare. On the personal level... the guy must be the most well-humored IT professional
-on the planet! :)`,
-      name: `Andre Vieira, Software developer @ KPMG`,
-    },
-  ],
-  skills: [
-    {
-      name: `Backend`,
-      level: `Senior`,
-      keywords: [`Golang`, `Node.js`, `Deno`],
-    },
-
-    {
-      name: `Backend`,
-      level: `Medium`,
-      keywords: [`.Net / C#`, `Java`, `Rust`, `Python`],
-    },
-    {
-      name: `Frontend`,
-      level: `Senior`,
-      keywords: [`JavaScript / TypeScript`, `React`, `Redux`],
-    },
-    {
-      name: `Databases`,
-      level: `Senior`,
-      keywords: [`PostgreSQL`, `Microsoft SQL Server`, `Elasticsearch`],
-    },
-    {
-      name: `Infrastructure`,
-      level: `Senior`,
-      keywords: [`Docker`, `Kubernetes`, `Terraform`],
-    },
-    { name: `Mobile`, level: `Medium`, keywords: [`iOS Swift`] },
-    {
-      name: `Cloud Providers`,
-      level: `Medium`,
-      keywords: [`AWS`, `Google Cloud Platform`, `Azure`],
-    },
-  ],
   work: [
     {
       name: `BP`,
@@ -303,6 +178,50 @@ if a chart is found that matches the context of the article it is automatically 
       ],
     },
   ],
+  education: [
+    {
+      startDate: new Date(`2004-09-01`),
+      endDate: new Date(`2010-06-01`),
+      area: `Information Technology`,
+      studyType: `Bachelor + Master`,
+      institution: `ISEL`,
+      url: `https://www.isel.pt/cursos/licenciaturas/engenharia-informatica-e-de-computadores`,
+    },
+  ],
+  skills: [
+    {
+      name: `Backend`,
+      level: `Senior`,
+      keywords: [`Golang`, `Node.js`, `Deno`],
+    },
+
+    {
+      name: `Backend`,
+      level: `Medium`,
+      keywords: [`.Net / C#`, `Java`, `Rust`, `Python`],
+    },
+    {
+      name: `Frontend`,
+      level: `Senior`,
+      keywords: [`JavaScript / TypeScript`, `React`, `Redux`],
+    },
+    {
+      name: `Databases`,
+      level: `Senior`,
+      keywords: [`PostgreSQL`, `Microsoft SQL Server`, `Elasticsearch`],
+    },
+    {
+      name: `Infrastructure`,
+      level: `Senior`,
+      keywords: [`Docker`, `Kubernetes`, `Terraform`],
+    },
+    { name: `Mobile`, level: `Medium`, keywords: [`iOS Swift`] },
+    {
+      name: `Cloud Providers`,
+      level: `Medium`,
+      keywords: [`AWS`, `Google Cloud Platform`, `Azure`],
+    },
+  ],
   interests: [
     { name: `Software development` },
     { name: `Anything tech` },
@@ -311,5 +230,86 @@ if a chart is found that matches the context of the article it is automatically 
     { name: `Movies / TV Series` },
     { name: `Entrepreneurship` },
     { name: `Gaming` },
+  ],
+  references: [
+    {
+      reference: `I worked with Nuno for several months at Deliveroo.
+Our team focused on delivering abstractions for deciding which primitives to run workloads on, networking and databases.
+Nuno was exceptional at delivering results and was behind some great initiatives which largely helped our monitoring posture.
+He lead the charge in investigating optimizations to our autoscaling strategies, built a non-urgent but high priority alerting system,
+changed our development workflow to make more use of devcontainers with VS Code (which significantly improved setup time),
+significantly improved our database monitoring with custom tooling and became our go-to Kubernetes expert.
+Nuno has a keen focus on terse but high quality code and likes to take a data driven approach to decision making,
+which makes him a great candidate for discussion around key decisions.
+It was great working with Nuno - he's an excellent addition to any team!`,
+      name: `Sanyia Saidova, Senior Software Engineer @ Deliveroo`,
+    },
+    {
+      reference: `Nuno is an experienced engineer who has been a pleasure to work with.
+He has a combination of qualities valuable for any engineering team or project:
+broad technical expertise, good people skills, and passion towards sharing his knowledge with others.
+He showed ability to contribute to and lead projects with high degree of ambiguity,
+independently learning a new problem space and proactively reaching out for guidance when necessary.
+Nuno engages well with customers and other stakeholders, showing humility and compassion.
+He quickly became a part of our team, showed high degree of initiative and regularly solicited feedback.`,
+      name: `Anton Tolchanov, Engineering Manager @ Deliveroo`,
+    },
+
+    {
+      reference: `Nuno carried the Frames product like no one else. From System Architecture
+to Quality Assurance, he handled the stack and everyone working with it with an
+impressive attention to detail and maintainability. Making sure the system scales
+and correctly responds the the rapid evolution of features is a number one priority
+that makes the life, as Nuno's manager, very easy. Highly recommended.`,
+      name: `Leo Xavier, CTO @ Observador, Founder @ Frames`,
+    },
+    {
+      reference: `Nuno is one of the best software engineers that I have worked with. He
+is highly dedicated, creative and intelligent and as his team leader, I always
+trusted that he would always present the best solution for our customer. He is
+a great team member, always available to help and coach other team members, even
+if it requires an extra effort. Despite his great skills, Nuno is very humble
+and he is always trying to learn new things. Nuno is a person that every project
+manager wants in his team. I feel very privileged to have met Nuno and to have
+worked with him, it was a very enriching experience.`,
+      name: `Andreia Melo, Manager @ KPMG`,
+    },
+    {
+      reference: `Nuno is an highly motivated and focused developer but this is not enough
+for him ! He is also good in gathering business requirement, support, troubleshooting
+and everything else Murphy laws can throw in a project.`,
+      name: `Rui Madaleno, IT Architect @ Acoreana`,
+    },
+    {
+      reference: `Nuno is THE BEST software engineer I have ever had the pleasure of working
+with. Period. He is the best! We worked on two big BPM projects. One of the projects
+was an award winning IBM BPM Application for the Insurance industry. Probably
+the most advanced IBM BPM application worldwide (I would bet on it). Nuno was
+the mastermind behind that awesome piece of technology. Top notch! He knows everything
+about software, architecture, programming languages, he is incredibly talented,
+he coaches young developers, he loves his code, he loves quality, he breathes
+software, and best of all he is funny as hell, the type that brings up the vibe
+of a team and that makes you want to go to work the next day. I recommend him
+unconditionally to any Software Architect role, any day. He's the best. Trust
+me, he's the man! I would hire him tomorrow without a blink.`,
+      name: `Pietro Casella, Senior Manager @ KPMG`,
+    },
+    {
+      reference: `Nuno is a highly skilled IT professional, a world-class developer. There
+are no unreachable goals, and everything he delivers is developed with robust
+solutions for complex problems. He is technically the best IT professional I ever
+worked. He is always ready to learn and improve his knowledge, and transfer that
+to every team colleague. Actively helps in creating a good working environment.`,
+      name: `Daniel Moura, Manager @ KPMG`,
+    },
+    {
+      reference: `It was an immense experience working with Nuno. One of the best professionals
+I have ever worked with. He is the real deal. Extremely productive and intelligent
+with strong architecture analysis skills. He is always available to help his colleagues
+and make us learn and evolve as professionals. This kind of availability is extremely
+rare. On the personal level... the guy must be the most well-humored IT professional
+on the planet! :)`,
+      name: `Andre Vieira, Software developer @ KPMG`,
+    },
   ],
 };
