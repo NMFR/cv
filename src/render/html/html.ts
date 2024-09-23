@@ -12,6 +12,11 @@ import {
   Reference,
 } from "../../model";
 
+interface Link {
+  name: string;
+  url?: string;
+}
+
 async function file(path: string) {
   return "";
 }
@@ -39,48 +44,353 @@ async function file(path: string) {
 
 // const html = String.raw;
 
-function renderMeta(cv: Basics) {
-  return ``;
+// icons from `feather-icons`
+async function icon(
+  icon: `github` | `link` | `linkedin` | `mail` | `map-pin` | `phone`
+) {
+  return file(`./icons/${icon}.svg`);
 }
 
-function renderHeader(cv: Basics) {
-  return ``;
+function renderLink(link: Link) {
+  return `{{#if name}}{{#if url}}<a href="{{url}}">{{name}}</a>{{else}}{{name}}{{/if}}{{else}}{{#url}}<a href="{{.}}">{{formatURL .}}</a>{{/url}}{{/if}}`;
+}
+
+function renderMeta(basics: Basics) {
+  return `<title>${basics.name}</title>
+    <meta name="description" content="${
+      basics.summary /**stripTags (markdown .) **/
+    }">{{/summary}}`;
+}
+
+function renderHeader(basics: Basics) {
+  return `<header class="masthead">
+      <img src="${basics.image}" alt="">
+      <div>
+        {{#name}}
+          <h1>{{.}}</h1>
+        {{/name}}
+        {{#label}}
+          <h2>{{.}}</h2>
+        {{/label}}
+      </div>
+      {{#summary}}
+        <article>
+          {{{markdown .}}}
+        </article>
+      {{/summary}}
+      <ul class="icon-list">
+        {{#location}}
+          {{#if city}}
+            <li>
+              {{{icon 'map-pin'}}}
+              {{city}}{{#countryCode}}, {{formatCountry .}}{{/countryCode}}
+            </li>
+          {{/if}}
+        {{/location}}
+        {{#email}}
+          <li>
+            {{{icon 'mail'}}}
+            <a href="mailto:{{.}}">{{.}}</a>
+          </li>
+        {{/email}}
+        {{#phone}}
+          <li>
+            {{{icon 'phone'}}}
+            <a href="tel:{{formatPhone .}}">{{.}}</a>
+          </li>
+        {{/phone}}
+        {{#url}}
+          <li>
+            {{{icon 'link'}}}
+            <a href="{{.}}">{{formatURL .}}</a>
+          </li>
+        {{/url}}
+        {{#profiles}}
+          <li>
+            {{{icon network 'user'}}}
+            {{#if username}}
+              {{#if url}}
+                <a href="{{url}}">{{username}}</a>
+              {{else}}
+                {{username}}
+              {{/if}}
+            {{else}}
+              {{#url}}
+                <a href="{{.}}">{{formatURL .}}</a>
+              {{/url}}
+            {{/if}}
+            {{#network}}
+              <span class="network">({{.}})</span>
+            {{/network}}
+          </li>
+        {{/profiles}}
+      </ul>
+    </header>`;
 }
 
 function renderWork(cv: Work[]) {
-  return ``;
+  return `{{#if resume.work.length}}
+      <section id="work">
+        <h3>Work</h3>
+        <div class="stack">
+          {{#each resume.work}}
+            <article>
+              <header>
+                <h4>{{position}}</h4>
+                <div class="meta">
+                  <div>
+                    <strong>{{> link}}</strong>
+                    {{#description}}
+                      <span class="bullet-item">{{.}}</span>
+                    {{/description}}
+                  </div>
+                  <div>
+                    <time datetime="{{startDate}}">{{formatDate startDate}}</time> –
+                    {{#if endDate}}<time datetime="{{endDate}}">{{formatDate endDate}}</time>{{else}}Present{{/if}}
+                  </div>
+                  {{#location}}
+                    <div>{{.}}</div>
+                  {{/location}}
+                </div>
+              </header>
+              {{#summary}}
+                {{{markdown .}}}
+              {{/summary}}
+              {{#if highlights.length}}
+                <ul>
+                  {{#highlights}}
+                    <li>{{{markdown .}}}</li>
+                  {{/highlights}}
+                </ul>
+              {{/if}}
+            </article>
+          {{/each}}
+        </div>
+      </section>
+    {{/if}}`;
 }
 
 function renderEducation(cv: Education[]) {
-  return ``;
+  return `{{#if resume.education.length}}
+      <section id="education">
+        <h3>Education</h3>
+        <div class="stack">
+          {{#each resume.education}}
+            <article>
+              <header>
+                <h4>{{> link name=institution}}</h4>
+                <div class="meta">
+                  {{#area}}
+                    <strong>{{.}}</strong>
+                  {{/area}}
+                  <div>
+                    <time datetime="{{startDate}}">{{formatDate startDate}}</time> –
+                    {{#if endDate}}<time datetime="{{endDate}}">{{formatDate endDate}}</time>{{else}}Present{{/if}}
+                  </div>
+                </div>
+              </header>
+              {{#studyType}}
+                {{{markdown .}}}
+              {{/studyType}}
+              {{#if courses.length}}
+                <h5>Courses</h5>
+                <ul>
+                  {{#courses}}
+                    <li>{{{markdown .}}}</li>
+                  {{/courses}}
+                </ul>
+              {{/if}}
+            </article>
+          {{/each}}
+        </div>
+      </section>
+    {{/if}}`;
 }
 
 function renderProjects(cv: Project[]) {
-  return ``;
+  return `{{#if resume.projects.length}}
+      <section id="projects">
+        <h3>Projects</h3>
+        <div class="stack">
+          {{#each resume.projects}}
+            <article>
+              <header>
+                <h4>{{> link}}</h4>
+                <div class="meta">
+                  <div>
+                    {{#if roles}}
+                      <strong>{{join roles}}</strong>
+                    {{/if}}
+                    {{#entity}}
+                      at <strong>{{.}}</strong>
+                    {{/entity}}
+                  </div>
+                  <div>
+                    <time datetime="{{startDate}}">{{formatDate startDate}}</time> –
+                    {{#if endDate}}<time datetime="{{endDate}}">{{formatDate endDate}}</time>{{else}}Present{{/if}}
+                  </div>
+                </div>
+              </header>
+              {{#description}}
+                {{{markdown .}}}
+              {{/description}}
+              {{#if highlights.length}}
+                <ul>
+                  {{#highlights}}
+                    <li>{{{markdown .}}}</li>
+                  {{/highlights}}
+                </ul>
+              {{/if}}
+            </article>
+          {{/each}}
+        </div>
+      </section>
+    {{/if}}`;
 }
 
 function renderCertificates(cv: Certificate[]) {
-  return ``;
+  return `{{#if resume.certificates.length}}
+      <section id="certificates">
+        <h3>Certificates</h3>
+        <div class="stack">
+          {{#each resume.certificates}}
+            <article>
+              <header>
+                <h4>{{> link}}</h4>
+                <div class="meta">
+                  {{#issuer}}
+                    <div>
+                      Issued by <strong>{{.}}</strong>
+                    </div>
+                  {{/issuer}}
+                  {{#date}}
+                    <time datetime="{{.}}">{{formatDate .}}</time>
+                  {{/date}}
+                </div>
+              </header>
+            </article>
+          {{/each}}
+        </div>
+      </section>
+    {{/if}}`;
 }
 
 function renderPublications(cv: Publication[]) {
-  return ``;
+  return `{{#if resume.publications.length}}
+    <section id="publications">
+      <h3>Publications</h3>
+      <div class="stack">
+        {{#each resume.publications}}
+          <article>
+            <header>
+              <h4>{{> link}}</h4>
+              <div class="meta">
+                {{#publisher}}
+                  <div>
+                    Published by <strong>{{.}}</strong>
+                  </div>
+                {{/publisher}}
+                {{#releaseDate}}
+                  <time datetime="{{.}}">{{formatDate .}}</time>
+                {{/releaseDate}}
+              </div>
+            </header>
+            {{#summary}}
+              {{{markdown .}}}
+            {{/summary}}
+          </article>
+        {{/each}}
+      </div>
+    </section>
+  {{/if}}`;
 }
 
 function renderSkills(cv: Skill[]) {
-  return ``;
+  return `{{#if resume.skills.length}}
+      <section id="skills">
+        <h3>Skills</h3>
+        <div class="grid-list">
+          {{#each resume.skills}}
+            <div>
+              {{#name}}
+                <h4>{{.}}</h4>
+              {{/name}}
+              {{#if keywords.length}}
+                <ul class="tag-list">
+                  {{#keywords}}
+                    <li>{{.}}</li>
+                  {{/keywords}}
+                </ul>
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+      </section>
+    {{/if}}`;
 }
 
 function renderLanguages(cv: Language[]) {
-  return ``;
+  return `{{#if resume.languages.length}}
+      <section id="languages">
+        <h3>Languages</h3>
+        <div class="grid-list">
+          {{#each resume.languages}}
+            <div>
+              {{#language}}
+                <h4>{{.}}</h4>
+              {{/language}}
+              {{fluency}}
+            </div>
+          {{/each}}
+        </div>
+      </section>
+    {{/if}}`;
 }
 
 function renderInterests(cv: Interest[]) {
-  return ``;
+  return `{{#if resume.interests.length}}
+      <section id="interests">
+        <h3>Interests</h3>
+        <div class="grid-list">
+          {{#each resume.interests}}
+            <div>
+              {{#name}}
+                <h4>{{.}}</h4>
+              {{/name}}
+              {{#if keywords.length}}
+                <ul class="tag-list">
+                  {{#keywords}}
+                    <li>{{.}}</li>
+                  {{/keywords}}
+                </ul>
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+      </section>
+    {{/if}}`;
 }
 
 function renderReferences(cv: Reference[]) {
-  return ``;
+  return `{{#if resume.references.length}}
+      <section id="references">
+        <h3>References</h3>
+        <div class="stack">
+          {{#each resume.references}}
+            {{#if reference}}
+              <blockquote>
+                {{{markdown reference}}}
+                {{#name}}
+                  <p>
+                    <cite>{{.}}</cite>
+                  </p>
+                {{/name}}
+              </blockquote>
+            {{/if}}
+          {{/each}}
+        </div>
+      </section>
+    {{/if}}`;
 }
 
 export async function render(cv: CV) {
@@ -88,40 +398,23 @@ export async function render(cv: CV) {
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <!-- {{#resume.basics}} -->
-      <!-- {{> meta}} -->
     ${renderMeta(cv.basics)}
-    <!-- {{/resume.basics}} -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
-    <!-- <style> {{{css}}}</style> -->
     <style>${await file(`./style.css`)}</style>
   </head>
   <body>
-    <!-- {{#resume.basics}} -->
-      <!-- {{> header}} -->
     ${renderHeader(cv.basics)}
-    <!-- {{/resume.basics}} -->
-
-    <!-- {{> work}} -->
     ${renderWork(cv.work ?? [])}
     <!-- {{> volunteer}} -->
-    <!-- {{> education}} -->
     ${renderEducation(cv.education ?? [])}
-    <!-- {{> projects}} -->
     ${renderProjects(cv.projects ?? [])}
     <!-- {{> awards}} -->
-    <!-- {{> certificates}} -->
     ${renderCertificates(cv.certificates ?? [])}
-    <!-- {{> publications}} -->
     ${renderPublications(cv.publications ?? [])}
-    <!-- {{> skills}} -->
     ${renderSkills(cv.skills ?? [])}
-    <!-- {{> languages}} -->
     ${renderLanguages(cv.languages ?? [])}
-    <!-- {{> interests}} -->
     ${renderInterests(cv.interests ?? [])}
-    <!-- {{> references}} -->
     ${renderReferences(cv.references ?? [])}
   </body>
 </html>
