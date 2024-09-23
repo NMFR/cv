@@ -2,9 +2,13 @@ import { Location } from "../model.ts";
 
 export function formatCountry(location: Location) {
   if (Intl?.DisplayNames) {
-    return new Intl.DisplayNames([`en`], { type: `region` }).of(
+    const country = new Intl.DisplayNames([`en`], { type: `region` }).of(
       location.countryCode
     );
+
+    if (country) {
+      return country;
+    }
   }
 
   if (location.country) {

@@ -11,6 +11,7 @@ import {
   Interest,
   Reference,
 } from "../../model";
+import { formatCountry, formatURL } from "../common";
 
 interface Link {
   name: string;
@@ -19,6 +20,10 @@ interface Link {
 
 async function file(path: string) {
   return "";
+}
+
+function escape(text: string) {
+  return text;
 }
 
 // function escapeAttributeValue(value: string) {
@@ -45,85 +50,69 @@ async function file(path: string) {
 // const html = String.raw;
 
 // icons from `feather-icons`
-async function icon(
+async function renderIcon(
   icon: `github` | `link` | `linkedin` | `mail` | `map-pin` | `phone`
 ) {
   return file(`./icons/${icon}.svg`);
 }
 
 function renderLink(link: Link) {
-  return `{{#if name}}{{#if url}}<a href="{{url}}">{{name}}</a>{{else}}{{name}}{{/if}}{{else}}{{#url}}<a href="{{.}}">{{formatURL .}}</a>{{/url}}{{/if}}`;
+  if (!link.url) {
+    return escape(link.name);
+  }
+
+  return `<a href="${link.url}">${escape(link.name)}</a>`;
 }
 
 function renderMeta(basics: Basics) {
-  return `<title>${basics.name}</title>
+  return `<title>${escape(basics.name)}</title>
     <meta name="description" content="${
-      basics.summary /**stripTags (markdown .) **/
+      escape(basics.summary) /* markdown */
     }">{{/summary}}`;
 }
 
 function renderHeader(basics: Basics) {
   return `<header class="masthead">
-      <img src="${basics.image}" alt="">
+      ${basics.image ? `<img src="${basics.image}" alt="">` : ``}
       <div>
-        {{#name}}
-          <h1>{{.}}</h1>
-        {{/name}}
-        {{#label}}
-          <h2>{{.}}</h2>
-        {{/label}}
+        <h1>${escape(basics.name)}</h1>
+        <h2>${escape(basics.label)}</h2>
       </div>
-      {{#summary}}
-        <article>
-          {{{markdown .}}}
-        </article>
-      {{/summary}}
+      <article>
+        ${escape(basics.summary) /* markdown */}
+      </article>
       <ul class="icon-list">
-        {{#location}}
-          {{#if city}}
-            <li>
-              {{{icon 'map-pin'}}}
-              {{city}}{{#countryCode}}, {{formatCountry .}}{{/countryCode}}
-            </li>
-          {{/if}}
-        {{/location}}
-        {{#email}}
-          <li>
-            {{{icon 'mail'}}}
-            <a href="mailto:{{.}}">{{.}}</a>
-          </li>
-        {{/email}}
-        {{#phone}}
-          <li>
-            {{{icon 'phone'}}}
-            <a href="tel:{{formatPhone .}}">{{.}}</a>
-          </li>
-        {{/phone}}
-        {{#url}}
-          <li>
-            {{{icon 'link'}}}
-            <a href="{{.}}">{{formatURL .}}</a>
-          </li>
-        {{/url}}
-        {{#profiles}}
-          <li>
-            {{{icon network 'user'}}}
-            {{#if username}}
-              {{#if url}}
-                <a href="{{url}}">{{username}}</a>
-              {{else}}
-                {{username}}
-              {{/if}}
-            {{else}}
-              {{#url}}
-                <a href="{{.}}">{{formatURL .}}</a>
-              {{/url}}
-            {{/if}}
-            {{#network}}
-              <span class="network">({{.}})</span>
-            {{/network}}
-          </li>
-        {{/profiles}}
+        ${
+          basics.location
+            ? `<li>
+          ${renderIcon(`map-pin`)}
+          ${basics.location.city ? `${basics.location.city}, ` : ``}${escape(
+                formatCountry(basics.location)
+              )}
+        </li>`
+            : ``
+        }
+        <li>
+          ${renderIcon(`mail`)}
+          <a href="mailto:${basics.email}">${basics.email}</a>
+        </li>
+        ${
+          basics.url
+            ? `<li>
+          ${renderIcon(`link`)}
+          <a href="${basics.url}">${escape(formatURL(basics.url))}</a>
+        </li>`
+            : ``
+        }
+${(basics.profiles ?? [])
+  .map(
+    (profile) => `        <li>
+          ${renderIcon(profile.network)}
+          <a href="${profile.url}">${escape(profile.username)}</a>
+          <span class="network">(${profile.network})</span>
+        </li>`
+  )
+  .join(`\n`)}
       </ul>
     </header>`;
 }
