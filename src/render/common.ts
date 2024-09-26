@@ -1,10 +1,12 @@
 import { Location } from "../model.ts";
 
-export function formatCountry(location: Location) {
+export function formatCountry(location: Location | null | undefined) {
+  if (!location) {
+    return location;
+  }
+
   if (Intl?.DisplayNames) {
-    const country = new Intl.DisplayNames([`en`], { type: `region` }).of(
-      location.countryCode
-    );
+    const country = new Intl.DisplayNames([`en`], { type: `region` }).of(location.countryCode);
 
     if (country) {
       return country;
@@ -30,7 +32,11 @@ export function formatPhone(phone: string) {
   return phone.replace(/[^\d|+]+/g, "");
 }
 
-export function formatURL(url: string) {
+export function formatURL(url: string | null | undefined) {
+  if (!url) {
+    return url;
+  }
+
   return url.replace(/^(https?:|)\/\//, "").replace(/\/$/, "");
 }
 
@@ -46,3 +52,22 @@ export function formatURL(url: string) {
 // Handlebars.registerHelper('join', arr => Intl.ListFormat ? new Intl.ListFormat('en').format(arr) : arr.join(', '));
 // Handlebars.registerHelper('markdown', doc => micromark(doc));
 // Handlebars.registerHelper('stripTags', html => striptags(html));
+
+export function taggedTemplate(strings: TemplateStringsArray, ...values: unknown[]) {
+  const results: string[] = [strings[0]];
+
+  for (let i = 0; i < values.length; i += 1) {
+    results.push(`${values[i]}`);
+    results.push(strings[i + 1]);
+  }
+
+  return results.join(``);
+}
+
+export function nonNullTaggedTemplate(strings: TemplateStringsArray, ...values: unknown[]) {
+  return values.some((s) => s === null || s === undefined) ? `` : taggedTemplate(strings, values);
+}
+
+export function nonEmptyTaggedTemplate(strings: TemplateStringsArray, ...values: unknown[]) {
+  return values.some((s) => s === null || s === undefined || s === ``) ? `` : taggedTemplate(strings, values);
+}

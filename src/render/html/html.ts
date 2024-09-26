@@ -10,8 +10,12 @@ import {
   Language,
   Interest,
   Reference,
+  SocialNetworkProfile,
 } from "../../model";
-import { formatCountry, formatURL } from "../common";
+import { formatCountry, formatDate, formatURL, nonEmptyTaggedTemplate } from "../common";
+
+/** Alias for `nonEmptyTaggedTemplate`. */
+const ne = nonEmptyTaggedTemplate;
 
 interface Link {
   name: string;
@@ -22,7 +26,11 @@ async function file(path: string) {
   return "";
 }
 
-function escape(text: string) {
+function escape(text: string | null | undefined) {
+  if (!text) {
+    return text;
+  }
+
   return text;
 }
 
@@ -50,9 +58,7 @@ function escape(text: string) {
 // const html = String.raw;
 
 // icons from `feather-icons`
-async function renderIcon(
-  icon: `github` | `link` | `linkedin` | `mail` | `map-pin` | `phone`
-) {
+async function renderIcon(icon: `github` | `link` | `linkedin` | `mail` | `map-pin` | `phone`) {
   return file(`./icons/${icon}.svg`);
 }
 
@@ -64,136 +70,134 @@ function renderLink(link: Link) {
   return `<a href="${link.url}">${escape(link.name)}</a>`;
 }
 
-function renderMeta(basics: Basics) {
-  return `<title>${escape(basics.name)}</title>
-    <meta name="description" content="${
-      escape(basics.summary) /* markdown */
-    }">{{/summary}}`;
-}
-
 function renderHeader(basics: Basics) {
-  return `<header class="masthead">
-      ${basics.image ? `<img src="${basics.image}" alt="">` : ``}
-      <div>
-        <h1>${escape(basics.name)}</h1>
-        <h2>${escape(basics.label)}</h2>
-      </div>
-      <article>
-        ${escape(basics.summary) /* markdown */}
-      </article>
-      <ul class="icon-list">
-        ${
-          basics.location
-            ? `<li>
-          ${renderIcon(`map-pin`)}
-          ${basics.location.city ? `${basics.location.city}, ` : ``}${escape(
-                formatCountry(basics.location)
-              )}
-        </li>`
-            : ``
-        }
-        <li>
-          ${renderIcon(`mail`)}
-          <a href="mailto:${basics.email}">${basics.email}</a>
-        </li>
-        ${
-          basics.url
-            ? `<li>
-          ${renderIcon(`link`)}
-          <a href="${basics.url}">${escape(formatURL(basics.url))}</a>
-        </li>`
-            : ``
-        }
-${(basics.profiles ?? [])
-  .map(
-    (profile) => `        <li>
-          ${renderIcon(profile.network)}
-          <a href="${profile.url}">${escape(profile.username)}</a>
-          <span class="network">(${profile.network})</span>
-        </li>`
-  )
-  .join(`\n`)}
-      </ul>
-    </header>`;
+  return `
+<header class="masthead">
+  ${ne`<img src="${basics.image}" alt="">`}
+  <div>
+    <h1>${escape(basics.name)}</h1>
+    <h2>${escape(basics.label)}</h2>
+  </div>
+  <article>
+    ${escape(basics.summary) /* markdown */}
+  </article>
+  <ul class="icon-list">
+    ${ne`
+    <li>
+      ${renderIcon(`map-pin`)}
+      ${ne`${basics?.location?.city}, `}${escape(formatCountry(basics.location))}
+    </li>
+    `}
+    <li>
+      ${renderIcon(`mail`)}
+      <a href="mailto:${basics.email}">${basics.email}</a>
+    </li>
+    ${ne`
+    <li>
+      ${renderIcon(`link`)}
+      <a href="${basics.url}">${escape(formatURL(basics.url))}</a>
+    </li>
+    `}
+    ${(basics.profiles ?? [])
+      .map(
+        (profile) => `
+    <li>
+      ${renderIcon(profile.network)}
+      <a href="${profile.url}">${escape(profile.username)}</a>
+      <span class="network">(${profile.network})</span>
+    </li>`
+      )
+      .join(`\n`)}
+  </ul>
+</header>`;
 }
 
-function renderWork(cv: Work[]) {
-  return `{{#if resume.work.length}}
-      <section id="work">
-        <h3>Work</h3>
-        <div class="stack">
-          {{#each resume.work}}
-            <article>
-              <header>
-                <h4>{{position}}</h4>
-                <div class="meta">
-                  <div>
-                    <strong>{{> link}}</strong>
-                    {{#description}}
-                      <span class="bullet-item">{{.}}</span>
-                    {{/description}}
-                  </div>
-                  <div>
-                    <time datetime="{{startDate}}">{{formatDate startDate}}</time> –
-                    {{#if endDate}}<time datetime="{{endDate}}">{{formatDate endDate}}</time>{{else}}Present{{/if}}
-                  </div>
-                  {{#location}}
-                    <div>{{.}}</div>
-                  {{/location}}
-                </div>
-              </header>
-              {{#summary}}
-                {{{markdown .}}}
-              {{/summary}}
-              {{#if highlights.length}}
-                <ul>
-                  {{#highlights}}
-                    <li>{{{markdown .}}}</li>
-                  {{/highlights}}
-                </ul>
-              {{/if}}
-            </article>
-          {{/each}}
+function renderWork(works: Work[]) {
+  if (works.length === 0) {
+    return ``;
+  }
+
+  return `
+<section id="work">
+  <h3>Work</h3>
+  <div class="stack">
+    ${works
+      .map(
+        (w) => `
+    <article>
+      <header>
+        ${ne`<h4>${escape(w.position)}</h4>`}}
+        <div class="meta">
+          <div>
+            <strong>${renderLink(w)}</strong>
+            ${ne`<span class="bullet-item">${escape(w.description)}</span>`}
+          </div>
+          <div>
+            <time datetime="${w.startDate.toISOString()}">${formatDate(w.startDate)}</time> –
+            ${w.endDate ? `<time datetime="${w.endDate.toISOString()}">${formatDate(w.endDate)}</time>` : `Present`}
+          </div>
+          ${ne`<div>${escape(w.location)}</div>`}
         </div>
-      </section>
-    {{/if}}`;
+      </header>
+      ${ne`${escape(w.summary) /* markdown */}`}
+      ${
+        (w.highlights ?? []).length
+          ? `
+      <ul>
+        ${(w.highlights ?? [])
+          .map(
+            (highlight) => `
+        <li>${escape(highlight) /* markdown */}}}</li>`
+          )
+          .join(`\n`)}
+      </ul>`
+          : ``
+      }
+    </article>`
+      )
+      .join(`\n`)}
+  </div>
+</section>`;
 }
 
-function renderEducation(cv: Education[]) {
-  return `{{#if resume.education.length}}
-      <section id="education">
-        <h3>Education</h3>
-        <div class="stack">
-          {{#each resume.education}}
-            <article>
-              <header>
-                <h4>{{> link name=institution}}</h4>
-                <div class="meta">
-                  {{#area}}
-                    <strong>{{.}}</strong>
-                  {{/area}}
-                  <div>
-                    <time datetime="{{startDate}}">{{formatDate startDate}}</time> –
-                    {{#if endDate}}<time datetime="{{endDate}}">{{formatDate endDate}}</time>{{else}}Present{{/if}}
-                  </div>
-                </div>
-              </header>
-              {{#studyType}}
-                {{{markdown .}}}
-              {{/studyType}}
-              {{#if courses.length}}
-                <h5>Courses</h5>
-                <ul>
-                  {{#courses}}
-                    <li>{{{markdown .}}}</li>
-                  {{/courses}}
-                </ul>
-              {{/if}}
-            </article>
-          {{/each}}
+function renderEducation(education: Education[]) {
+  if (education.length === 0) {
+    return ``;
+  }
+
+  return `
+<section id="education">
+  <h3>Education</h3>
+  <div class="stack">
+    ${(education ?? [])
+      .map(
+        (e) => `
+    <article>
+      <header>
+        <h4>${renderLink({ name: e.institution, url: e.url })}</h4>
+        <div class="meta">
+          ${ne`<strong>${escape(e.area)}</strong>`}
+          <div>
+            <time datetime="${e.startDate.toISOString()}">${formatDate(e.startDate)}</time> –
+            ${e.endDate ? `<time datetime="${e.endDate.toISOString()}">${formatDate(e.endDate)}</time>` : `Present`}
+          </div>
         </div>
-      </section>
-    {{/if}}`;
+      </header>
+      ${ne`${escape(e.studyType) /* markdown */}`}
+      ${
+        (e.courses ?? []).length
+          ? `
+      <h5>Courses</h5>
+      <ul>
+        ${(e.courses ?? []).map((c) => `<li>${escape(c) /* markdown */}</li>`).join(`\n`)}
+      </ul>`
+          : ``
+      }
+    </article>`
+      )
+      .join(`\n`)}
+  </div>
+</section>`;
 }
 
 function renderProjects(cv: Project[]) {
@@ -383,22 +387,23 @@ function renderReferences(cv: Reference[]) {
 }
 
 export async function render(cv: CV) {
-  return `<!DOCTYPE html>
+  return `
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    ${renderMeta(cv.basics)}
+    <title>${escape(cv.basics.name)}</title>
+    <meta name="description" content="${escape(cv.basics.summary) /* markdown */}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
     <style>${await file(`./style.css`)}</style>
+    <style>${await file(`./print.css`)}</style>
   </head>
   <body>
     ${renderHeader(cv.basics)}
     ${renderWork(cv.work ?? [])}
-    <!-- {{> volunteer}} -->
     ${renderEducation(cv.education ?? [])}
     ${renderProjects(cv.projects ?? [])}
-    <!-- {{> awards}} -->
     ${renderCertificates(cv.certificates ?? [])}
     ${renderPublications(cv.publications ?? [])}
     ${renderSkills(cv.skills ?? [])}
@@ -406,6 +411,5 @@ export async function render(cv: CV) {
     ${renderInterests(cv.interests ?? [])}
     ${renderReferences(cv.references ?? [])}
   </body>
-</html>
-`;
+</html>`;
 }
