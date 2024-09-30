@@ -69,9 +69,9 @@ export function taggedTemplate(strings: TemplateStringsArray, ...values: unknown
 }
 
 export function nonNullTaggedTemplate(strings: TemplateStringsArray, ...values: unknown[]) {
-  return values.some((s) => s === null || s === undefined) ? `` : taggedTemplate(strings, values);
+  return values.some((s) => s === null || s === undefined) ? `` : taggedTemplate(strings, ...values);
 }
 
 export function nonEmptyTaggedTemplate(strings: TemplateStringsArray, ...values: unknown[]) {
-  return values.some((s) => s === null || s === undefined || s === ``) ? `` : taggedTemplate(strings, values);
+  return values.some((s) => s === null || s === undefined || s === ``) ? `` : taggedTemplate(strings, ...values);
 }

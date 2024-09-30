@@ -1,18 +1,22 @@
 import {
-  CV,
   Basics,
-  Work,
-  Education,
-  Project,
   Certificate,
-  Publication,
-  Skill,
-  Language,
+  CV,
+  Education,
   Interest,
+  Language,
+  Project,
+  Publication,
   Reference,
-  SocialNetworkProfile,
-} from "../../model";
-import { formatCountry, formatDate, formatURL, nonEmptyTaggedTemplate } from "../common";
+  Skill,
+  Work,
+} from "../../model.ts";
+import {
+  formatCountry,
+  formatDate,
+  formatURL,
+  nonEmptyTaggedTemplate,
+} from "../common.ts";
 
 /** Alias for `nonEmptyTaggedTemplate`. */
 const ne = nonEmptyTaggedTemplate;
@@ -22,8 +26,8 @@ interface Link {
   url?: string;
 }
 
-async function file(path: string) {
-  return "";
+function file(path: string) {
+  return Deno.readTextFile(`./src/render/html/${path}`);
 }
 
 function escape(text: string | null | undefined) {
@@ -58,7 +62,9 @@ function escape(text: string | null | undefined) {
 // const html = String.raw;
 
 // icons from `feather-icons`
-async function renderIcon(icon: `github` | `link` | `linkedin` | `mail` | `map-pin` | `phone`) {
+function renderIcon(
+  icon: `github` | `link` | `linkedin` | `mail` | `map-pin` | `phone`,
+) {
   return file(`./icons/${icon}.svg`);
 }
 
@@ -70,44 +76,49 @@ function renderLink(link: Link) {
   return `<a href="${link.url}">${escape(link.name)}</a>`;
 }
 
-function renderHeader(basics: Basics) {
+async function renderHeader(basics: Basics) {
   return `
 <header class="masthead">
   ${ne`<img src="${basics.image}" alt="">`}
   <div>
     <h1>${escape(basics.name)}</h1>
-    <h2>${escape(basics.label)}</h2>
-  </div>
+    <h2>${escape(basics.label)}</h2></div>
   <article>
     ${escape(basics.summary) /* markdown */}
   </article>
   <ul class="icon-list">
     ${ne`
     <li>
-      ${renderIcon(`map-pin`)}
-      ${ne`${basics?.location?.city}, `}${escape(formatCountry(basics.location))}
+      ${await renderIcon(`map-pin`)}
+      ${ne`${basics?.location?.city}, `}${
+    escape(formatCountry(basics.location))
+  }
     </li>
     `}
     <li>
-      ${renderIcon(`mail`)}
+      ${await renderIcon(`mail`)}
       <a href="mailto:${basics.email}">${basics.email}</a>
     </li>
     ${ne`
     <li>
-      ${renderIcon(`link`)}
+      ${await renderIcon(`link`)}
       <a href="${basics.url}">${escape(formatURL(basics.url))}</a>
     </li>
     `}
-    ${(basics.profiles ?? [])
-      .map(
-        (profile) => `
+    ${
+    (
+      await Promise.all(
+        (basics.profiles ?? []).map(
+          async (profile) => `
     <li>
-      ${renderIcon(profile.network)}
+      ${await renderIcon(profile.network)}
       <a href="${profile.url}">${escape(profile.username)}</a>
       <span class="network">(${profile.network})</span>
-    </li>`
+    </li>`,
+        ),
       )
-      .join(`\n`)}
+    ).join(`\n`)
+  }
   </ul>
 </header>`;
 }
@@ -121,7 +132,8 @@ function renderWork(works: Work[]) {
 <section id="work">
   <h3>Work</h3>
   <div class="stack">
-    ${works
+    ${
+    works
       .map(
         (w) => `
     <article>
@@ -133,29 +145,40 @@ function renderWork(works: Work[]) {
             ${ne`<span class="bullet-item">${escape(w.description)}</span>`}
           </div>
           <div>
-            <time datetime="${w.startDate.toISOString()}">${formatDate(w.startDate)}</time> –
-            ${w.endDate ? `<time datetime="${w.endDate.toISOString()}">${formatDate(w.endDate)}</time>` : `Present`}
+            <time datetime="${w.startDate.toISOString()}">${
+          formatDate(w.startDate)
+        }</time> –
+            ${
+          w.endDate
+            ? `<time datetime="${w.endDate.toISOString()}">${
+              formatDate(w.endDate)
+            }</time>`
+            : `Present`
+        }
           </div>
           ${ne`<div>${escape(w.location)}</div>`}
         </div>
       </header>
       ${ne`${escape(w.summary) /* markdown */}`}
       ${
-        (w.highlights ?? []).length
-          ? `
+          (w.highlights ?? []).length
+            ? `
       <ul>
-        ${(w.highlights ?? [])
-          .map(
-            (highlight) => `
-        <li>${escape(highlight) /* markdown */}}}</li>`
-          )
-          .join(`\n`)}
+        ${
+              (w.highlights ?? [])
+                .map(
+                  (highlight) => `
+        <li>${escape(highlight) /* markdown */}}}</li>`,
+                )
+                .join(`\n`)
+            }
       </ul>`
-          : ``
-      }
-    </article>`
+            : ``
+        }
+    </article>`,
       )
-      .join(`\n`)}
+      .join(`\n`)
+  }
   </div>
 </section>`;
 }
@@ -169,7 +192,8 @@ function renderEducation(education: Education[]) {
 <section id="education">
   <h3>Education</h3>
   <div class="stack">
-    ${(education ?? [])
+    ${
+    (education ?? [])
       .map(
         (e) => `
     <article>
@@ -178,24 +202,37 @@ function renderEducation(education: Education[]) {
         <div class="meta">
           ${ne`<strong>${escape(e.area)}</strong>`}
           <div>
-            <time datetime="${e.startDate.toISOString()}">${formatDate(e.startDate)}</time> –
-            ${e.endDate ? `<time datetime="${e.endDate.toISOString()}">${formatDate(e.endDate)}</time>` : `Present`}
+            <time datetime="${e.startDate.toISOString()}">${
+          formatDate(e.startDate)
+        }</time> –
+            ${
+          e.endDate
+            ? `<time datetime="${e.endDate.toISOString()}">${
+              formatDate(e.endDate)
+            }</time>`
+            : `Present`
+        }
           </div>
         </div>
       </header>
       ${ne`${escape(e.studyType) /* markdown */}`}
       ${
-        (e.courses ?? []).length
-          ? `
+          (e.courses ?? []).length
+            ? `
       <h5>Courses</h5>
       <ul>
-        ${(e.courses ?? []).map((c) => `<li>${escape(c) /* markdown */}</li>`).join(`\n`)}
+        ${
+              (e.courses ?? []).map((c) =>
+                `<li>${escape(c) /* markdown */}</li>`
+              ).join(`\n`)
+            }
       </ul>`
-          : ``
-      }
-    </article>`
+            : ``
+        }
+    </article>`,
       )
-      .join(`\n`)}
+      .join(`\n`)
+  }
   </div>
 </section>`;
 }
@@ -209,7 +246,8 @@ function renderProjects(projects: Project[]) {
 <section id="projects">
   <h3>Projects</h3>
   <div class="stack">
-    ${(projects ?? [])
+    ${
+    (projects ?? [])
       .map(
         (p) => `
     <article>
@@ -221,23 +259,35 @@ function renderProjects(projects: Project[]) {
             ${ne`at <strong>${p.entity}</strong>`}
           </div>
           <div>
-            <time datetime="${p.startDate.toISOString()}">${formatDate(p.startDate)}</time> –
-            ${p.endDate ? `<time datetime="${p.endDate.toISOString()}">${formatDate(p.endDate)}</time>` : `Present`}
+            <time datetime="${p.startDate.toISOString()}">${
+          formatDate(p.startDate)
+        }</time> –
+            ${
+          p.endDate
+            ? `<time datetime="${p.endDate.toISOString()}">${
+              formatDate(p.endDate)
+            }</time>`
+            : `Present`
+        }
           </div>
         </div>
       </header>
       ${ne`${escape(p.description) /* markdown */}`}
       ${
-        (p.highlights ?? []).length
-          ? `
+          (p.highlights ?? []).length
+            ? `
       <ul>
-        ${p.highlights?.map((h) => `<li>${escape(h) /* markdown */}</li>`).join(`\n`)}
+        ${
+              p.highlights?.map((h) => `<li>${escape(h) /* markdown */}</li>`)
+                .join(`\n`)
+            }
       </ul>`
-          : ``
-      }
-    </article>`
+            : ``
+        }
+    </article>`,
       )
-      .join(`\n`)}
+      .join(`\n`)
+  }
   </div>
 </section>`;
 }
@@ -251,7 +301,8 @@ function renderCertificates(certificates: Certificate[]) {
 <section id="certificates">
   <h3>Certificates</h3>
   <div class="stack">
-    ${certificates
+    ${
+    certificates
       .map(
         (c) => `
     <article>
@@ -263,12 +314,15 @@ function renderCertificates(certificates: Certificate[]) {
             Issued by <strong>${c.issuer}</strong>
           </div>
           `}
-          ${ne`<time datetime="${c.date?.toISOString()}">${formatDate(c.date)}</time>`}
+          ${ne`<time datetime="${c.date?.toISOString()}">${
+          formatDate(c.date)
+        }</time>`}
         </div>
       </header>
-    </article>`
+    </article>`,
       )
-      .join(`\n`)}
+      .join(`\n`)
+  }
   </div>
 </section>`;
 }
@@ -282,7 +336,8 @@ function renderPublications(publications: Publication[]) {
 <section id="publications">
   <h3>Publications</h3>
   <div class="stack">
-    ${publications
+    ${
+    publications
       .map(
         (p) => `
     <article>
@@ -294,13 +349,16 @@ function renderPublications(publications: Publication[]) {
             Published by <strong>${escape(p.publisher)}</strong>
           </div>
           `}
-          ${ne`<time datetime="${p.releaseDate?.toISOString()}">${formatDate(p.releaseDate)}}</time>`}
+          ${ne`<time datetime="${p.releaseDate?.toISOString()}">${
+          formatDate(p.releaseDate)
+        }}</time>`}
         </div>
       </header>
       ${ne`${escape(p.summary) /* markdown */}`}
-    </article>`
+    </article>`,
       )
-      .join(`\n`)}
+      .join(`\n`)
+  }
   </div>
 </section>`;
 }
@@ -314,22 +372,24 @@ function renderSkills(skills: Skill[]) {
 <section id="skills">
   <h3>Skills</h3>
   <div class="grid-list">
-    ${skills
+    ${
+    skills
       .map(
         (s) => `
     <div>
       <h4>${escape(s.name)}</h4>
       ${
-        (s.keywords ?? []).length
-          ? `
+          (s.keywords ?? []).length
+            ? `
       <ul class="tag-list">
         ${s.keywords?.map((k) => `<li>${escape(k)}</li>`).join(`\n`)}
       </ul>`
-          : ``
-      }
-    </div>`
+            : ``
+        }
+    </div>`,
       )
-      .join(`\n`)}
+      .join(`\n`)
+  }
   </div>
 </section>`;
 }
@@ -343,15 +403,17 @@ function renderLanguages(languages: Language[]) {
 <section id="languages">
   <h3>Languages</h3>
   <div class="grid-list">
-    ${languages
+    ${
+    languages
       .map(
         (l) => `
     <div>
       ${ne`<h4>${escape(l.language)}</h4>`}
       ${ne`${escape(l.fluency)}`}
-    </div>`
+    </div>`,
       )
-      .join(`\n`)}
+      .join(`\n`)
+  }
   </div>
 </section>`;
 }
@@ -365,22 +427,24 @@ function renderInterests(interests: Interest[]) {
 <section id="interests">
   <h3>Interests</h3>
   <div class="grid-list">
-    ${interests
+    ${
+    interests
       .map(
         (i) => `
     <div>
       ${ne`<h4>${escape(i.name)}</h4>`}
       ${
-        (i.keywords ?? []).length
-          ? `
+          (i.keywords ?? []).length
+            ? `
       <ul class="tag-list">
         ${i.keywords?.map((k) => `<li>${escape(k)}</li>`).join(`\n`)}
       </ul>`
-          : ``
-      }
-    </div>`
+            : ``
+        }
+    </div>`,
       )
-      .join(`\n`)}
+      .join(`\n`)
+  }
   </div>
 </section>`;
 }
@@ -394,7 +458,8 @@ function renderReferences(references: Reference[]) {
 <section id="references">
   <h3>References</h3>
   <div class="stack">
-    ${references
+    ${
+    references
       .map(
         (r) => `
     <blockquote>
@@ -402,9 +467,10 @@ function renderReferences(references: Reference[]) {
       <p>
         <cite>${escape(r.name)}</cite>
       </p>
-    </blockquote>`
+    </blockquote>`,
       )
-      .join(`\n`)}
+      .join(`\n`)
+  }
   </div>
 </section>`;
 }
@@ -416,17 +482,19 @@ export async function render(cv: CV) {
   <head>
     <meta charset="utf-8">
     <title>${escape(cv.basics.name)}</title>
-    <meta name="description" content="${escape(cv.basics.summary) /* markdown */}">
+    <meta name="description" content="${
+    escape(cv.basics.summary) /* markdown */
+  }">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
-    <style>${await file(`./style.css`)}</style>${
-    `` /*
+    <style>${await file(`./style.css`)}</style>${``
+    /*
     <style>${await file(`./print.css`)}</style>
-*/
+    */
   }
   </head>
   <body>
-    ${renderHeader(cv.basics)}
+    ${await renderHeader(cv.basics)}
     ${renderWork(cv.work ?? [])}
     ${renderEducation(cv.education ?? [])}
     ${renderProjects(cv.projects ?? [])}
