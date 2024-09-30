@@ -200,190 +200,213 @@ function renderEducation(education: Education[]) {
 </section>`;
 }
 
-function renderProjects(cv: Project[]) {
-  return `{{#if resume.projects.length}}
-      <section id="projects">
-        <h3>Projects</h3>
-        <div class="stack">
-          {{#each resume.projects}}
-            <article>
-              <header>
-                <h4>{{> link}}</h4>
-                <div class="meta">
-                  <div>
-                    {{#if roles}}
-                      <strong>{{join roles}}</strong>
-                    {{/if}}
-                    {{#entity}}
-                      at <strong>{{.}}</strong>
-                    {{/entity}}
-                  </div>
-                  <div>
-                    <time datetime="{{startDate}}">{{formatDate startDate}}</time> –
-                    {{#if endDate}}<time datetime="{{endDate}}">{{formatDate endDate}}</time>{{else}}Present{{/if}}
-                  </div>
-                </div>
-              </header>
-              {{#description}}
-                {{{markdown .}}}
-              {{/description}}
-              {{#if highlights.length}}
-                <ul>
-                  {{#highlights}}
-                    <li>{{{markdown .}}}</li>
-                  {{/highlights}}
-                </ul>
-              {{/if}}
-            </article>
-          {{/each}}
+function renderProjects(projects: Project[]) {
+  if (projects.length === 0) {
+    return ``;
+  }
+
+  return `
+<section id="projects">
+  <h3>Projects</h3>
+  <div class="stack">
+    ${(projects ?? [])
+      .map(
+        (p) => `
+    <article>
+      <header>
+        <h4>${renderLink(p)}</h4>
+        <div class="meta">
+          <div>
+            ${(p.roles ?? []).join(` and `)}
+            ${ne`at <strong>${p.entity}</strong>`}
+          </div>
+          <div>
+            <time datetime="${p.startDate.toISOString()}">${formatDate(p.startDate)}</time> –
+            ${p.endDate ? `<time datetime="${p.endDate.toISOString()}">${formatDate(p.endDate)}</time>` : `Present`}
+          </div>
         </div>
-      </section>
-    {{/if}}`;
+      </header>
+      ${ne`${escape(p.description) /* markdown */}`}
+      ${
+        (p.highlights ?? []).length
+          ? `
+      <ul>
+        ${p.highlights?.map((h) => `<li>${escape(h) /* markdown */}</li>`).join(`\n`)}
+      </ul>`
+          : ``
+      }
+    </article>`
+      )
+      .join(`\n`)}
+  </div>
+</section>`;
 }
 
-function renderCertificates(cv: Certificate[]) {
-  return `{{#if resume.certificates.length}}
-      <section id="certificates">
-        <h3>Certificates</h3>
-        <div class="stack">
-          {{#each resume.certificates}}
-            <article>
-              <header>
-                <h4>{{> link}}</h4>
-                <div class="meta">
-                  {{#issuer}}
-                    <div>
-                      Issued by <strong>{{.}}</strong>
-                    </div>
-                  {{/issuer}}
-                  {{#date}}
-                    <time datetime="{{.}}">{{formatDate .}}</time>
-                  {{/date}}
-                </div>
-              </header>
-            </article>
-          {{/each}}
+function renderCertificates(certificates: Certificate[]) {
+  if (certificates.length === 0) {
+    return ``;
+  }
+
+  return `
+<section id="certificates">
+  <h3>Certificates</h3>
+  <div class="stack">
+    ${certificates
+      .map(
+        (c) => `
+    <article>
+      <header>
+        <h4>${renderLink(c)}</h4>
+        <div class="meta">
+          ${ne`
+          <div>
+            Issued by <strong>${c.issuer}</strong>
+          </div>
+          `}
+          ${ne`<time datetime="${c.date?.toISOString()}">${formatDate(c.date)}</time>`}
         </div>
-      </section>
-    {{/if}}`;
+      </header>
+    </article>`
+      )
+      .join(`\n`)}
+  </div>
+</section>`;
 }
 
-function renderPublications(cv: Publication[]) {
-  return `{{#if resume.publications.length}}
-    <section id="publications">
-      <h3>Publications</h3>
-      <div class="stack">
-        {{#each resume.publications}}
-          <article>
-            <header>
-              <h4>{{> link}}</h4>
-              <div class="meta">
-                {{#publisher}}
-                  <div>
-                    Published by <strong>{{.}}</strong>
-                  </div>
-                {{/publisher}}
-                {{#releaseDate}}
-                  <time datetime="{{.}}">{{formatDate .}}</time>
-                {{/releaseDate}}
-              </div>
-            </header>
-            {{#summary}}
-              {{{markdown .}}}
-            {{/summary}}
-          </article>
-        {{/each}}
-      </div>
-    </section>
-  {{/if}}`;
+function renderPublications(publications: Publication[]) {
+  if (publications.length === 0) {
+    return ``;
+  }
+
+  return `
+<section id="publications">
+  <h3>Publications</h3>
+  <div class="stack">
+    ${publications
+      .map(
+        (p) => `
+    <article>
+      <header>
+        <h4>${renderLink(p)}}</h4>
+        <div class="meta">
+          ${ne`
+          <div>
+            Published by <strong>${escape(p.publisher)}</strong>
+          </div>
+          `}
+          ${ne`<time datetime="${p.releaseDate?.toISOString()}">${formatDate(p.releaseDate)}}</time>`}
+        </div>
+      </header>
+      ${ne`${escape(p.summary) /* markdown */}`}
+    </article>`
+      )
+      .join(`\n`)}
+  </div>
+</section>`;
 }
 
-function renderSkills(cv: Skill[]) {
-  return `{{#if resume.skills.length}}
-      <section id="skills">
-        <h3>Skills</h3>
-        <div class="grid-list">
-          {{#each resume.skills}}
-            <div>
-              {{#name}}
-                <h4>{{.}}</h4>
-              {{/name}}
-              {{#if keywords.length}}
-                <ul class="tag-list">
-                  {{#keywords}}
-                    <li>{{.}}</li>
-                  {{/keywords}}
-                </ul>
-              {{/if}}
-            </div>
-          {{/each}}
-        </div>
-      </section>
-    {{/if}}`;
+function renderSkills(skills: Skill[]) {
+  if (skills.length === 0) {
+    return ``;
+  }
+
+  return `
+<section id="skills">
+  <h3>Skills</h3>
+  <div class="grid-list">
+    ${skills
+      .map(
+        (s) => `
+    <div>
+      <h4>${escape(s.name)}</h4>
+      ${
+        (s.keywords ?? []).length
+          ? `
+      <ul class="tag-list">
+        ${s.keywords?.map((k) => `<li>${escape(k)}</li>`).join(`\n`)}
+      </ul>`
+          : ``
+      }
+    </div>`
+      )
+      .join(`\n`)}
+  </div>
+</section>`;
 }
 
-function renderLanguages(cv: Language[]) {
-  return `{{#if resume.languages.length}}
-      <section id="languages">
-        <h3>Languages</h3>
-        <div class="grid-list">
-          {{#each resume.languages}}
-            <div>
-              {{#language}}
-                <h4>{{.}}</h4>
-              {{/language}}
-              {{fluency}}
-            </div>
-          {{/each}}
-        </div>
-      </section>
-    {{/if}}`;
+function renderLanguages(languages: Language[]) {
+  if (languages.length === 0) {
+    return ``;
+  }
+
+  return `
+<section id="languages">
+  <h3>Languages</h3>
+  <div class="grid-list">
+    ${languages
+      .map(
+        (l) => `
+    <div>
+      ${ne`<h4>${escape(l.language)}</h4>`}
+      ${ne`${escape(l.fluency)}`}
+    </div>`
+      )
+      .join(`\n`)}
+  </div>
+</section>`;
 }
 
-function renderInterests(cv: Interest[]) {
-  return `{{#if resume.interests.length}}
-      <section id="interests">
-        <h3>Interests</h3>
-        <div class="grid-list">
-          {{#each resume.interests}}
-            <div>
-              {{#name}}
-                <h4>{{.}}</h4>
-              {{/name}}
-              {{#if keywords.length}}
-                <ul class="tag-list">
-                  {{#keywords}}
-                    <li>{{.}}</li>
-                  {{/keywords}}
-                </ul>
-              {{/if}}
-            </div>
-          {{/each}}
-        </div>
-      </section>
-    {{/if}}`;
+function renderInterests(interests: Interest[]) {
+  if (interests.length === 0) {
+    return ``;
+  }
+
+  return `
+<section id="interests">
+  <h3>Interests</h3>
+  <div class="grid-list">
+    ${interests
+      .map(
+        (i) => `
+    <div>
+      ${ne`<h4>${escape(i.name)}</h4>`}
+      ${
+        (i.keywords ?? []).length
+          ? `
+      <ul class="tag-list">
+        ${i.keywords?.map((k) => `<li>${escape(k)}</li>`).join(`\n`)}
+      </ul>`
+          : ``
+      }
+    </div>`
+      )
+      .join(`\n`)}
+  </div>
+</section>`;
 }
 
-function renderReferences(cv: Reference[]) {
-  return `{{#if resume.references.length}}
-      <section id="references">
-        <h3>References</h3>
-        <div class="stack">
-          {{#each resume.references}}
-            {{#if reference}}
-              <blockquote>
-                {{{markdown reference}}}
-                {{#name}}
-                  <p>
-                    <cite>{{.}}</cite>
-                  </p>
-                {{/name}}
-              </blockquote>
-            {{/if}}
-          {{/each}}
-        </div>
-      </section>
-    {{/if}}`;
+function renderReferences(references: Reference[]) {
+  if (references.length === 0) {
+    return ``;
+  }
+
+  return `
+<section id="references">
+  <h3>References</h3>
+  <div class="stack">
+    ${references
+      .map(
+        (r) => `
+    <blockquote>
+      ${escape(r.reference) /* markdown */}
+      <p>
+        <cite>${escape(r.name)}</cite>
+      </p>
+    </blockquote>`
+      )
+      .join(`\n`)}
+  </div>
+</section>`;
 }
 
 export async function render(cv: CV) {
@@ -396,8 +419,11 @@ export async function render(cv: CV) {
     <meta name="description" content="${escape(cv.basics.summary) /* markdown */}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
-    <style>${await file(`./style.css`)}</style>
+    <style>${await file(`./style.css`)}</style>${
+    `` /*
     <style>${await file(`./print.css`)}</style>
+*/
+  }
   </head>
   <body>
     ${renderHeader(cv.basics)}

@@ -20,7 +20,11 @@ export function formatCountry(location: Location | null | undefined) {
   return location.countryCode;
 }
 
-export function formatDate(date: Date) {
+export function formatDate(date: Date | null | undefined) {
+  if (!date) {
+    return date;
+  }
+
   return date.toLocaleDateString(`en`, {
     month: `short`,
     year: `numeric`,

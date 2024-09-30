@@ -72,14 +72,7 @@ export type Skill = {
 
 export type Language = {
   language: string;
-  fluency?:
-    | "basic"
-    | "beginner"
-    | "intermediate"
-    | "independent"
-    | "proficient"
-    | "fluent"
-    | "native";
+  fluency?: "basic" | "beginner" | "intermediate" | "independent" | "proficient" | "fluent" | "native";
 };
 
 export type Interest = {
@@ -97,17 +90,12 @@ export type Project = {
   description?: string;
   highlights?: string[];
   keywords?: string[];
-  startDate?: Date;
+  startDate: Date;
   endDate?: Date;
   url?: URL;
   roles?: string[];
   entity?: string;
-  type?:
-    | "volunteering"
-    | "presentation"
-    | "talk"
-    | "application"
-    | "conference";
+  type?: "volunteering" | "presentation" | "talk" | "application" | "conference";
 };
 
 export type Meta = {
