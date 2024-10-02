@@ -11,15 +11,8 @@ import {
   Skill,
   Work,
 } from "../../model.ts";
-import {
-  formatCountry,
-  formatDate,
-  formatURL,
-  nonEmptyTaggedTemplate,
-} from "../common.ts";
-
-/** Alias for `nonEmptyTaggedTemplate`. */
-const ne = nonEmptyTaggedTemplate;
+import { formatCountry, formatDate, formatURL } from "../format.ts";
+import { ensureNoObjectToString, nonEmptyTaggedTemplate as ne, taggedTemplate as t } from "../string.ts";
 
 interface Link {
   name: string;
@@ -76,8 +69,8 @@ function renderLink(link: Link) {
   return `<a href="${link.url}">${escape(link.name)}</a>`;
 }
 
-async function renderHeader(basics: Basics) {
-  return `
+function renderHeader(basics: Basics) {
+  return t`
 <header class="masthead">
   ${ne`<img src="${basics.image}" alt="">`}
   <div>
@@ -89,36 +82,32 @@ async function renderHeader(basics: Basics) {
   <ul class="icon-list">
     ${ne`
     <li>
-      ${await renderIcon(`map-pin`)}
-      ${ne`${basics?.location?.city}, `}${
-    escape(formatCountry(basics.location))
-  }
+      ${renderIcon(`map-pin`)}
+      ${ne`${basics?.location?.city}, `}${escape(formatCountry(basics.location))}
     </li>
     `}
     <li>
-      ${await renderIcon(`mail`)}
+      ${renderIcon(`mail`)}
       <a href="mailto:${basics.email}">${basics.email}</a>
     </li>
     ${ne`
     <li>
-      ${await renderIcon(`link`)}
+      ${renderIcon(`link`)}
       <a href="${basics.url}">${escape(formatURL(basics.url))}</a>
     </li>
     `}
-    ${
-    (
-      await Promise.all(
-        (basics.profiles ?? []).map(
-          async (profile) => `
+    ${(
+    Promise.all(
+      (basics.profiles ?? []).map(
+        async (profile) => `
     <li>
       ${await renderIcon(profile.network)}
       <a href="${profile.url}">${escape(profile.username)}</a>
       <span class="network">(${profile.network})</span>
     </li>`,
-        ),
-      )
-    ).join(`\n`)
-  }
+      ),
+    ).then((r) => r.join(`\n`))
+  )}
   </ul>
 </header>`;
 }
@@ -128,14 +117,15 @@ function renderWork(works: Work[]) {
     return ``;
   }
 
-  return `
+  return t`
 <section id="work">
   <h3>Work</h3>
   <div class="stack">
     ${
     works
       .map(
-        (w) => `
+        (w) =>
+          t`
     <article>
       <header>
         ${ne`<h4>${escape(w.position)}</h4>`}}
@@ -145,39 +135,30 @@ function renderWork(works: Work[]) {
             ${ne`<span class="bullet-item">${escape(w.description)}</span>`}
           </div>
           <div>
-            <time datetime="${w.startDate.toISOString()}">${
-          formatDate(w.startDate)
-        }</time> –
-            ${
-          w.endDate
-            ? `<time datetime="${w.endDate.toISOString()}">${
-              formatDate(w.endDate)
-            }</time>`
-            : `Present`
-        }
+            <time datetime="${w.startDate.toISOString()}">${formatDate(w.startDate)}</time> –
+            ${w.endDate ? `<time datetime="${w.endDate.toISOString()}">${formatDate(w.endDate)}</time>` : `Present`}
           </div>
           ${ne`<div>${escape(w.location)}</div>`}
         </div>
       </header>
       ${ne`${escape(w.summary) /* markdown */}`}
       ${
-          (w.highlights ?? []).length
-            ? `
+            (w.highlights ?? []).length
+              ? `
       <ul>
         ${
-              (w.highlights ?? [])
-                .map(
-                  (highlight) => `
+                (w.highlights ?? [])
+                  .map(
+                    (highlight) => `
         <li>${escape(highlight) /* markdown */}}}</li>`,
-                )
-                .join(`\n`)
-            }
+                  )
+                  .join(`\n`)
+              }
       </ul>`
-            : ``
-        }
+              : ``
+          }
     </article>`,
       )
-      .join(`\n`)
   }
   </div>
 </section>`;
@@ -188,50 +169,38 @@ function renderEducation(education: Education[]) {
     return ``;
   }
 
-  return `
+  return t`
 <section id="education">
   <h3>Education</h3>
   <div class="stack">
     ${
     (education ?? [])
       .map(
-        (e) => `
+        (e) =>
+          t`
     <article>
       <header>
         <h4>${renderLink({ name: e.institution, url: e.url })}</h4>
         <div class="meta">
           ${ne`<strong>${escape(e.area)}</strong>`}
           <div>
-            <time datetime="${e.startDate.toISOString()}">${
-          formatDate(e.startDate)
-        }</time> –
-            ${
-          e.endDate
-            ? `<time datetime="${e.endDate.toISOString()}">${
-              formatDate(e.endDate)
-            }</time>`
-            : `Present`
-        }
+            <time datetime="${e.startDate.toISOString()}">${formatDate(e.startDate)}</time> –
+            ${e.endDate ? `<time datetime="${e.endDate.toISOString()}">${formatDate(e.endDate)}</time>` : `Present`}
           </div>
         </div>
       </header>
       ${ne`${escape(e.studyType) /* markdown */}`}
       ${
-          (e.courses ?? []).length
-            ? `
+            (e.courses ?? []).length
+              ? `
       <h5>Courses</h5>
       <ul>
-        ${
-              (e.courses ?? []).map((c) =>
-                `<li>${escape(c) /* markdown */}</li>`
-              ).join(`\n`)
-            }
+        ${(e.courses ?? []).map((c) => `<li>${escape(c) /* markdown */}</li>`).join(`\n`)}
       </ul>`
-            : ``
-        }
+              : ``
+          }
     </article>`,
       )
-      .join(`\n`)
   }
   </div>
 </section>`;
@@ -242,7 +211,7 @@ function renderProjects(projects: Project[]) {
     return ``;
   }
 
-  return `
+  return t`
 <section id="projects">
   <h3>Projects</h3>
   <div class="stack">
@@ -259,16 +228,8 @@ function renderProjects(projects: Project[]) {
             ${ne`at <strong>${p.entity}</strong>`}
           </div>
           <div>
-            <time datetime="${p.startDate.toISOString()}">${
-          formatDate(p.startDate)
-        }</time> –
-            ${
-          p.endDate
-            ? `<time datetime="${p.endDate.toISOString()}">${
-              formatDate(p.endDate)
-            }</time>`
-            : `Present`
-        }
+            <time datetime="${p.startDate.toISOString()}">${formatDate(p.startDate)}</time> –
+            ${p.endDate ? `<time datetime="${p.endDate.toISOString()}">${formatDate(p.endDate)}</time>` : `Present`}
           </div>
         </div>
       </header>
@@ -297,7 +258,7 @@ function renderCertificates(certificates: Certificate[]) {
     return ``;
   }
 
-  return `
+  return t`
 <section id="certificates">
   <h3>Certificates</h3>
   <div class="stack">
@@ -314,9 +275,7 @@ function renderCertificates(certificates: Certificate[]) {
             Issued by <strong>${c.issuer}</strong>
           </div>
           `}
-          ${ne`<time datetime="${c.date?.toISOString()}">${
-          formatDate(c.date)
-        }</time>`}
+          ${ne`<time datetime="${c.date?.toISOString()}">${formatDate(c.date)}</time>`}
         </div>
       </header>
     </article>`,
@@ -332,7 +291,7 @@ function renderPublications(publications: Publication[]) {
     return ``;
   }
 
-  return `
+  return t`
 <section id="publications">
   <h3>Publications</h3>
   <div class="stack">
@@ -349,9 +308,7 @@ function renderPublications(publications: Publication[]) {
             Published by <strong>${escape(p.publisher)}</strong>
           </div>
           `}
-          ${ne`<time datetime="${p.releaseDate?.toISOString()}">${
-          formatDate(p.releaseDate)
-        }}</time>`}
+          ${ne`<time datetime="${p.releaseDate?.toISOString()}">${formatDate(p.releaseDate)}}</time>`}
         </div>
       </header>
       ${ne`${escape(p.summary) /* markdown */}`}
@@ -368,7 +325,7 @@ function renderSkills(skills: Skill[]) {
     return ``;
   }
 
-  return `
+  return t`
 <section id="skills">
   <h3>Skills</h3>
   <div class="grid-list">
@@ -399,7 +356,7 @@ function renderLanguages(languages: Language[]) {
     return ``;
   }
 
-  return `
+  return t`
 <section id="languages">
   <h3>Languages</h3>
   <div class="grid-list">
@@ -423,27 +380,27 @@ function renderInterests(interests: Interest[]) {
     return ``;
   }
 
-  return `
+  return t`
 <section id="interests">
   <h3>Interests</h3>
   <div class="grid-list">
     ${
     interests
       .map(
-        (i) => `
+        (i) =>
+          t`
     <div>
       ${ne`<h4>${escape(i.name)}</h4>`}
       ${
-          (i.keywords ?? []).length
-            ? `
+            (i.keywords ?? []).length
+              ? `
       <ul class="tag-list">
         ${i.keywords?.map((k) => `<li>${escape(k)}</li>`).join(`\n`)}
       </ul>`
-            : ``
-        }
+              : ``
+          }
     </div>`,
       )
-      .join(`\n`)
   }
   </div>
 </section>`;
@@ -454,7 +411,7 @@ function renderReferences(references: Reference[]) {
     return ``;
   }
 
-  return `
+  return t`
 <section id="references">
   <h3>References</h3>
   <div class="stack">
@@ -476,25 +433,23 @@ function renderReferences(references: Reference[]) {
 }
 
 export async function render(cv: CV) {
-  return `
+  const template = t`
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>${escape(cv.basics.name)}</title>
-    <meta name="description" content="${
-    escape(cv.basics.summary) /* markdown */
-  }">
+    <title>${escape(cv.basics.name)}'s curriculum vitae</title>
+    <meta name="description" content="${escape(cv.basics.summary) /* markdown */}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
-    <style>${await file(`./style.css`)}</style>${``
+    <style>${file(`./style.css`)}</style>${``
     /*
-    <style>${await file(`./print.css`)}</style>
+    <style>${file(`./print.css`)}</style>
     */
   }
   </head>
   <body>
-    ${await renderHeader(cv.basics)}
+    ${renderHeader(cv.basics)}
     ${renderWork(cv.work ?? [])}
     ${renderEducation(cv.education ?? [])}
     ${renderProjects(cv.projects ?? [])}
@@ -506,4 +461,10 @@ export async function render(cv: CV) {
     ${renderReferences(cv.references ?? [])}
   </body>
 </html>`;
+
+  const result = await template.generateString();
+
+  ensureNoObjectToString(result);
+
+  return result;
 }
