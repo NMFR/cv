@@ -1,9 +1,9 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert@1.0.6";
 
-import { ensureNoObjectToString, nonEmptyTaggedTemplate, taggedTemplate } from "./string.ts";
+import { ensureNoDefaultToString, nonEmptyTaggedTemplate, taggedTemplate } from "./string.ts";
 
-Deno.test(`ensureNoObjectToString()`, async (t) => {
-  await t.step(`does not throw`, async (t) => {
+Deno.test(`ensureNoDefaultToString()`, async (t) => {
+  await t.step(`valid`, async (t) => {
     const testCases = [
       ``,
       `   `,
@@ -26,12 +26,12 @@ Deno.test(`ensureNoObjectToString()`, async (t) => {
 
     for (const testCase of testCases) {
       await t.step(`Test case "${testCase}"`, () => {
-        ensureNoObjectToString(testCase);
+        ensureNoDefaultToString(testCase);
       });
     }
   });
 
-  await t.step(`throws error`, async (t) => {
+  await t.step(`invalid`, async (t) => {
     const testCases = [
       `${{}}`,
       `${new Object()}`,
@@ -45,13 +45,13 @@ Deno.test(`ensureNoObjectToString()`, async (t) => {
 
     for (const testCase of testCases) {
       await t.step(`Test case "${testCase}"`, () => {
-        assertThrows(() => ensureNoObjectToString(testCase));
+        assertThrows(() => ensureNoDefaultToString(testCase));
       });
     }
   });
 });
 
-Deno.test(`taggedTemplate()`, async (t) => {
+Deno.test(`taggedTemplate()`, async () => {
   interface TestCase {
     buildString: (t: typeof taggedTemplate) => ReturnType<typeof taggedTemplate>;
     expected: string;
@@ -70,8 +70,17 @@ Deno.test(`taggedTemplate()`, async (t) => {
     },
     { buildString: (t) => t`aaa ${"bb"} ccccc`, expected: `aaa bb ccccc` },
     { buildString: (t) => t`aaa ${Promise.resolve("bb")} ccccc`, expected: `aaa bb ccccc` },
+    { buildString: (t) => t`aaa ${t`bb`} ccccc`, expected: `aaa bb ccccc` },
+    { buildString: (t) => t`aaa ${t`${"bb"} ${Promise.resolve("ccccc")}`}`, expected: `aaa bb ccccc` },
+    {
+      buildString: (t) => t`aaa ${t`${"bb"} ${Promise.resolve("ccccc")} ${t`${Promise.resolve("ddddd")}`}`}`,
+      expected: `aaa bb ccccc ddddd`,
+    },
     { buildString: (t) => t`aaa ${["bb", "cc"]} ccccc`, expected: `aaa bbcc ccccc` },
-    { buildString: (t) => t`${"aaa"} ${["bb", "cc"]} ${Promise.resolve("ccccc")}`, expected: `aaa bbcc ccccc` },
+    {
+      buildString: (t) => t`${"aaa"} ${["bb", "cc"]} ${Promise.resolve("ccccc")} ${t`ddd ${"eeee"} fff`}`,
+      expected: `aaa bbcc ccccc ddd eeee fff`,
+    },
   ];
 
   for (const testCase of testCases) {
@@ -82,7 +91,7 @@ Deno.test(`taggedTemplate()`, async (t) => {
   }
 });
 
-Deno.test(`nonEmptyTaggedTemplate()`, async (t) => {
+Deno.test(`nonEmptyTaggedTemplate()`, async () => {
   interface TestCase {
     buildString: (t: typeof nonEmptyTaggedTemplate) => ReturnType<typeof nonEmptyTaggedTemplate>;
     expected: string;

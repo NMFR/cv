@@ -12,7 +12,7 @@ import {
   Work,
 } from "../../model.ts";
 import { formatCountry, formatDate, formatURL } from "../format.ts";
-import { ensureNoObjectToString, nonEmptyTaggedTemplate as ne, taggedTemplate as t } from "../string.ts";
+import { ensureNoDefaultToString, nonEmptyTaggedTemplate as ne, taggedTemplate as t } from "../string.ts";
 
 interface Link {
   name: string;
@@ -464,7 +464,7 @@ export async function render(cv: CV) {
 
   const result = await template.generateString();
 
-  ensureNoObjectToString(result);
+  ensureNoDefaultToString(result);
 
   return result;
 }
