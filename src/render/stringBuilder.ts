@@ -71,6 +71,10 @@ export class StringBuilder {
         fragment = await fragment;
       }
 
+      if (fragment === undefined || fragment === null) {
+        continue;
+      }
+
       strings.push(typeof fragment === `string` ? fragment : `${fragment}`);
     }
 
