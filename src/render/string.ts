@@ -1,4 +1,6 @@
-import { StringBuilder } from "./stringBuilder.ts";
+import { StringBuilder as Template } from "./stringBuilder.ts";
+// Rename and reexport StringBuilder as Template
+export { Template };
 
 const DefaultToStrings = [(new Object()).toString(), Promise.resolve().toString()];
 
@@ -39,26 +41,33 @@ export function ensureNoDefaultToString(value: string) {
 }
 
 /**
- * `taggedTemplate` is a tag template literal function that returns a `StringBuilder`.
+ * `taggedTemplate` is a tag template literal function that returns a `Template`.
  *
- * The template literal is able to resolve `Promise`s and nested `StringBuilder` values.
+ * The template literal is able to resolve `Promise`s and nested `Template` values.
  *
  * Example:
  *
  * ```
- * (await taggedTemplate`Hello ${"World"}`.generateString()) === "Hello World"
+ * (await taggedTemplate`Hello ${"World"}`.getString()) === "Hello World"
  * ```
  */
 export function taggedTemplate(strings: TemplateStringsArray, ...values: unknown[]) {
-  return StringBuilder.fromTaggedTemplate(strings, ...values);
+  const fragments: unknown[] = [strings[0]];
+
+  for (let i = 0; i < values.length; i += 1) {
+    fragments.push(values[i]);
+    fragments.push(strings[i + 1]);
+  }
+
+  return new Template(fragments);
 }
 
 /**
  * `nonEmptyTaggedTemplate` ensures the template values are not `null` or `undefined`.
  *
- * If all of the template literal values are not `null` or `undefined` a `StringBuilder`
+ * If all of the template literal values are not `null` or `undefined` a `Template`
  * with the template is returned (same behaviour of `taggedTemplate`).
- * If any of the template literal values are `null` or `undefined` an empty string `StringBuilder`
+ * If any of the template literal values are `null` or `undefined` an empty string `Template`
  * is returned.
  *
  * This allows to create conditional template literals where the template only "renders" if its
@@ -67,13 +76,13 @@ export function taggedTemplate(strings: TemplateStringsArray, ...values: unknown
  * Examples:
  *
  * ```
- * (await nonEmptyTaggedTemplate`Hello ${"World"}`.generateString()) === "Hello World"
- * (await nonEmptyTaggedTemplate`Hello ${null}`.generateString()) === "".
- * (await nonEmptyTaggedTemplate`Hello ${"World"}, I am ${undefined}`.generateString()) === "".
+ * (await nonEmptyTaggedTemplate`Hello ${"World"}`.getString()) === "Hello World"
+ * (await nonEmptyTaggedTemplate`Hello ${null}`.getString()) === "".
+ * (await nonEmptyTaggedTemplate`Hello ${"World"}, I am ${undefined}`.getString()) === "".
  * ```
  */
 export function nonEmptyTaggedTemplate(strings: TemplateStringsArray, ...values: unknown[]) {
   return values.some((s) => s === null || s === undefined || s === ``)
-    ? new StringBuilder()
+    ? new Template()
     : taggedTemplate(strings, ...values);
 }

@@ -85,7 +85,7 @@ Deno.test(`taggedTemplate()`, async () => {
 
   for (const testCase of testCases) {
     const template = testCase.buildString(taggedTemplate);
-    const result = await template.generateString();
+    const result = await template.getString();
 
     assertEquals(result, testCase.expected);
   }
@@ -131,7 +131,7 @@ Deno.test(`nonEmptyTaggedTemplate()`, async () => {
 
   for (const testCase of testCases) {
     const template = testCase.buildString(nonEmptyTaggedTemplate);
-    const result = await template.generateString();
+    const result = await template.getString();
 
     assertEquals(result, testCase.expected);
   }
