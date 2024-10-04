@@ -1,7 +1,11 @@
-function* flatten(list: unknown[]): Generator {
-  for (const item of list) {
+async function* flattenWithPromiseResolution(list: unknown[]): AsyncGenerator {
+  for (let item of list) {
+    if (item instanceof Promise) {
+      item = await item;
+    }
+
     if (Array.isArray(item)) {
-      yield* flatten(item);
+      yield* flattenWithPromiseResolution(item);
     } else {
       yield item;
     }
@@ -34,8 +38,8 @@ export class StringBuilder {
     this.fragments = [...fragments];
   }
 
-  private *iterateFragments(): Generator {
-    for (const fragment of flatten(this.fragments)) {
+  private async *iterateFragments(): AsyncGenerator {
+    for await (const fragment of flattenWithPromiseResolution(this.fragments)) {
       if (fragment instanceof StringBuilder) {
         yield* fragment.iterateFragments();
       } else {
@@ -66,11 +70,7 @@ export class StringBuilder {
   async getString(): Promise<string> {
     const strings: string[] = [];
 
-    for (let fragment of this.iterateFragments()) {
-      if (fragment instanceof Promise) {
-        fragment = await fragment;
-      }
-
+    for await (const fragment of this.iterateFragments()) {
       if (fragment === undefined || fragment === null) {
         continue;
       }
