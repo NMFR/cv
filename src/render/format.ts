@@ -13,16 +13,20 @@ export function formatCountry(location: Location | null | undefined) {
     }
   }
 
-  if (location.country) {
-    return location.country;
-  }
+  return location.country ? location.country : location.countryCode;
+}
 
-  return location.countryCode;
+function isValid(date: Date) {
+  return !isNaN(date.getTime());
 }
 
 export function formatDate(date: Date | null | undefined) {
   if (!date) {
     return date;
+  }
+
+  if (!isValid(date)) {
+    return undefined;
   }
 
   return date.toLocaleDateString(`en`, {
@@ -32,7 +36,11 @@ export function formatDate(date: Date | null | undefined) {
   });
 }
 
-export function formatPhone(phone: string) {
+export function formatPhone(phone: string | null | undefined) {
+  if (!phone) {
+    return phone;
+  }
+
   return phone.replace(/[^\d|+]+/g, "");
 }
 
