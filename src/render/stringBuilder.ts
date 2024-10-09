@@ -1,10 +1,12 @@
-async function* flattenWithPromiseResolution(list: unknown[]): AsyncGenerator {
+import { isIterable } from "./iterator.ts";
+
+async function* flattenWithPromiseResolution(list: Iterable<unknown>): AsyncGenerator {
   for (let item of list) {
     if (item instanceof Promise) {
       item = await item;
     }
 
-    if (Array.isArray(item)) {
+    if (isIterable(item)) {
       yield* flattenWithPromiseResolution(item);
     } else {
       yield item;

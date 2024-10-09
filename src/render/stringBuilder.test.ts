@@ -1,6 +1,7 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert@1.0.6";
 
 import { StringBuilder } from "./stringBuilder.ts";
+import { iterator } from "./iterator.ts";
 
 Deno.test(`StringBuilder`, async (t) => {
   await t.step(`toString()`, (t) => {
@@ -35,6 +36,8 @@ Deno.test(`StringBuilder`, async (t) => {
       { fragments: [null, null], expected: `` },
       { fragments: [[]], expected: `` },
       { fragments: [[], []], expected: `` },
+      { fragments: [iterator([])], expected: `` },
+      { fragments: [iterator([]), iterator([])], expected: `` },
       { fragments: [``, undefined, null, [], [``, undefined, null, [], [``, undefined, null, []]]], expected: `` },
       { fragments: [Promise.resolve(``)], expected: `` },
       { fragments: [Promise.resolve(undefined)], expected: `` },

@@ -1,6 +1,7 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert@1.0.6";
 
 import { ensureNoDefaultToString, nonEmptyTaggedTemplate, taggedTemplate } from "./string.ts";
+import { iterator } from "./iterator.ts";
 
 Deno.test(`ensureNoDefaultToString()`, async (t) => {
   await t.step(`valid`, async (t) => {
@@ -16,12 +17,16 @@ Deno.test(`ensureNoDefaultToString()`, async (t) => {
       `aa bb cc [object something] dd ee`,
       `aa bb cc [something Object] dd ee`,
       `aa bb cc [something Promise] dd ee`,
+      `aa bb cc [something Generator] dd ee`,
       `aa bb cc [object  Object] dd ee`,
       `aa bb cc [object something Object] dd ee`,
       `aa bb cc [object something else Object] dd ee`,
       `aa bb cc [object  Promise] dd ee`,
+      `aa bb cc [object  Generator] dd ee`,
       `aa bb cc [object something Promise] dd ee`,
+      `aa bb cc [object something Generator] dd ee`,
       `aa bb cc [object something else Promise] dd ee`,
+      `aa bb cc [object something else Generator] dd ee`,
     ];
 
     for (const testCase of testCases) {
@@ -33,15 +38,30 @@ Deno.test(`ensureNoDefaultToString()`, async (t) => {
 
   await t.step(`invalid`, async (t) => {
     const testCases = [
-      `${{}}`,
-      `${new Object()}`,
-      `${Promise.resolve(`a`)}`,
-      `    ${{}}`,
-      `${new Object()}     `,
-      `aaa bbb ${Promise.resolve(`a`)}`,
-      `${Promise.resolve(`a`)} cccc d`,
-      `aaa bbb ${Promise.resolve(`a`)} cccc d`,
-    ];
+      {},
+      new Object(),
+      Promise.resolve(`a`),
+      iterator([]),
+    ].map((v) => [
+      `${v}`,
+      `    ${v}`,
+      `${v}    `,
+      `    ${v}    `,
+      `aaa ${v}`,
+      `${v} bbb`,
+      `aaa ${v} bbb`,
+      `aaa bbb ${v} cccc d`,
+      `aaa bbb${v}cccc d`,
+      `aaa bbb
+${v}cccc d`,
+      `aaa bbb${v}
+cccc d`,
+      `aaa bbb
+${v}
+cccc d`,
+    ]).flat().concat([
+      `aaa ${{}} bbb ${new Object()} cccc ${Promise.resolve(`a`)} d ${iterator([])} eeee`,
+    ]);
 
     for (const testCase of testCases) {
       await t.step(`Test case "${testCase}"`, () => {
