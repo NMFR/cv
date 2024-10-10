@@ -48,9 +48,9 @@ Deno.test(`formatPhone()`, () => {
     { input: undefined, expected: undefined },
     { input: null, expected: null },
     { input: `+351123456789`, expected: `+351123456789` },
-    { input: `   +351123456789    `, expected: `+351123456789` },
-    { input: `+351 123 456 789`, expected: `+351123456789` },
-    { input: `   +351 123 456 789   `, expected: `+351123456789` },
+    { input: `   +351987654321    `, expected: `+351987654321` },
+    { input: `+351 555 444 333`, expected: `+351555444333` },
+    { input: `   +351 555 666 777   `, expected: `+351555666777` },
     { input: ` 99 88 77 `, expected: `998877` },
   ];
 
@@ -66,11 +66,14 @@ Deno.test(`formatURL()`, () => {
     { input: undefined, expected: undefined },
     { input: null, expected: null },
     { input: `http://some.address`, expected: `some.address` },
-    { input: `http://some.address/`, expected: `some.address` },
+    { input: `http://some.other.address/`, expected: `some.other.address` },
     { input: `https://some.address/some/path`, expected: `some.address/some/path` },
-    { input: `https://some.address/some/path/`, expected: `some.address/some/path` },
+    { input: `https://some.other.address/some/path/`, expected: `some.other.address/some/path` },
     { input: `https://some.address/some/path/#id`, expected: `some.address/some/path/#id` },
-    { input: `https://some.address/some/path/#id?query=string`, expected: `some.address/some/path/#id?query=string` },
+    {
+      input: `https://some.other.address/some/path/#id?query=string`,
+      expected: `some.other.address/some/path/#id?query=string`,
+    },
   ];
 
   for (const testCase of testCases) {
