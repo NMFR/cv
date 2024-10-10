@@ -3,15 +3,27 @@ import { StringBuilder as Template } from "./stringBuilder.ts";
 // Rename and reexport StringBuilder as Template
 export { Template };
 
-const DefaultToStrings = [(new Object()).toString(), Promise.resolve().toString(), iterator([]).toString()];
+const DefaultToStrings = [
+  (new Object()).toString(),
+  Promise.resolve().toString(),
+  iterator([]).toString(),
+  (new Set()).toString(),
+  (new Map()).toString(),
+];
 
-/** `ensureNoDefaultToString` ensures that the return value of the default `toString()` implementation of `Object`s
- * (`"[object Object]""`), `Promise`s (`"[object Promise]""`) or function generator (`"[object Generator]"`) is not present in a string.
+/** `ensureNoDefaultToString` ensures that the return value of the default `toString()` implementation of:
+ * - `Object`: `"[object Object]"`.
+ * - `Promise`: `"[object Promise]"`)
+ * - `function* generator`: `"[object Generator]"`
+ * - `Set`: `"[object Set]"`.
+ * - `Map`: `"[object Map]"`.
+ *
+ * are not present in a string.
  *
  * An error is thrown if the default `toString()` values are detected anywhere in the string, otherwise the function
  * returns normally.
  *
- * This is useful to detect unwanted default `toString()` in template literal strings where an `Object` or `Promise`
+ * This is useful to detect unwanted default `toString()` in template literal strings where an `Object`, `Promise`, ...,
  * value was not correctly formatted.
  *
  * Example:

@@ -42,6 +42,8 @@ Deno.test(`ensureNoDefaultToString()`, async (t) => {
       new Object(),
       Promise.resolve(`a`),
       iterator([]),
+      new Set(),
+      new Map(),
     ].map((v) => [
       `${v}`,
       `    ${v}`,
