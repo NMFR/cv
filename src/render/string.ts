@@ -1,7 +1,9 @@
-import { iterator } from "./iterator.ts";
-import { StringBuilder as Template } from "./stringBuilder.ts";
-// Rename and reexport StringBuilder as Template
-export { Template };
+import { isIterable, iterator, toArrayWithPromiseResolution } from "./iterator.ts";
+import { StringBuilder } from "./stringBuilder.ts";
+
+export interface Template {
+  getString(): Promise<string>;
+}
 
 const DefaultToStrings = [
   (new Object()).toString(),
@@ -64,7 +66,7 @@ export function ensureNoDefaultToString(value: string) {
  * (await taggedTemplate`Hello ${"World"}`.getString()) === "Hello World"
  * ```
  */
-export function taggedTemplate(strings: TemplateStringsArray, ...values: unknown[]) {
+export function taggedTemplate(strings: TemplateStringsArray, ...values: unknown[]): Template {
   const fragments: unknown[] = [strings[0]];
 
   for (let i = 0; i < values.length; i += 1) {
@@ -72,19 +74,36 @@ export function taggedTemplate(strings: TemplateStringsArray, ...values: unknown
     fragments.push(strings[i + 1]);
   }
 
-  return new Template(fragments);
+  return new StringBuilder(fragments);
+}
+
+function hasEmpty(values: (unknown | unknown[])[]) {
+  for (const value of values) {
+    if (
+      (value === undefined || value === null || value === ``) ||
+      (Array.isArray(value) && (value.length === 0 || hasEmpty(value)))
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**
- * `nonEmptyTaggedTemplate` ensures the template values are not `null` or `undefined`.
+ * `nonEmptyTaggedTemplate` ensures the template values are not "empty".
  *
- * If all of the template literal values are not `null` or `undefined` a `Template`
- * with the template is returned (same behaviour of `taggedTemplate`).
- * If any of the template literal values are `null` or `undefined` an empty string `Template`
- * is returned.
+ * The definition of "empty" is any value equal to:
+ * - `undefined`.
+ * - `null`.
+ * - empty string (`""`).
+ * - empty array / iterator (`[]`).
+ *
+ * If any of the template literal values are "empty" an empty string `Template` is returned.
+ * Otherwise a `Template` with the template is returned (same behaviour of `taggedTemplate`).
  *
  * This allows to create conditional template literals where the template only "renders" if its
- * values are not `null` or `undefined`.
+ * values are not "empty".
  *
  * Examples:
  *
@@ -94,8 +113,16 @@ export function taggedTemplate(strings: TemplateStringsArray, ...values: unknown
  * (await nonEmptyTaggedTemplate`Hello ${"World"}, I am ${undefined}`.getString()) === "".
  * ```
  */
-export function nonEmptyTaggedTemplate(strings: TemplateStringsArray, ...values: unknown[]) {
-  return values.some((s) => s === null || s === undefined || s === ``)
-    ? new Template()
-    : taggedTemplate(strings, ...values);
+export function nonEmptyTaggedTemplate(strings: TemplateStringsArray, ...values: unknown[]): Template {
+  return new StringBuilder([
+    (async () => {
+      const resolvedValues = await toArrayWithPromiseResolution(values);
+
+      if (hasEmpty(resolvedValues)) {
+        return ``;
+      }
+
+      return taggedTemplate(strings, ...resolvedValues);
+    })(),
+  ]);
 }

@@ -47,6 +47,7 @@ Deno.test(`formatPhone()`, () => {
   const testCases = [
     { input: undefined, expected: undefined },
     { input: null, expected: null },
+    { input: ``, expected: `` },
     { input: `+351123456789`, expected: `+351123456789` },
     { input: `   +351987654321    `, expected: `+351987654321` },
     { input: `+351 555 444 333`, expected: `+351555444333` },
@@ -65,6 +66,7 @@ Deno.test(`formatURL()`, () => {
   const testCases = [
     { input: undefined, expected: undefined },
     { input: null, expected: null },
+    { input: ``, expected: `` },
     { input: `http://some.address`, expected: `some.address` },
     { input: `http://some.other.address/`, expected: `some.other.address` },
     { input: `https://some.address/some/path`, expected: `some.address/some/path` },

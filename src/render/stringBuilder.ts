@@ -73,7 +73,7 @@ export class StringBuilder {
     const strings: string[] = [];
 
     for await (const fragment of this.iterateFragments()) {
-      if (fragment === undefined || fragment === null) {
+      if (fragment === undefined || fragment === null || fragment === ``) {
         continue;
       }
 

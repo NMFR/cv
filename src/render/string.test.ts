@@ -4,7 +4,7 @@ import { ensureNoDefaultToString, nonEmptyTaggedTemplate, taggedTemplate } from 
 import { iterator } from "./iterator.ts";
 
 Deno.test(`ensureNoDefaultToString()`, async (t) => {
-  await t.step(`valid`, async (t) => {
+  await t.step(`valid`, () => {
     const testCases = [
       ``,
       `   `,
@@ -18,25 +18,31 @@ Deno.test(`ensureNoDefaultToString()`, async (t) => {
       `aa bb cc [something Object] dd ee`,
       `aa bb cc [something Promise] dd ee`,
       `aa bb cc [something Generator] dd ee`,
+      `aa bb cc [something Set] dd ee`,
+      `aa bb cc [something Map] dd ee`,
       `aa bb cc [object  Object] dd ee`,
       `aa bb cc [object something Object] dd ee`,
       `aa bb cc [object something else Object] dd ee`,
       `aa bb cc [object  Promise] dd ee`,
       `aa bb cc [object  Generator] dd ee`,
+      `aa bb cc [object  Set] dd ee`,
+      `aa bb cc [object  Map] dd ee`,
       `aa bb cc [object something Promise] dd ee`,
       `aa bb cc [object something Generator] dd ee`,
+      `aa bb cc [object something Set] dd ee`,
+      `aa bb cc [object something Map] dd ee`,
       `aa bb cc [object something else Promise] dd ee`,
       `aa bb cc [object something else Generator] dd ee`,
+      `aa bb cc [object something else Set] dd ee`,
+      `aa bb cc [object something else Map] dd ee`,
     ];
 
     for (const testCase of testCases) {
-      await t.step(`Test case "${testCase}"`, () => {
-        ensureNoDefaultToString(testCase);
-      });
+      ensureNoDefaultToString(testCase);
     }
   });
 
-  await t.step(`invalid`, async (t) => {
+  await t.step(`invalid`, () => {
     const testCases = [
       {},
       new Object(),
@@ -66,95 +72,186 @@ cccc d`,
     ]);
 
     for (const testCase of testCases) {
-      await t.step(`Test case "${testCase}"`, () => {
-        assertThrows(() => ensureNoDefaultToString(testCase));
-      });
+      assertThrows(() => ensureNoDefaultToString(testCase));
     }
   });
 });
 
-Deno.test(`taggedTemplate()`, async () => {
+Deno.test(`taggedTemplate()`, async (t) => {
   interface TestCase {
     buildString: (t: typeof taggedTemplate) => ReturnType<typeof taggedTemplate>;
     expected: string;
   }
 
-  const testCases: TestCase[] = [
-    { buildString: (t) => t``, expected: `` },
-    { buildString: (t) => t`  `, expected: `  ` },
-    { buildString: (t) => t`aaa bb ccccc`, expected: `aaa bb ccccc` },
-    {
+  const testCases: { [name: string]: TestCase } = {
+    "empty string": { buildString: (t) => t``, expected: `` },
+    "whitespace string": {
+      buildString: (t) =>
+        t`
+         `,
+      expected: `
+         `,
+    },
+    "string": { buildString: (t) => t`aaa bb ccccc`, expected: `aaa bb ccccc` },
+    "multiline string": {
       buildString: (t) =>
         t`aaa
       bb ccccc`,
       expected: `aaa
       bb ccccc`,
     },
-    { buildString: (t) => t`aaa ${"bb"} ccccc`, expected: `aaa bb ccccc` },
-    { buildString: (t) => t`aaa ${Promise.resolve("bb")} ccccc`, expected: `aaa bb ccccc` },
-    { buildString: (t) => t`aaa ${t`bb`} ccccc`, expected: `aaa bb ccccc` },
-    { buildString: (t) => t`aaa ${t`${"bb"} ${Promise.resolve("ccccc")}`}`, expected: `aaa bb ccccc` },
-    {
-      buildString: (t) => t`aaa ${t`${"bb"} ${Promise.resolve("ccccc")} ${t`${Promise.resolve("ddddd")}`}`}`,
-      expected: `aaa bb ccccc ddddd`,
+    "undefined": { buildString: (t) => t`aaa ${undefined} ccccc`, expected: `aaa  ccccc` },
+    "null": { buildString: (t) => t`aaa ${null} ccccc`, expected: `aaa  ccccc` },
+    "empty string value": { buildString: (t) => t`aaa ${``} ccccc`, expected: `aaa  ccccc` },
+    "string value": { buildString: (t) => t`aaa ${`bb`} ccccc`, expected: `aaa bb ccccc` },
+    "multiple string value": { buildString: (t) => t`${`aaa`} ${`bb`} ${`ccccc`}`, expected: `aaa bb ccccc` },
+    "array value:": {
+      buildString: (t) => t`aaa${[` `, undefined, `bb`, null, ` `, ``]}ccccc`,
+      expected: `aaa bb ccccc`,
     },
-    { buildString: (t) => t`aaa ${["bb", "cc"]} ccccc`, expected: `aaa bbcc ccccc` },
-    {
-      buildString: (t) => t`${"aaa"} ${["bb", "cc"]} ${Promise.resolve("ccccc")} ${t`ddd ${"eeee"} fff`}`,
-      expected: `aaa bbcc ccccc ddd eeee fff`,
+    "array nested values:": {
+      buildString: (t) => t`${[`aaa`, [` `], iterator([`bb`]), Promise.resolve(` `), t`ccccc`]}`,
+      expected: `aaa bb ccccc`,
     },
-  ];
+    "iterator value:": {
+      buildString: (t) => t`aaa${iterator([` `, undefined, `bb`, null, ` `, ``])}ccccc`,
+      expected: `aaa bb ccccc`,
+    },
+    "iterator nested values:": {
+      buildString: (t) => t`${iterator([`aaa`, [` `], iterator([`bb`]), Promise.resolve(` `), t`ccccc`])}`,
+      expected: `aaa bb ccccc`,
+    },
+    "promise value": { buildString: (t) => t`aaa ${Promise.resolve(`bb`)} ccccc`, expected: `aaa bb ccccc` },
+    "promise nested values": {
+      buildString: (t) => t`${Promise.resolve([`aaa`, [` `], iterator([`bb`]), Promise.resolve(` `), t`ccccc`])}`,
+      expected: `aaa bb ccccc`,
+    },
+    "taggedTemplate value": { buildString: (t) => t`aaa ${t`bb`} ccccc`, expected: `aaa bb ccccc` },
+    "taggedTemplate nested values": {
+      buildString: (t) => t`${[`aaa`, [` `], iterator([`bb`]), Promise.resolve(` `), t`ccccc`]}`,
+      expected: `aaa bb ccccc`,
+    },
+    "multiple value combinations": {
+      buildString: (t) =>
+        t`aaa ${undefined}${null}${``}${[]}${iterator([])}${Promise.resolve(``)}${t``}${`bb`} ccccc ${[
+          undefined,
+          null,
+          ``,
+          `dddd`,
+        ]} ${iterator([undefined, null, ``, `ee`])} ${Promise.resolve(`fff`)} ${t`gg`}`,
+      expected: `aaa bb ccccc dddd ee fff gg`,
+    },
+    "multiple nested value combinations": {
+      buildString: (t) =>
+        t`aaa ${undefined}${null}${``}${[]}${iterator([])}${Promise.resolve(``)}${t``}${`bb`} ccccc ${[
+          undefined,
+          null,
+          ``,
+          `dddd`,
+          [],
+          [undefined, null, ``, ` `, `ee`, iterator([` `, `fff`]), Promise.resolve([` `, t`gg`]), t` `],
+          iterator([]),
+          iterator([]),
+        ]}${
+          iterator([
+            undefined,
+            null,
+            ``,
+            `hhh`,
+            [],
+            [undefined, null, ``, ` `, `i`, iterator([` `, `jjj`]), Promise.resolve([` `, t`k`]), t` `],
+            iterator([]),
+            iterator([]),
+          ])
+        }${
+          Promise.resolve([
+            undefined,
+            null,
+            ``,
+            `ll`,
+            [],
+            [undefined, null, ``, ` `, `mm`, iterator([` `, `nnn`]), Promise.resolve([` `, t`o`]), t` `],
+            iterator([]),
+            iterator([]),
+          ])
+        }${t`${undefined}${null}${``}${`q`}${[]}${[
+          undefined,
+          null,
+          ``,
+          ` `,
+          `r`,
+          iterator([` `, `s`]),
+          Promise.resolve([` `, t`t`]),
+          t` `,
+        ]}${iterator([])}${iterator([])}`}`,
+      expected: `aaa bb ccccc dddd ee fff gg hhh i jjj k ll mm nnn o q r s t `,
+    },
+  };
 
-  for (const testCase of testCases) {
-    const template = testCase.buildString(taggedTemplate);
-    const result = await template.getString();
+  for (const [testName, testCase] of Object.entries(testCases)) {
+    await t.step(testName, async () => {
+      const template = testCase.buildString(taggedTemplate);
+      const result = await template.getString();
 
-    assertEquals(result, testCase.expected);
+      assertEquals(result, testCase.expected);
+    });
   }
 });
 
-Deno.test(`nonEmptyTaggedTemplate()`, async () => {
+Deno.test(`nonEmptyTaggedTemplate()`, async (t) => {
   interface TestCase {
     buildString: (t: typeof nonEmptyTaggedTemplate) => ReturnType<typeof nonEmptyTaggedTemplate>;
     expected: string;
   }
 
-  const testCases: TestCase[] = [
-    { buildString: (t) => t``, expected: `` },
-    { buildString: (t) => t`  `, expected: `  ` },
-    { buildString: (t) => t`aaa bb ccccc`, expected: `aaa bb ccccc` },
-    {
+  const testCases: { [name: string]: TestCase } = {
+    "empty": { buildString: (t) => t``, expected: `` },
+    "whitespace string": {
+      buildString: (t) =>
+        t`
+         `,
+      expected: `
+         `,
+    },
+    "string": { buildString: (t) => t`aaa bb ccccc`, expected: `aaa bb ccccc` },
+    "multiline string": {
       buildString: (t) =>
         t`aaa
       bb ccccc`,
       expected: `aaa
       bb ccccc`,
     },
-    { buildString: (t) => t`aaa ${"bb"} ccccc`, expected: `aaa bb ccccc` },
-    { buildString: (t) => t`aaa ${Promise.resolve("bb")} ccccc`, expected: `aaa bb ccccc` },
-    { buildString: (t) => t`aaa ${["bb", "cc"]} ccccc`, expected: `aaa bbcc ccccc` },
-    { buildString: (t) => t`${undefined}`, expected: `` },
-    { buildString: (t) => t`${null}`, expected: `` },
-    { buildString: (t) => t`  ${undefined}   `, expected: `` },
-    { buildString: (t) => t`  ${null}   `, expected: `` },
-    { buildString: (t) => t`aa bb ${undefined}`, expected: `` },
-    { buildString: (t) => t`aa bb ${null}`, expected: `` },
-    { buildString: (t) => t`${undefined} cccc ddd`, expected: `` },
-    { buildString: (t) => t`${null} cccc ddd`, expected: `` },
-    { buildString: (t) => t`aa bb ${undefined} cccc ddd`, expected: `` },
-    { buildString: (t) => t`aa bb ${null} cccc ddd`, expected: `` },
-    { buildString: (t) => t`aa bb ${undefined} cccc ${null} ddd`, expected: `` },
-    { buildString: (t) => t`aa bb ${"bb"} ${undefined} cccc ${null} ddd`, expected: `` },
-    { buildString: (t) => t`aa bb ${undefined} cc ${"bb"} cc ${null} ddd`, expected: `` },
-    { buildString: (t) => t`aa bb ${undefined} cccc ${null} d ${"bb"} dd`, expected: `` },
-    { buildString: (t) => t`aa bb ${undefined} cccc d ${"bb"} dd`, expected: `` },
-    { buildString: (t) => t`aa bb cccc ${null} d ${"bb"} dd`, expected: `` },
-  ];
+    "string value": { buildString: (t) => t`aaa ${"bb"} ccccc`, expected: `aaa bb ccccc` },
+    "undefined value": { buildString: (t) => t`a ${undefined} b`, expected: `` },
+    "null value": { buildString: (t) => t`a ${null} b`, expected: `` },
+    "empty string value": { buildString: (t) => t`a ${``} b`, expected: `` },
+    "empty array value": { buildString: (t) => t`a ${[]} b`, expected: `` },
+    "array value": { buildString: (t) => t`a${[` `, `b`, ` `]}c`, expected: `a b c` },
+    "array with undefined value": { buildString: (t) => t`a${[` `, undefined, ` `]}c`, expected: `` },
+    "array with null value": { buildString: (t) => t`a${[` `, null, ` `]}c`, expected: `` },
+    "array with empty string value": { buildString: (t) => t`a${[` `, ``, ` `]}c`, expected: `` },
+    "empty iterator": { buildString: (t) => t`a ${iterator([])} c`, expected: `` },
+    "iterator value": { buildString: (t) => t`a${iterator([` `, `b`, ` `])}c`, expected: `a b c` },
+    "iterator with undefined value": { buildString: (t) => t`a${iterator([` `, undefined, ` `])}c`, expected: `` },
+    "iterator with null value": { buildString: (t) => t`a${iterator([` `, null, ` `])}c`, expected: `` },
+    "iterator with empty string value": { buildString: (t) => t`a${iterator([` `, ``, ` `])}c`, expected: `` },
+    "promise value": { buildString: (t) => t`a${Promise.resolve([` `, `b`, ` `])}c`, expected: `a b c` },
+    "promise with undefined value": {
+      buildString: (t) => t`a${Promise.resolve([` `, undefined, ` `])}c`,
+      expected: ``,
+    },
+    "promise with null value": { buildString: (t) => t`a${Promise.resolve([` `, null, ` `])}c`, expected: `` },
+    "promise with empty string value": { buildString: (t) => t`a${Promise.resolve([` `, ``, ` `])}c`, expected: `` },
+    "promise with empty array value": { buildString: (t) => t`a ${Promise.resolve([])} c`, expected: `` },
+    "promise with empty iterator value": { buildString: (t) => t`a ${Promise.resolve(iterator([]))} c`, expected: `` },
+  };
 
-  for (const testCase of testCases) {
-    const template = testCase.buildString(nonEmptyTaggedTemplate);
-    const result = await template.getString();
+  for (const [testName, testCase] of Object.entries(testCases)) {
+    await t.step(testName, async () => {
+      const template = testCase.buildString(nonEmptyTaggedTemplate);
+      const result = await template.getString();
 
-    assertEquals(result, testCase.expected);
+      assertEquals(result, testCase.expected);
+    });
   }
 });
