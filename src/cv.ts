@@ -1,4 +1,4 @@
-import { CV } from "./model";
+import { CV } from "./model.ts";
 
 export const cv: CV = {
   basics: {
@@ -40,7 +40,7 @@ I also really enjoy helping people learn and grow.`,
       url: `https://www.bp.com/`,
       location: `Remote`,
       startDate: new Date(`2023-06-14`),
-      endDate: new Date(`2024-09-20`),
+      endDate: undefined, //new Date(`2024-09-20`),
       summary: `Helping BP create and build internal products in the data space.`,
       highlights: [
         `Created a proof of concept application to manage resources utilization and predict / project future demand.`,
@@ -128,7 +128,8 @@ Most of my focus was on building the Cloudmobility (Mercedez-Benz AG) company.`,
       location: `Lisbon (remote in the first year)`,
       startDate: new Date(`2016-05-01`),
       endDate: new Date(`2019-01-01`),
-      summary: `Frames provides a service to online news media companies to automatically place beautiful, contextual charts in their articles.
+      summary:
+        `Frames provides a service to online news media companies to automatically place beautiful, contextual charts in their articles.
 Articles are automatically parsed and analyzed, the Frames curated charts database is searched,
 if a chart is found that matches the context of the article it is automatically placed in the article.`,
       highlights: [
