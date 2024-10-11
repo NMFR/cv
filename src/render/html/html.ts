@@ -128,7 +128,7 @@ function renderWork(works: Work[]) {
           t`
     <article>
       <header>
-        ${ne`<h4>${escape(w.position)}</h4>`}}
+        ${ne`<h4>${escape(w.position)}</h4>`}
         <div class="meta">
           <div>
             <strong>${renderLink(w)}</strong>
@@ -150,7 +150,7 @@ function renderWork(works: Work[]) {
                 (w.highlights ?? [])
                   .map(
                     (highlight) => `
-        <li>${escape(highlight) /* markdown */}}}</li>`,
+        <li>${escape(highlight) /* markdown */}</li>`,
                   )
                   .join(`\n`)
               }
@@ -218,7 +218,8 @@ function renderProjects(projects: Project[]) {
     ${
     (projects ?? [])
       .map(
-        (p) => `
+        (p) =>
+          t`
     <article>
       <header>
         <h4>${renderLink(p)}</h4>
@@ -235,19 +236,18 @@ function renderProjects(projects: Project[]) {
       </header>
       ${ne`${escape(p.description) /* markdown */}`}
       ${
-          (p.highlights ?? []).length
-            ? `
+            (p.highlights ?? []).length
+              ? `
       <ul>
         ${
-              p.highlights?.map((h) => `<li>${escape(h) /* markdown */}</li>`)
-                .join(`\n`)
-            }
+                p.highlights?.map((h) => `<li>${escape(h) /* markdown */}</li>`)
+                  .join(`\n`)
+              }
       </ul>`
-            : ``
-        }
+              : ``
+          }
     </article>`,
       )
-      .join(`\n`)
   }
   </div>
 </section>`;
@@ -301,7 +301,7 @@ function renderPublications(publications: Publication[]) {
         (p) => `
     <article>
       <header>
-        <h4>${renderLink(p)}}</h4>
+        <h4>${renderLink(p)}</h4>
         <div class="meta">
           ${ne`
           <div>
@@ -442,9 +442,9 @@ export async function render(cv: CV) {
     <meta name="description" content="${escape(cv.basics.summary) /* markdown */}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
-    <style>${file(`./style.css`)}</style>${``
+    <style>${file(`./css/style.css`)}</style>${``
     /*
-    <style>${file(`./print.css`)}</style>
+    <style>${file(`./css/print.css`)}</style>
     */
   }
   </head>
@@ -462,7 +462,7 @@ export async function render(cv: CV) {
   </body>
 </html>`;
 
-  const result = await template.generateString();
+  const result = await template.getString();
 
   ensureNoDefaultToString(result);
 
