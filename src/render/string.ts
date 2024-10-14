@@ -1,4 +1,4 @@
-import { isIterable, iterator, toArrayWithPromiseResolution } from "./iterator.ts";
+import { iterator, toArrayAsync } from "./iterator.ts";
 import { StringBuilder } from "./stringBuilder.ts";
 
 export interface Template {
@@ -116,7 +116,7 @@ function hasEmpty(values: (unknown | unknown[])[]) {
 export function nonEmptyTaggedTemplate(strings: TemplateStringsArray, ...values: unknown[]): Template {
   return new StringBuilder([
     (async () => {
-      const resolvedValues = await toArrayWithPromiseResolution(values);
+      const resolvedValues = await toArrayAsync(values);
 
       if (hasEmpty(resolvedValues)) {
         return ``;

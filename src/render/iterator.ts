@@ -14,17 +14,17 @@ export function* iterator(collection: Iterable<unknown>) {
   }
 }
 
-/** `toArrayWithPromiseResolution` converts a nested `Iterable` to nested `Array`s allowing to iterate over the collection multiple times.
+/** `toArrayAsync` converts a nested `Iterable` to nested `Array`s allowing to iterate over the collection multiple times.
  * As opposed to a single time with the usage of some iterators like function generators.
  *
  * It also resolves all nested `Promise`s to their values.
  *
  * Example:
  * ```
- * await toArrayWithPromiseResolution(iterator([1,iterator([2, Promise.resolve(3)])])) // [1,[2,3]]
+ * await toArrayAsync(iterator([1,iterator([2, Promise.resolve(3)])])) // [1,[2,3]]
  * ```
  */
-export async function toArrayWithPromiseResolution(
+export async function toArrayAsync(
   list: Iterable<unknown | Promise<unknown> | Iterable<unknown>>,
 ): Promise<(unknown | unknown[])[]> {
   const result: unknown[] = [];
@@ -35,7 +35,7 @@ export async function toArrayWithPromiseResolution(
     }
 
     if (isIterable(item)) {
-      result.push(await toArrayWithPromiseResolution(item));
+      result.push(await toArrayAsync(item));
     } else {
       result.push(item);
     }

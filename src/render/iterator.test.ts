@@ -1,6 +1,6 @@
 import { assert, assertEquals } from "jsr:@std/assert@1.0.6";
 
-import { isIterable, iterator, toArrayWithPromiseResolution } from "./iterator.ts";
+import { isIterable, iterator, toArrayAsync } from "./iterator.ts";
 
 Deno.test(`isIterable()`, async (t) => {
   const testCases = {
@@ -55,7 +55,7 @@ Deno.test(`iterator()`, async (t) => {
   }
 });
 
-Deno.test(`toArrayWithPromiseResolution()`, async (t) => {
+Deno.test(`toArrayAsync()`, async (t) => {
   const testCases = {
     "empty array": { input: [], expected: [] },
     "array": { input: [1, 2, 3], expected: [1, 2, 3] },
@@ -80,7 +80,7 @@ Deno.test(`toArrayWithPromiseResolution()`, async (t) => {
 
   for (const [testName, testCase] of Object.entries(testCases)) {
     await t.step(testName, async () => {
-      const result = await toArrayWithPromiseResolution(testCase.input);
+      const result = await toArrayAsync(testCase.input);
 
       assert(Array.isArray(result));
       assertEquals(result, testCase.expected);

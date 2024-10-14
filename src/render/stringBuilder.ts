@@ -1,13 +1,13 @@
 import { isIterable } from "./iterator.ts";
 
-async function* flattenWithPromiseResolution(list: Iterable<unknown>): AsyncGenerator {
+async function* flattenAsync(list: Iterable<unknown>): AsyncGenerator {
   for (let item of list) {
     if (item instanceof Promise) {
       item = await item;
     }
 
     if (isIterable(item)) {
-      yield* flattenWithPromiseResolution(item);
+      yield* flattenAsync(item);
     } else {
       yield item;
     }
@@ -41,7 +41,7 @@ export class StringBuilder {
   }
 
   private async *iterateFragments(): AsyncGenerator {
-    for await (const fragment of flattenWithPromiseResolution(this.fragments)) {
+    for await (const fragment of flattenAsync(this.fragments)) {
       if (fragment instanceof StringBuilder) {
         yield* fragment.iterateFragments();
       } else {
