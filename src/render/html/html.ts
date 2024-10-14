@@ -14,45 +14,53 @@ import {
 import { formatCountry, formatDate, formatURL } from "../format.ts";
 import { ensureNoDefaultToString, nonEmptyTaggedTemplate as ne, taggedTemplate as t } from "../string.ts";
 
-interface Link {
-  name: string;
-  url?: string;
-}
-
-function file(path: string) {
-  return Deno.readTextFile(`./src/render/html/${path}`);
-}
+const htmlEscapeMap = {
+  "<": `&lt;`,
+  ">": `&gt;`,
+  "&": `&amp;`,
+};
 
 function escape(text: string | null | undefined) {
   if (!text) {
     return text;
   }
 
-  return text;
+  return Object.entries(htmlEscapeMap).reduce(
+    (text, [pattern, replacement]) => text.replaceAll(pattern, replacement),
+    text,
+  );
 }
 
-// function escapeAttributeValue(value: string) {
-//   return value
-//     .replaceAll("<", "&lt;")
-//     .replaceAll("&", "&amp;")
-//     .replaceAll('"', "&quot");
-// }
+const htmlAttributeEscapeMap = {
+  ...htmlEscapeMap,
+  '"': `&quot;`,
+  "\"'": `&#39;`,
+};
 
-// function html(
-//   strings: TemplateStringsArray,
-//   ...expressions: unknown[]
-// ): string {
-//   let result = strings[0];
+function escapeAttr(text: string | null | undefined) {
+  if (!text) {
+    return text;
+  }
 
-//   for (let i = 1, l = strings.length; i < l; i++) {
-//     result += expressions[i - 1];
-//     result += strings[i];
-//   }
+  return Object.entries(htmlAttributeEscapeMap).reduce(
+    (text, [pattern, replacement]) => text.replaceAll(pattern, replacement),
+    text,
+  );
+}
 
-//   return result;
-// }
+function markdownLite(text: string | null | undefined) {
+  if (!text) {
+    return text;
+  }
 
-// const html = String.raw;
+  const paragraphs = text.split("\n\n");
+
+  return paragraphs.map((p) => `<p>${p}</p>`).join(`\n`);
+}
+
+function file(path: string) {
+  return Deno.readTextFile(`./src/render/html/${path}`);
+}
 
 // icons from `feather-icons`
 function renderIcon(
@@ -61,71 +69,68 @@ function renderIcon(
   return file(`./icons/${icon}.svg`);
 }
 
+interface Link {
+  name: string;
+  url?: string;
+}
+
 function renderLink(link: Link) {
   if (!link.url) {
     return escape(link.name);
   }
 
-  return `<a href="${link.url}">${escape(link.name)}</a>`;
+  return `<a href="${escapeAttr(link.url)}">${escape(link.name)}</a>`;
 }
 
 function renderHeader(basics: Basics) {
   return t`
 <header class="masthead">
-  ${ne`<img src="${basics.image}" alt="">`}
+  ${ne`<img src="${escapeAttr(basics.image)}" alt="">`}
   <div>
     <h1>${escape(basics.name)}</h1>
     <h2>${escape(basics.label)}</h2></div>
   <article>
-    ${escape(basics.summary) /* markdown */}
+    ${markdownLite(escape(basics.summary))}
   </article>
   <ul class="icon-list">
     ${ne`
     <li>
       ${renderIcon(`map-pin`)}
-      ${ne`${basics?.location?.city}, `}${escape(formatCountry(basics.location))}
+      ${ne`${escape(basics?.location?.city)}, `}${escape(formatCountry(basics.location))}
     </li>
     `}
     <li>
       ${renderIcon(`mail`)}
-      <a href="mailto:${basics.email}">${basics.email}</a>
+      <a href="mailto:${escapeAttr(basics.email)}">${escape(basics.email)}</a>
     </li>
     ${ne`
     <li>
       ${renderIcon(`link`)}
-      <a href="${basics.url}">${escape(formatURL(basics.url))}</a>
+      <a href="${escapeAttr(basics.url)}">${escape(formatURL(basics.url))}</a>
     </li>
     `}
-    ${(
-    Promise.all(
-      (basics.profiles ?? []).map(
-        async (profile) => `
+    ${ne`${
+    basics.profiles?.map((profile) =>
+      t`
     <li>
-      ${await renderIcon(profile.network)}
-      <a href="${profile.url}">${escape(profile.username)}</a>
-      <span class="network">(${profile.network})</span>
-    </li>`,
-      ),
-    ).then((r) => r.join(`\n`))
-  )}
+      ${renderIcon(profile.network)}
+      <a href="${escapeAttr(profile.url)}">${escape(profile.username)}</a>
+      <span class="network">(${escape(profile.network)})</span>
+    </li>`
+    )
+  }`}
   </ul>
 </header>`;
 }
 
-function renderWork(works: Work[]) {
-  if (works.length === 0) {
-    return ``;
-  }
-
-  return t`
+function renderWork(works?: Work[]) {
+  return ne`
 <section id="work">
   <h3>Work</h3>
   <div class="stack">
     ${
-    works
-      .map(
-        (w) =>
-          t`
+    works?.map((w) =>
+      t`
     <article>
       <header>
         ${ne`<h4>${escape(w.position)}</h4>`}
@@ -141,43 +146,29 @@ function renderWork(works: Work[]) {
           ${ne`<div>${escape(w.location)}</div>`}
         </div>
       </header>
-      ${ne`${escape(w.summary) /* markdown */}`}
-      ${
-            (w.highlights ?? []).length
-              ? `
+      ${ne`${markdownLite(escape(w.summary))}`}
+      ${ne`
       <ul>
-        ${
-                (w.highlights ?? [])
-                  .map(
-                    (highlight) => `
-        <li>${escape(highlight) /* markdown */}</li>`,
-                  )
-                  .join(`\n`)
-              }
-      </ul>`
-              : ``
-          }
-    </article>`,
-      )
+      ${
+        w.highlights?.map((highlight) => `
+        <li>${markdownLite(escape(highlight))}</li>`)
+      }
+      </ul>`}
+    </article>`
+    )
   }
   </div>
 </section>`;
 }
 
-function renderEducation(education: Education[]) {
-  if (education.length === 0) {
-    return ``;
-  }
-
-  return t`
+function renderEducation(education?: Education[]) {
+  return ne`
 <section id="education">
   <h3>Education</h3>
   <div class="stack">
     ${
-    (education ?? [])
-      .map(
-        (e) =>
-          t`
+    education?.map((e) =>
+      t`
     <article>
       <header>
         <h4>${renderLink({ name: e.institution, url: e.url })}</h4>
@@ -189,44 +180,34 @@ function renderEducation(education: Education[]) {
           </div>
         </div>
       </header>
-      ${ne`${escape(e.studyType) /* markdown */}`}
-      ${
-            (e.courses ?? []).length
-              ? `
+      ${ne`${markdownLite(escape(e.studyType))}`}
+      ${ne`
       <h5>Courses</h5>
       <ul>
-        ${(e.courses ?? []).map((c) => `<li>${escape(c) /* markdown */}</li>`).join(`\n`)}
-      </ul>`
-              : ``
-          }
-    </article>`,
-      )
+        ${e.courses?.map((c) => `<li>${markdownLite(escape(c))}</li>`)}
+      </ul>`}
+    </article>`
+    )
   }
   </div>
 </section>`;
 }
 
-function renderProjects(projects: Project[]) {
-  if (projects.length === 0) {
-    return ``;
-  }
-
-  return t`
+function renderProjects(projects?: Project[]) {
+  return ne`
 <section id="projects">
   <h3>Projects</h3>
   <div class="stack">
     ${
-    (projects ?? [])
-      .map(
-        (p) =>
-          t`
+    projects?.map((p) =>
+      t`
     <article>
       <header>
         <h4>${renderLink(p)}</h4>
         <div class="meta">
           <div>
-            ${(p.roles ?? []).join(` and `)}
-            ${ne`at <strong>${p.entity}</strong>`}
+            ${escape((p.roles ?? []).join(` and `))}
+            ${ne`at <strong>${escape(p.entity)}</strong>`}
           </div>
           <div>
             <time datetime="${p.startDate.toISOString()}">${formatDate(p.startDate)}</time> –
@@ -234,71 +215,53 @@ function renderProjects(projects: Project[]) {
           </div>
         </div>
       </header>
-      ${ne`${escape(p.description) /* markdown */}`}
-      ${
-            (p.highlights ?? []).length
-              ? `
+      ${ne`${markdownLite(escape(p.description))}`}
+      ${ne`
       <ul>
-        ${
-                p.highlights?.map((h) => `<li>${escape(h) /* markdown */}</li>`)
-                  .join(`\n`)
-              }
-      </ul>`
-              : ``
-          }
-    </article>`,
-      )
+        ${p.highlights?.map((h) => `<li>${markdownLite(escape(h))}</li>`)}
+      </ul>`}
+    </article>`
+    )
   }
   </div>
 </section>`;
 }
 
-function renderCertificates(certificates: Certificate[]) {
-  if (certificates.length === 0) {
-    return ``;
-  }
-
-  return t`
+function renderCertificates(certificates?: Certificate[]) {
+  return ne`
 <section id="certificates">
   <h3>Certificates</h3>
   <div class="stack">
     ${
-    certificates
-      .map(
-        (c) => `
+    certificates?.map(
+      (c) => `
     <article>
       <header>
         <h4>${renderLink(c)}</h4>
         <div class="meta">
           ${ne`
           <div>
-            Issued by <strong>${c.issuer}</strong>
+            Issued by <strong>${escape(c.issuer)}</strong>
           </div>
           `}
           ${ne`<time datetime="${c.date?.toISOString()}">${formatDate(c.date)}</time>`}
         </div>
       </header>
     </article>`,
-      )
-      .join(`\n`)
+    )
   }
   </div>
 </section>`;
 }
 
-function renderPublications(publications: Publication[]) {
-  if (publications.length === 0) {
-    return ``;
-  }
-
-  return t`
+function renderPublications(publications?: Publication[]) {
+  return ne`
 <section id="publications">
   <h3>Publications</h3>
   <div class="stack">
     ${
-    publications
-      .map(
-        (p) => `
+    publications?.map(
+      (p) => `
     <article>
       <header>
         <h4>${renderLink(p)}</h4>
@@ -311,122 +274,91 @@ function renderPublications(publications: Publication[]) {
           ${ne`<time datetime="${p.releaseDate?.toISOString()}">${formatDate(p.releaseDate)}}</time>`}
         </div>
       </header>
-      ${ne`${escape(p.summary) /* markdown */}`}
+      ${ne`${markdownLite(escape(p.summary))}`}
     </article>`,
-      )
-      .join(`\n`)
+    )
   }
   </div>
 </section>`;
 }
 
-function renderSkills(skills: Skill[]) {
-  if (skills.length === 0) {
-    return ``;
-  }
-
-  return t`
+function renderSkills(skills?: Skill[]) {
+  return ne`
 <section id="skills">
   <h3>Skills</h3>
   <div class="grid-list">
     ${
-    skills
-      .map(
-        (s) => `
+    skills?.map(
+      (s) =>
+        t`
     <div>
       <h4>${escape(s.name)}</h4>
-      ${
-          (s.keywords ?? []).length
-            ? `
+      ${ne`
       <ul class="tag-list">
-        ${s.keywords?.map((k) => `<li>${escape(k)}</li>`).join(`\n`)}
-      </ul>`
-            : ``
-        }
+        ${s.keywords?.map((k) => `<li>${escape(k)}</li>`)}
+      </ul>`}
     </div>`,
-      )
-      .join(`\n`)
+    )
   }
   </div>
 </section>`;
 }
 
-function renderLanguages(languages: Language[]) {
-  if (languages.length === 0) {
-    return ``;
-  }
-
-  return t`
+function renderLanguages(languages?: Language[]) {
+  return ne`
 <section id="languages">
   <h3>Languages</h3>
   <div class="grid-list">
     ${
-    languages
-      .map(
-        (l) => `
+    languages?.map(
+      (l) => `
     <div>
       ${ne`<h4>${escape(l.language)}</h4>`}
       ${ne`${escape(l.fluency)}`}
     </div>`,
-      )
-      .join(`\n`)
+    )
   }
   </div>
 </section>`;
 }
 
-function renderInterests(interests: Interest[]) {
-  if (interests.length === 0) {
-    return ``;
-  }
-
-  return t`
+function renderInterests(interests?: Interest[]) {
+  return ne`
 <section id="interests">
   <h3>Interests</h3>
   <div class="grid-list">
     ${
-    interests
-      .map(
-        (i) =>
-          t`
+    interests?.map(
+      (i) =>
+        t`
     <div>
       ${ne`<h4>${escape(i.name)}</h4>`}
-      ${
-            (i.keywords ?? []).length
-              ? `
+      ${ne`
       <ul class="tag-list">
-        ${i.keywords?.map((k) => `<li>${escape(k)}</li>`).join(`\n`)}
-      </ul>`
-              : ``
-          }
+        ${i.keywords?.map((k) => `<li>${escape(k)}</li>`)}
+      </ul>`}
     </div>`,
-      )
+    )
   }
   </div>
 </section>`;
 }
 
-function renderReferences(references: Reference[]) {
-  if (references.length === 0) {
-    return ``;
-  }
-
-  return t`
+function renderReferences(references?: Reference[]) {
+  return ne`
 <section id="references">
   <h3>References</h3>
   <div class="stack">
     ${
-    references
-      .map(
-        (r) => `
+    references?.map(
+      (r) => `
     <blockquote>
-      ${escape(r.reference) /* markdown */}
+      ${markdownLite(escape(r.reference))}
       <p>
         <cite>${escape(r.name)}</cite>
       </p>
     </blockquote>`,
-      )
-      .join(`\n`)
+    )
   }
   </div>
 </section>`;
@@ -439,7 +371,7 @@ export async function render(cv: CV) {
   <head>
     <meta charset="utf-8">
     <title>${escape(cv.basics.name)}'s curriculum vitae</title>
-    <meta name="description" content="${escape(cv.basics.summary) /* markdown */}">
+    <meta name="description" content="${markdownLite(escape(cv.basics.summary))}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
     <style>${file(`./css/style.css`)}</style>${``
@@ -450,15 +382,15 @@ export async function render(cv: CV) {
   </head>
   <body>
     ${renderHeader(cv.basics)}
-    ${renderWork(cv.work ?? [])}
-    ${renderEducation(cv.education ?? [])}
-    ${renderProjects(cv.projects ?? [])}
-    ${renderCertificates(cv.certificates ?? [])}
-    ${renderPublications(cv.publications ?? [])}
-    ${renderSkills(cv.skills ?? [])}
-    ${renderLanguages(cv.languages ?? [])}
-    ${renderInterests(cv.interests ?? [])}
-    ${renderReferences(cv.references ?? [])}
+    ${renderWork(cv.work)}
+    ${renderEducation(cv.education)}
+    ${renderProjects(cv.projects)}
+    ${renderCertificates(cv.certificates)}
+    ${renderPublications(cv.publications)}
+    ${renderSkills(cv.skills)}
+    ${renderLanguages(cv.languages)}
+    ${renderInterests(cv.interests)}
+    ${renderReferences(cv.references)}
   </body>
 </html>`;
 
