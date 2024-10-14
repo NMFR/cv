@@ -1,18 +1,4 @@
-import { isIterable } from "./iterator.ts";
-
-async function* flattenAsync(list: Iterable<unknown>): AsyncGenerator {
-  for (let item of list) {
-    if (item instanceof Promise) {
-      item = await item;
-    }
-
-    if (isIterable(item)) {
-      yield* flattenAsync(item);
-    } else {
-      yield item;
-    }
-  }
-}
+import { flattenAsync } from "./iterator.ts";
 
 /** `StringBuilder` helps build a string from fragments.
  *

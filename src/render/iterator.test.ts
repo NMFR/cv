@@ -1,6 +1,6 @@
 import { assert, assertEquals } from "jsr:@std/assert@1.0.6";
 
-import { isIterable, iterator, toArrayAsync } from "./iterator.ts";
+import { flattenAsync, isIterable, iterator, toArrayAsync } from "./iterator.ts";
 
 Deno.test(`isIterable()`, async (t) => {
   const testCases = {
@@ -51,6 +51,63 @@ Deno.test(`iterator()`, async (t) => {
   for (const [testName, testCase] of Object.entries(testCases)) {
     await t.step(testName, () => {
       assertEquals([...iterator(testCase.input)], testCase.expected);
+    });
+  }
+});
+
+Deno.test(`flattenAsync()`, async (t) => {
+  const testCases = {
+    "empty array": { input: [], expected: [] },
+    "empty iterator": { input: iterator([]), expected: [] },
+    "array with empty promise": { input: [Promise.resolve([])], expected: [] },
+    "iterator with empty promise": { input: iterator([Promise.resolve([])]), expected: [] },
+    "array": { input: [1, 2, 3], expected: [1, 2, 3] },
+    "iterator": { input: iterator([1, 2, 3]), expected: [1, 2, 3] },
+    "array with value promise": { input: [1, Promise.resolve(2), 3], expected: [1, 2, 3] },
+    "iterator with value promise": { input: iterator([1, Promise.resolve(2), 3]), expected: [1, 2, 3] },
+    "array with promise": { input: [1, Promise.resolve([2, 3])], expected: [1, 2, 3] },
+    "iterator with promise": { input: iterator([1, Promise.resolve([2, 3])]), expected: [1, 2, 3] },
+    "nested array": { input: [1, [2, [3]]], expected: [1, 2, 3] },
+    "nested iterator": { input: iterator([1, [2, [3]]]), expected: [1, 2, 3] },
+    "multiple combinations": {
+      input: [
+        1,
+        [2, 3],
+        iterator([4, 5]),
+        Promise.resolve(6),
+        Promise.resolve([7, 8]),
+        [9, [
+          10,
+          11,
+          iterator([
+            12,
+            iterator([
+              13,
+              Promise.resolve([
+                14,
+                Promise.resolve(iterator([
+                  15,
+                  16,
+                  [17, 18, Promise.resolve(19)],
+                ])),
+              ]),
+            ]),
+          ]),
+        ]],
+      ],
+      expected: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    },
+    "doc comment example": {
+      input: iterator([1, [2, Promise.resolve([3, iterator([4, Promise.resolve([5])])])]]),
+      expected: [1, 2, 3, 4, 5],
+    },
+  };
+
+  for (const [testName, testCase] of Object.entries(testCases)) {
+    await t.step(testName, async () => {
+      const result = await Array.fromAsync(flattenAsync(testCase.input));
+
+      assertEquals(result, testCase.expected);
     });
   }
 });

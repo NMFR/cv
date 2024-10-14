@@ -16,7 +16,7 @@ Deno.test(`formatCountry()`, () => {
     { input: { countryCode: `ES` }, expected: `Spain` },
     { input: { countryCode: `UK` }, expected: `United Kingdom` },
     { input: { countryCode: `US` }, expected: `United States` },
-    { input: { countryCode: `PT`, country: `Alternative name` }, expected: `Portugal` },
+    { input: { countryCode: `FR`, country: `Alternative name` }, expected: `France` },
   ];
 
   for (const testCase of testCases) {
