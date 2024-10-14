@@ -2,7 +2,7 @@ import { flattenAsync } from "./iterator.ts";
 
 /** `StringBuilder` helps build a string from fragments.
  *
- * Fragments can be strings, `Array`s, `Promise`s, nested `StringBuilder`s or anything with a `toString()` method.
+ * Fragments can be `string`s, `Array`s, `Promise`s, nested `StringBuilder`s or anything else that has a `toString()` method.
  * `Promise`s will be awaited and resolved.
  * `Array`s will be iterated and their items resolved to a string.
  * Nested `StringBuilder` will have their fragments resolved to a string.

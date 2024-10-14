@@ -26,28 +26,38 @@ Deno.test(`StringBuilder`, async (t) => {
   });
 
   await t.step(`getString()`, async (t) => {
-    const testCases = [
-      { fragments: [], expected: `` },
-      { fragments: [``], expected: `` },
-      { fragments: [``, ``], expected: `` },
-      { fragments: [undefined], expected: `` },
-      { fragments: [undefined, undefined], expected: `` },
-      { fragments: [null], expected: `` },
-      { fragments: [null, null], expected: `` },
-      { fragments: [[]], expected: `` },
-      { fragments: [[], []], expected: `` },
-      { fragments: [iterator([])], expected: `` },
-      { fragments: [iterator([]), iterator([])], expected: `` },
-      { fragments: [``, undefined, null, [], [``, undefined, null, [], [``, undefined, null, []]]], expected: `` },
-      { fragments: [Promise.resolve(``)], expected: `` },
-      { fragments: [Promise.resolve(undefined)], expected: `` },
-      { fragments: [Promise.resolve(null)], expected: `` },
-      { fragments: [Promise.resolve([])], expected: `` },
-      {
+    const testCases = {
+      "empty": { fragments: [], expected: `` },
+      "empty string": { fragments: [``], expected: `` },
+      "multiple empty strings": { fragments: [``, ``], expected: `` },
+      "undefined": { fragments: [undefined], expected: `` },
+      "multiple undefined": { fragments: [undefined, undefined], expected: `` },
+      "null": { fragments: [null], expected: `` },
+      "multiple null": { fragments: [null, null], expected: `` },
+      "empty array": { fragments: [[]], expected: `` },
+      "multiple empty array": { fragments: [[], []], expected: `` },
+      "empty iterator": { fragments: [iterator([])], expected: `` },
+      "multiple empty iterator": { fragments: [iterator([]), iterator([])], expected: `` },
+      "mix of empty string, undefined, null, nested array and iterator": {
+        fragments: [
+          ``,
+          undefined,
+          null,
+          [],
+          [``, undefined, null, [], [``, undefined, null, []]],
+          iterator([iterator([``, undefined, null, []])]),
+        ],
+        expected: ``,
+      },
+      "empty string promise": { fragments: [Promise.resolve(``)], expected: `` },
+      "undefined promise": { fragments: [Promise.resolve(undefined)], expected: `` },
+      "null promise": { fragments: [Promise.resolve(null)], expected: `` },
+      "empty array promise": { fragments: [Promise.resolve([])], expected: `` },
+      "mix of empty promises": {
         fragments: [Promise.resolve(``), Promise.resolve(undefined), Promise.resolve(null), Promise.resolve([])],
         expected: ``,
       },
-      {
+      "mix of nested empty promises": {
         fragments: [
           Promise.resolve(``),
           Promise.resolve(undefined),
@@ -56,17 +66,20 @@ Deno.test(`StringBuilder`, async (t) => {
         ],
         expected: ``,
       },
-      { fragments: [new StringBuilder([])], expected: `` },
-      { fragments: [new StringBuilder([``])], expected: `` },
-      { fragments: [new StringBuilder([undefined])], expected: `` },
-      { fragments: [new StringBuilder([null])], expected: `` },
-      { fragments: [new StringBuilder([new StringBuilder([``])])], expected: `` },
-      { fragments: [new StringBuilder([``, new StringBuilder([``])])], expected: `` },
-      {
+      "empty StringBuilder": { fragments: [new StringBuilder([])], expected: `` },
+      "empty string StringBuilder": { fragments: [new StringBuilder([``])], expected: `` },
+      "undefined StringBuilder": { fragments: [new StringBuilder([undefined])], expected: `` },
+      "null StringBuilder": { fragments: [new StringBuilder([null])], expected: `` },
+      "nested empty StringBuilder": { fragments: [new StringBuilder([new StringBuilder([``])])], expected: `` },
+      "nested StringBuilder and empty string": {
+        fragments: [new StringBuilder([``, new StringBuilder([``])])],
+        expected: ``,
+      },
+      "mix of empty StringBuilder": {
         fragments: [new StringBuilder([``, undefined, null, [], new StringBuilder([``, undefined, null, []])])],
         expected: ``,
       },
-      {
+      "all nested empty values": {
         fragments: [
           ``,
           undefined,
@@ -126,29 +139,50 @@ Deno.test(`StringBuilder`, async (t) => {
         ],
         expected: ``,
       },
-      { fragments: [`a`], expected: `a` },
-      { fragments: [`a`, `b`], expected: `ab` },
-      { fragments: [`a`, `b`, `c`], expected: `abc` },
-      { fragments: [`a`, undefined, `b`, null, `c`], expected: `abc` },
-      { fragments: [[`a`]], expected: `a` },
-      { fragments: [[`a`, `b`]], expected: `ab` },
-      { fragments: [[`a`, `b`], `c`], expected: `abc` },
-      { fragments: [[`a`, `b`], [`c`]], expected: `abc` },
-      { fragments: [[`a`], [`b`], [`c`]], expected: `abc` },
-      { fragments: [[`a`, [`b`, [`c`]]]], expected: `abc` },
-      {
-        fragments: [[`a`, undefined, [null, `b`, undefined, [null, `c`, undefined], null], null], null],
+      "single string": { fragments: [`a`], expected: `a` },
+      "three strings": { fragments: [`a`, `b`, `c`], expected: `abc` },
+      "strings with undefined and null": { fragments: [`a`, undefined, `b`, null, `c`, ``], expected: `abc` },
+      "array with single string": { fragments: [[`a`]], expected: `a` },
+      "array with two strings": { fragments: [[`a`, `b`]], expected: `ab` },
+      "string and string array": { fragments: [[`a`, `b`], `c`], expected: `abc` },
+      "multiple string arrays": { fragments: [[`a`, `b`], [`c`]], expected: `abc` },
+      "nested string arrays": { fragments: [[`a`, [`b`, [`c`]]]], expected: `abc` },
+      "nested array with strings, undefined and null": {
+        fragments: [[`a`, undefined, [null, `b`, undefined, [null, `c`, undefined], null, ``], null], null],
         expected: `abc`,
       },
-      { fragments: [Promise.resolve(`a`)], expected: `a` },
-      { fragments: [Promise.resolve([`a`, `b`, [`c`], Promise.resolve(`d`)])], expected: `abcd` },
-      { fragments: [new StringBuilder([`a`])], expected: `a` },
-      { fragments: [new StringBuilder([`a`, `b`, [`c`], new StringBuilder([`d`])])], expected: `abcd` },
-      {
+      "iterator with single string": { fragments: [iterator([`a`])], expected: `a` },
+      "iterator with two strings": { fragments: [iterator([`a`, `b`])], expected: `ab` },
+      "string and string iterator": { fragments: [iterator([`a`, `b`]), `c`], expected: `abc` },
+      "multiple string iterator": { fragments: [iterator([`a`, `b`]), iterator([`c`])], expected: `abc` },
+      "nested string iterator": { fragments: [iterator([`a`, iterator([`b`, iterator([`c`])])])], expected: `abc` },
+      "nested iterator with strings, undefined and null": {
+        fragments: [
+          iterator([
+            `a`,
+            undefined,
+            iterator([null, `b`, undefined, iterator([null, `c`, undefined]), null, ``]),
+            null,
+          ]),
+          null,
+        ],
+        expected: `abc`,
+      },
+      "string promise": { fragments: [Promise.resolve(`a`)], expected: `a` },
+      "nested string array promise": {
+        fragments: [Promise.resolve([`a`, `b`, [`c`], Promise.resolve(`d`)])],
+        expected: `abcd`,
+      },
+      "string StringBuilder": { fragments: [new StringBuilder([`a`])], expected: `a` },
+      "nested string StringBuilder": {
+        fragments: [new StringBuilder([`a`, `b`, [`c`], new StringBuilder([`d`])])],
+        expected: `abcd`,
+      },
+      "multiple nested values": {
         fragments: [
           undefined,
           `a a`,
-          `bb`,
+          iterator([`b`, `b`]),
           null,
           [
             `ccc`,
@@ -158,14 +192,14 @@ Deno.test(`StringBuilder`, async (t) => {
               null,
               `ee e ee`,
               Promise.resolve(`fff f ff`),
-              new StringBuilder([``, `gg g gg`, undefined, [`hh  h  hh`], Promise.resolve(`ii`)]),
+              new StringBuilder([``, `gg g gg`, undefined, [`hh  `, iterator([`h`, `  hh`])], Promise.resolve(`ii`)]),
             ]),
           ],
           Promise.resolve(`jj`),
           Promise.resolve([
             null,
             `k`,
-            Promise.resolve(`ll`),
+            Promise.resolve(iterator([`ll`])),
             undefined,
             new StringBuilder([`mm`, Promise.resolve(`nn`)]),
           ]),
@@ -179,20 +213,20 @@ Deno.test(`StringBuilder`, async (t) => {
         ],
         expected: `a abbcccdd ddee e eefff f ffgg g gghh  h  hhiijjkllmmnnooppqqrrss`,
       },
-    ];
+    };
 
-    for (let i = 0; i < testCases.length; i++) {
-      const testCase = testCases[i];
+    for (const [testName, testCase] of Object.entries(testCases)) {
+      await t.step(testName, async () => {
+        const builder = new StringBuilder();
 
-      const builder = new StringBuilder();
+        for (const fragment of testCase.fragments) {
+          builder.add(fragment);
+        }
 
-      for (const fragment of testCase.fragments) {
-        builder.add(fragment);
-      }
+        const text = await builder.getString();
 
-      const text = await builder.getString();
-
-      assertEquals(text, testCase.expected, `test case index: ${i}`);
+        assertEquals(text, testCase.expected);
+      });
     }
   });
 });
