@@ -1,17 +1,26 @@
 {
-  "name": "Node",
+  "name": "CV",
   "build": {
     "dockerfile": "../Dockerfile",
     "context": "..",
     "target": "dev-container"
   },
   "containerEnv": {},
-  "extensions": [
-    "editorconfig.editorconfig",
-    "ms-azuretools.vscode-docker",
-    "redhat.vscode-yaml",
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint"
-  ],
-  "settings": {}
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "waderyan.gitblame",
+        "donjayamanne.githistory",
+        "eamodio.gitlens",
+        "editorconfig.editorconfig",
+        "denoland.vscode-deno",
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "mgmcdermott.vscode-language-babel"
+      ],
+      "settings": {}
+    }
+  }
 }

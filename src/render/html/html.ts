@@ -371,7 +371,7 @@ export async function render(cv: CV) {
   <head>
     <meta charset="utf-8">
     <title>${escape(cv.basics.name)}'s curriculum vitae</title>
-    <meta name="description" content="${markdownLite(escape(cv.basics.summary))}">
+    <meta name="description" content="${escape(cv.basics.summary)}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
     <style>${file(`./css/style.css`)}</style>${``
