@@ -1,0 +1,10 @@
+version: "3"
+services:
+  deno-dev-container:
+    container_name: deno-dev-container
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+      target: dev-container
+    volumes:
+      - .:/opt/app

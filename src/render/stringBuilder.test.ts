@@ -1,4 +1,4 @@
-import { assertEquals, assertThrows } from "jsr:@std/assert@1.0.6";
+import { assertEquals, assertThrows } from "@std/assert";
 
 import { StringBuilder } from "./stringBuilder.ts";
 import { iterator } from "./iterator.ts";

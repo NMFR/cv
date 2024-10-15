@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "jsr:@std/assert@1.0.6";
+import { assert, assertEquals } from "@std/assert";
 
 import { flattenAsync, isIterable, iterator, toArrayAsync } from "./iterator.ts";
 

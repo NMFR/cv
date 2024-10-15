@@ -58,3 +58,9 @@ container:
 	[[ "$$USE_CONTAINER_CACHE" == "true" ]] && (docker pull $(CI_CONTAINER_IMAGE_NAME)) || true
 	docker build --target ci --tag $(CI_CONTAINER_IMAGE_NAME) --cache-from=$(CI_CONTAINER_IMAGE_NAME) --build-arg BUILDKIT_INLINE_CACHE=1 .
 	docker run -v "$(CURDIR):/workspace" $(CI_CONTAINER_IMAGE_NAME) $(run)
+
+deno test
+deno run --allow-read=src/render/html/css/,src/render/html/icons/ --allow-write=cv.html src/generate-html.ts
+deno fmt --unstable-html cv.html
+
+deno run --allow-read=src/render/html/css/,src/render/html/icons/ src/render-html.ts > ./cv.html && deno fmt --unstable-html cv.html

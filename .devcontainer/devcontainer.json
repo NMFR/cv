@@ -1,11 +1,9 @@
 {
   "name": "CV",
-  "build": {
-    "dockerfile": "../Dockerfile",
-    "context": "..",
-    "target": "dev-container"
-  },
-  "containerEnv": {},
+  "dockerComposeFile": ["../docker-compose.yaml"],
+  "service": "deno-dev-container",
+  "workspaceFolder": "/opt/app",
+  "mounts": ["type=bind,source=${localEnv:HOME}/.ssh,target=/home/dev/.ssh,readonly"],
   "customizations": {
     "vscode": {
       "extensions": [
