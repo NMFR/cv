@@ -13,7 +13,7 @@ RUN apt-get update && \
   # Install: - hunspell: Spell checker.
   #          - make: Used as a task runner.
   #          - tidy: Used to format HTML files to valid XML so Hunspell can parse them correctly.
-  # TODO: lock_versions to ensure deterministic behaviour
+  # TODO: lock_versions to ensure deterministic behaviour.
   apt-get install -y hunspell make tidy && \
   # Clean up apt update and install unused artifacts.
   apt-get clean && \
