@@ -12,7 +12,8 @@ env:
   CI_CONTAINER_IMAGE_NAME: ghcr.io/nmfr/cv/ci
 
 jobs:
-  spell-check:
+  test-and-spell-check:
+    name: a
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
