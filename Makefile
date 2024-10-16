@@ -41,7 +41,9 @@ spell-check: generate-html
 # make spell-check-readme # Spell check the README.md file.
 .PHONY: spell-check-readme
 spell-check-readme:
-	hunspell -d en_US -l -H -p spell-check-exclude.dic README.md
+	@SPELL_CHECK_RESULT=$$(hunspell -d en_US -l -H -p spell-check-exclude.dic README.md) && \
+	(([[ $${SPELL_CHECK_RESULT} == "" ]] && echo "No spelling errors found.") || \
+	(echo -e "Spelling errors found:\n\n$${SPELL_CHECK_RESULT}\n" && exit 1))
 
 # make format-spell-check-exclude-file # Format the spell-check-exclude.dic file used to exclude spell checker errors. This will sort and remove duplicate lines from the file.
 .PHONY: format-spell-check-exclude-file
