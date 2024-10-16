@@ -19,4 +19,5 @@ jobs:
       - name: docker login
         continue-on-error: true
         run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ${CI_CONTAINER_REGISTRY} -u ${GITHUB_ACTOR} --password-stdin)
+      - run: make container run="make test"
       - run: make container run="make spell-check"
