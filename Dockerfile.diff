@@ -1,0 +1,25 @@
+FROM ghcr.io/puppeteer/puppeteer:23.5.3@sha256:ed20831e147f6c277d436946cc0f0088f47900906ca7a798816236fe60f37347
+
+# Fix: https://github.com/hadolint/hadolint/wiki/DL4006
+# Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+WORKDIR /opt/app
+
+USER root
+
+RUN apt-get update && \
+  # Install: - ImageMagick: Used as a HTML image diff tool.
+  # TODO: lock_versions to ensure deterministic behaviour
+  apt-get install -y imagemagick && \
+  # Clean up apt update and install unused artifacts.
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
+USER node
+
+# docker build -f ./Dockerfile.diff -t tttt .
+# docker run -it -v "${PWD}/tmp:/opt/app" tttt bash
+# curl https://www.bannerbear.com/images/ghost/2023-01-04-how-to-compare-puppeteer-screenshots-using-imagemagick/0.png -o ./1.png
+# curl https://www.bannerbear.com/images/ghost/2023-01-04-how-to-compare-puppeteer-screenshots-using-imagemagick/1.png -o ./2.png
+# magick compare 1.png 2.png difference.png
