@@ -26,6 +26,7 @@ clean:
 # make generate-html # Generate the CV in HTML format.
 .PHONY: generate-html
 generate-html: clean
+	ln -s ${PWD}/gh-pages/* ${PWD}/generated/
 	deno run --allow-read=src/render/html/css/,src/render/html/icons/ src/render-html.ts > ./generated/cv.html
 	deno fmt --unstable-html ./generated/cv.html
 
@@ -53,8 +54,7 @@ format-spell-check-exclude-file:
 # make prepare-gh-pages # Prepare the gh-pages folder to be deployed. This will copy the generated CV to the gh-pages folder making sure the HTML file is renamed to "index.html". Note that this command expects the contents of the `generated` folder to already be generated.
 .PHONY: prepare-gh-pages
 prepare-gh-pages:
-	mv generated/cv.html generated/index.html
-	cp -rn generated/. gh-pages/
+	cp generated/cv.html gh-pages/index.html
 
 # make container run="<command>" # Run a command from inside the container. Examples: `make container run="make spell-check"`.
 .PHONY: container
