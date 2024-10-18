@@ -53,9 +53,7 @@ function markdownLite(text: string | null | undefined) {
     return text;
   }
 
-  const paragraphs = text.split("\n\n");
-
-  return paragraphs.map((p) => `<p>${p}</p>`).join(`\n`);
+  return `<p>${text}</p>`;
 }
 
 function file(path: string) {
