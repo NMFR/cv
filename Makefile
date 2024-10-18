@@ -56,6 +56,23 @@ format-spell-check-exclude-file:
 prepare-gh-pages:
 	cp generated/cv.html gh-pages/index.html
 
+# make watch-html-and-diff # Watch the './genereted/cv.html' file for changes and calculate the image difference from the `https://cv.nunorodrigues.tech/` deployed version of the CV. The difference is a file saved in `./generated/difference.png`. This requires `node`, `puppeteer` and `magick` to be installed. Use the Dockerfile.diff container to run this.
+.PHONY: watch-html-and-diff
+watch-html-and-diff:
+	@LTIME=`0`; \
+	while true ; do \
+		ATIME=`stat -c %Z /opt/app/generated/cv.html || echo "0"`; \
+		echo "checking if 'generated/cv.html' changed, ATIME: $$ATIME"; \
+		if [[ "$$ATIME" != "$$LTIME" ]] ; then \
+			echo "change detected, generating image diff from 'https://cv.nunorodrigues.tech/'"; \
+			node src/html-to-image/index.js; \
+			magick compare -fuzz 1% generated/current.png generated/this.png generated/difference.png; \
+			echo "diff generated: 'generated/difference.png'"; \
+			LTIME=$$ATIME; \
+		fi; \
+		sleep 1; \
+	done;
+
 # make container run="<command>" # Run a command from inside the container. Examples: `make container run="make spell-check"`.
 .PHONY: container
 container:

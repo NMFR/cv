@@ -4,8 +4,6 @@ FROM ghcr.io/puppeteer/puppeteer:23.5.3@sha256:ed20831e147f6c277d436946cc0f0088f
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-WORKDIR /opt/app
-
 USER root
 
 RUN apt-get update && \
@@ -25,15 +23,17 @@ RUN apt-get update && \
   make -j && \
   make install && \
   ldconfig /usr/local/lib/ && \
-  rm -rf /tmp/*
+  rm -rf /tmp/* && \
+  # Symlink the pptruser user puppeteer cache folder to the node user home folder.
+  # Required for the javascript puppeteer library to be able to find the browser binary when being run by the node user.
+  ln -s /home/pptruser/.cache /home/node/.cache
 
 USER node
 
-# docker build -f ./Dockerfile.diff -t tttt .
-# docker run -it -v "${PWD}/tmp:/opt/app" tttt bash
-# curl https://www.bannerbear.com/images/ghost/2023-01-04-how-to-compare-puppeteer-screenshots-using-imagemagick/0.png -o ./1.png
-# curl https://www.bannerbear.com/images/ghost/2023-01-04-how-to-compare-puppeteer-screenshots-using-imagemagick/1.png -o ./2.png
-# magick compare 1.png 2.png difference.png
-# curl -L https://user-images.githubusercontent.com/13458218/135765002-e67e67bd-82c2-4a2f-920d-3f4f8f42ba28.jpg -o 3.jpg
-# curl -L https://user-images.githubusercontent.com/13458218/135765013-2f94bb1a-9b9f-4528-883d-d279306382be.jpg -o 4.jpg
-# magick compare -fuzz 1% 3.jpg 4.jpg difference3.jpg
+WORKDIR /opt/app
+
+# Allow the already installed npm puppeteer npm modules to be loaded from anywhere / by any user.
+ENV NODE_PATH=/home/pptruser/node_modules/:/usr/local/lib/node_modules/
+
+# Watch the `./generated/cv.html` file for changes and calculate the image difference from the deployed `https://cv.nunorodrigues.tech/` version of the CV.
+CMD [ "make", "watch-html-and-diff" ]

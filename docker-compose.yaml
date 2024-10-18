@@ -8,3 +8,10 @@ services:
       target: dev-container
     volumes:
       - .:/opt/app
+  html-diff:
+    container_name: html-diff
+    build:
+      dockerfile: ./Dockerfile.diff
+      context: .
+    volumes:
+      - .:/opt/app
