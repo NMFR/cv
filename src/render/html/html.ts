@@ -53,7 +53,9 @@ function markdownLite(text: string | null | undefined) {
     return text;
   }
 
-  return `<p>${text}</p>`;
+  const paragraphs = text.split("\n\n");
+
+  return paragraphs.map((p) => `<p>${p}</p>`).join(`\n`);
 }
 
 function file(path: string) {
@@ -364,6 +366,7 @@ export async function render(cv: CV) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
     <style>${file(`./css/style.css`)}</style>
+    <style>${file(`./css/print.css`)}</style>
   </head>
   <body>
     ${renderHeader(cv.basics)}
