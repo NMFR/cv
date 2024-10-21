@@ -281,6 +281,77 @@ I also really enjoy helping people learn and grow."
         stroke-linejoin: round;
       }
     </style>
+    <style>
+      @media print {
+        html body {
+          gap: 1em;
+        }
+
+        body .masthead {
+          padding-top: 12px;
+          padding-bottom: 0;
+        }
+
+        body .masthead .icon-list {
+          display: flex;
+          flex-direction: row;
+          justify-content: left;
+          gap: 10px 10px;
+          flex-wrap: wrap;
+          list-style-type: none;
+          padding-left: 0;
+        }
+
+        body .masthead .icon-list li {
+          flex: 0 0 calc(32%);
+        }
+
+        #work .stack article,
+        #references .stack blockquote {
+          break-inside: avoid;
+        }
+
+        #work .stack article header .meta,
+        #education .stack article header .meta {
+          display: flex;
+          gap: 10px;
+        }
+
+        #skills {
+          break-inside: avoid;
+        }
+
+        #skills .grid-list {
+          padding-top: 5px;
+          gap: 0;
+          grid-template-columns: auto;
+        }
+
+        #skills .grid-list h4 {
+          display: none;
+        }
+
+        #interests {
+          break-inside: avoid;
+        }
+
+        #interests .grid-list {
+          padding-top: 5px;
+          display: flex;
+          flex-direction: row;
+          justify-content: left;
+          gap: 10px 10px;
+          flex-wrap: wrap;
+          list-style-type: none;
+          padding-left: 0;
+          gap: 10px;
+        }
+
+        #interests .grid-list h4 {
+          font: 1em / 1.5 Lato, sans-serif;
+        }
+      }
+    </style>
   </head>
   <body>
     <header class="masthead">
@@ -292,9 +363,12 @@ I also really enjoy helping people learn and grow."
       <article>
         <p>
           I am a passionate engineering lead / full-stack software engineer that loves his job. I have broad experience
-          in building stable and scalable products / services that users love. I always have been very curious and
-          enthusiastic about technology. I love to learn, understand how things work and solve problems. I really like
-          to design and build software. I also really enjoy helping people learn and grow.
+          in building stable and scalable products / services that users love.
+        </p>
+        <p>
+          I always have been very curious and enthusiastic about technology. I love to learn, understand how things work
+          and solve problems. I really like to design and build software. I also really enjoy helping people learn and
+          grow.
         </p>
       </article>
       <ul class="icon-list">
@@ -438,6 +512,8 @@ I also really enjoy helping people learn and grow."
           </header>
           <p>
             Deliveroo is a food takeout / groceries delivery service. I was part of the platform engineering team.
+          </p>
+          <p>
             Responsible for designing, implementing and maintaining infrastructure abstractions. Enabling other teams to
             easily deploy their services (containers), load balancers, databases, message queues, ... Abstracting
             infrastructure details, cloud providers, logging, monitoring, ... so other teams can focus only on their
@@ -469,10 +545,10 @@ I also really enjoy helping people learn and grow."
               <div>Remote</div>
             </div>
           </header>
+          <p>Building an on premise cloud for Daimler / Mercedez-Benz AG.</p>
           <p>
-            Building an on premise cloud for Daimler / Mercedez-Benz AG. Tech lead of the Kubernetes multi tenant
-            services team. Helping break down product requirements. Designing and building services. Leading and
-            mentoring the tech team.
+            Tech lead of the Kubernetes multi tenant services team. Helping break down product requirements. Designing
+            and building services. Leading and mentoring the tech team.
           </p>
           <ul>
             <li><p>Implemented a Kubernetes hard multi-tenancy service.</p></li>
@@ -500,10 +576,8 @@ I also really enjoy helping people learn and grow."
               <div>Lisbon</div>
             </div>
           </header>
-          <p>
-            KI challengers is a tech company incubator, building companies, their tech products and teams. Most of my
-            focus was on building the Cloudmobility (Mercedez-Benz AG) company.
-          </p>
+          <p>KI challengers is a tech company incubator, building companies, their tech products and teams.</p>
+          <p>Most of my focus was on building the Cloudmobility (Mercedez-Benz AG) company.</p>
           <ul>
             <li>
               <p>
@@ -581,9 +655,10 @@ I also really enjoy helping people learn and grow."
               <div>Lisbon</div>
             </div>
           </header>
+          <p>Worked in two KPMG consultancy projects.</p>
           <p>
-            Worked in two KPMG consultancy projects. One for a UK based bank to build a complex financial product
-            subscription application. Another one for an insurance company to build a accident management system.
+            One for a UK based bank to build a complex financial product subscription application. Another one for an
+            insurance company to build a accident management system.
           </p>
           <ul>
             <li>
