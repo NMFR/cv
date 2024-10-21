@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Program",
+      "request": "launch",
+      "type": "node",
+      "program": "${workspaceFolder}/src/render-html.ts",
+      "cwd": "${workspaceFolder}",
+      "env": {},
+      "runtimeExecutable": "/usr/bin/deno",
+      "runtimeArgs": ["run", "--unstable", "--inspect-wait", "--allow-all"],
+      "attachSimplePort": 9229
+    },
+    {
+      "name": "Debug tests",
+      "request": "launch",
+      "type": "node",
+      "cwd": "${workspaceFolder}",
+      "env": {},
+      "runtimeExecutable": "/usr/bin/deno",
+      "runtimeArgs": ["test", "--inspect-brk", "--allow-all"],
+      "attachSimplePort": 9229
+    }
+  ]
+}

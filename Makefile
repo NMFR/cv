@@ -11,13 +11,10 @@ export PROJECT_ROOT=$(shell pwd)
 help:
 	@egrep "^# make " [Mm]akefile | cut -c 3-
 
-# make generate-html # Generate the CV in HTML format.
-.PHONY: generate-html
-generate-html:
-	@mkdir -p generated
-	@chmod o+rw generated
-	npm install
-	npm run export-html
+# make test # Run the unit tests.
+.PHONY: test
+test:
+	@deno test
 
 # make clean # Clean up the generated files.
 .PHONY: clean
@@ -25,6 +22,13 @@ clean:
 	@rm -rf generated
 	@mkdir -p generated
 	@chmod o+rw generated
+
+# make generate-html # Generate the CV in HTML format.
+.PHONY: generate-html
+generate-html: clean
+	ln -s ${PWD}/gh-pages/* ${PWD}/generated/
+	deno run --allow-read=src/render/html/css/,src/render/html/icons/ src/render-html.ts > ./generated/cv.html
+	deno fmt --unstable-html ./generated/cv.html
 
 # make spell-check # Spell check the CV HTML file.
 .PHONY: spell-check
@@ -38,7 +42,9 @@ spell-check: generate-html
 # make spell-check-readme # Spell check the README.md file.
 .PHONY: spell-check-readme
 spell-check-readme:
-	hunspell -d en_US -l -H -p spell-check-exclude.dic README.md
+	@SPELL_CHECK_RESULT=$$(hunspell -d en_US -l -H -p spell-check-exclude.dic README.md) && \
+	(([[ $${SPELL_CHECK_RESULT} == "" ]] && echo "No spelling errors found.") || \
+	(echo -e "Spelling errors found:\n\n$${SPELL_CHECK_RESULT}\n" && exit 1))
 
 # make format-spell-check-exclude-file # Format the spell-check-exclude.dic file used to exclude spell checker errors. This will sort and remove duplicate lines from the file.
 .PHONY: format-spell-check-exclude-file
@@ -48,8 +54,24 @@ format-spell-check-exclude-file:
 # make prepare-gh-pages # Prepare the gh-pages folder to be deployed. This will copy the generated CV to the gh-pages folder making sure the HTML file is renamed to "index.html". Note that this command expects the contents of the `generated` folder to already be generated.
 .PHONY: prepare-gh-pages
 prepare-gh-pages:
-	mv generated/cv.html generated/index.html
-	cp -rn generated/. gh-pages/
+	cp generated/cv.html gh-pages/index.html
+
+# make watch-html-and-diff # Watch the './genereted/cv.html' file for changes and calculate the image difference from the `https://cv.nunorodrigues.tech/` deployed version of the CV. The difference is a file saved in `./generated/difference.png`. This requires `node`, `puppeteer` and `magick` to be installed. Use the Dockerfile.diff container to run this.
+.PHONY: watch-html-and-diff
+watch-html-and-diff:
+	@LTIME=`0`; \
+	while true ; do \
+		ATIME=`stat -c %Z /opt/app/generated/cv.html || echo "0"`; \
+		echo "checking if 'generated/cv.html' changed, ATIME: $$ATIME"; \
+		if [[ "$$ATIME" != "$$LTIME" ]] ; then \
+			echo "change detected, generating image diff from 'https://cv.nunorodrigues.tech/'"; \
+			node src/html-to-image/index.js; \
+			magick compare -fuzz 1% generated/current.png generated/this.png generated/difference.png; \
+			echo "diff generated: 'generated/difference.png'"; \
+			LTIME=$$ATIME; \
+		fi; \
+		sleep 1; \
+	done;
 
 # make container run="<command>" # Run a command from inside the container. Examples: `make container run="make spell-check"`.
 .PHONY: container
@@ -57,4 +79,4 @@ container:
 # If caching is enabled attempt to pull the container from the registry to fill the cache before the build.
 	[[ "$$USE_CONTAINER_CACHE" == "true" ]] && (docker pull $(CI_CONTAINER_IMAGE_NAME)) || true
 	docker build --target ci --tag $(CI_CONTAINER_IMAGE_NAME) --cache-from=$(CI_CONTAINER_IMAGE_NAME) --build-arg BUILDKIT_INLINE_CACHE=1 .
-	docker run -v "$(CURDIR):/workspace" $(CI_CONTAINER_IMAGE_NAME) $(run)
+	docker run -v "$(CURDIR):/opt/app" $(CI_CONTAINER_IMAGE_NAME) $(run)
