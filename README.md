@@ -73,6 +73,34 @@ The [`spell-check-exclude.dic`](./spell-check-exclude.dic) dictionary file is us
 If [Hunspell](http://hunspell.github.io/) is reporting false spelling errors, add the words to this file to fix the errors.
 The file uses the format defined [here](https://man.archlinux.org/man/hunspell.5.en).
 
+## Diff
+
+If using the recommended IDE ([development container](https://code.visualstudio.com/docs/remote/containers)) or the [`docker-compose.yaml`](docker-compose.yaml) directly the diff container ([`Dockerfile.diff`](Dockerfile.diff)) is running and listening to changes on the [`generated/cv.html`](./generated/cv.html) output file.
+Any change to the output file will trigger a script that will produce an image difference between https://nmfr.github.io/cv and [`generated/cv.html`](./generated/cv.html).
+
+Here is what the script will do every time the [`generated/cv.html`](./generated/cv.html) file is changed / re generated:
+
+-   Use [puppeteer](https://pptr.dev/) to take a screenshot of the current version of the CV present in https://nmfr.github.io/cv.
+    This screenshot is saved on the [`generated/current.png`](generated/current.png) file.
+-   Use [puppeteer](https://pptr.dev/) to take a screenshot of the updated [`generated/cv.html`](./generated/cv.html).
+    This screenshot is saved on the [`generated/this.png`](generated/this.png) file.
+-   Use [ImageMagick](https://imagemagick.org/index.php) to create an image with the difference between the two screenshots.
+    This image difference is saved on the [`generated/difference.png`](generated/difference.png) file.
+
+Example:
+
+-   https://nmfr.github.io/cv ([`generated/current.png`](generated/current.png)):
+
+    ![generated/current.png](examples/diff/current.png)
+
+-   [`generated/cv.html`](./generated/cv.html) ([`generated/this.png`](generated/this.png)):
+
+    ![generated/this.png](examples/diff/this.png)
+
+-   Difference ([`generated/difference.png`](generated/difference.png)):
+
+    ![generated/difference.png](examples/diff/difference.png)
+
 ## Continuous integration
 
 Every pull request made against `master` will trigger the [CI github workflow](.github/workflows/ci.yaml) to:
