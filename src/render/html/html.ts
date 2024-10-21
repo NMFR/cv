@@ -91,8 +91,7 @@ function renderHeader(basics: Basics) {
     ${markdownLite(escape(basics.summary))}
   </article>
   <ul class="icon-list">
-    ${ne`
-    <li>
+${ne`<li>
       ${renderIcon(`map-pin`)}
       ${ne`${escape(basics?.location?.city)}, `}${escape(formatCountry(basics.location))}
     </li>
@@ -101,8 +100,7 @@ function renderHeader(basics: Basics) {
       ${renderIcon(`mail`)}
       <a href="mailto:${escapeAttr(basics.email)}">${escape(basics.email)}</a>
     </li>
-    ${ne`
-    <li>
+${ne`<li>
       ${renderIcon(`link`)}
       <a href="${escapeAttr(basics.url)}">${escape(formatURL(basics.url))}</a>
     </li>
@@ -145,8 +143,7 @@ function renderWork(works?: Work[]) {
         </div>
       </header>
       ${ne`${markdownLite(escape(w.summary))}`}
-      ${ne`
-      <ul>
+ ${ne`<ul>
       ${
         w.highlights?.map((highlight) => `
         <li>${markdownLite(escape(highlight))}</li>`)
@@ -179,8 +176,7 @@ function renderEducation(education?: Education[]) {
         </div>
       </header>
       ${ne`${markdownLite(escape(e.studyType))}`}
-      ${ne`
-      <h5>Courses</h5>
+ ${ne`<h5>Courses</h5>
       <ul>
         ${e.courses?.map((c) => `<li>${markdownLite(escape(c))}</li>`)}
       </ul>`}
@@ -214,8 +210,7 @@ function renderProjects(projects?: Project[]) {
         </div>
       </header>
       ${ne`${markdownLite(escape(p.description))}`}
-      ${ne`
-      <ul>
+ ${ne`<ul>
         ${p.highlights?.map((h) => `<li>${markdownLite(escape(h))}</li>`)}
       </ul>`}
     </article>`
@@ -237,8 +232,7 @@ function renderCertificates(certificates?: Certificate[]) {
       <header>
         <h4>${renderLink(c)}</h4>
         <div class="meta">
-          ${ne`
-          <div>
+     ${ne`<div>
             Issued by <strong>${escape(c.issuer)}</strong>
           </div>
           `}
@@ -264,8 +258,7 @@ function renderPublications(publications?: Publication[]) {
       <header>
         <h4>${renderLink(p)}</h4>
         <div class="meta">
-          ${ne`
-          <div>
+     ${ne`<div>
             Published by <strong>${escape(p.publisher)}</strong>
           </div>
           `}
@@ -291,8 +284,7 @@ function renderSkills(skills?: Skill[]) {
         t`
     <div>
       <h4>${escape(s.name)}</h4>
-      ${ne`
-      <ul class="tag-list">
+ ${ne`<ul class="tag-list">
         ${s.keywords?.map((k) => `<li>${escape(k)}</li>`)}
       </ul>`}
     </div>`,
@@ -331,8 +323,7 @@ function renderInterests(interests?: Interest[]) {
         t`
     <div>
       ${ne`<h4>${escape(i.name)}</h4>`}
-      ${ne`
-      <ul class="tag-list">
+ ${ne`<ul class="tag-list">
         ${i.keywords?.map((k) => `<li>${escape(k)}</li>`)}
       </ul>`}
     </div>`,
