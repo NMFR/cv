@@ -100,7 +100,9 @@ Designing and building services.
 Leading and mentoring the tech team.`,
       highlights: [
         `Implemented a Kubernetes hard multi-tenancy service.`,
-        `Researched and designed cloud compute services.`,
+        `Built a proof of concept on how to improve the container runtime isolation by switching runc with gVisor or Firecracker or Kata.`,
+        `Implemented single sign on using OAuth flows to our Keycloak.`,
+        `Researched service meshes to provide out of the box container network observability, reliability and security.`,
         `Mentored team members.`,
         `Key technologies: Golang / Java / Python / Swift, PostgreSQL / MongoDb, Docker / Kubernetes and React / Redux.`,
       ],
@@ -135,6 +137,7 @@ if a chart is found that matches the context of the article it is automatically 
       highlights: [
         `Responsible for everything tech at Frames, from architecture to implementation of the full tech stack.`,
         `Leading and mentoring the tech team.`,
+        // `Implemented OAuth to allow different clients to be able to single sign on into our service.`,
         `Helped create an incredible user experience.`,
         `Key technologies: Node.js, React / Redux, PostgreSQL / Elasticsearch, Docker / Kubernetes and AWS.`,
       ],
