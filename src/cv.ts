@@ -4,7 +4,7 @@ export const cv: CV = {
   basics: {
     name: `Nuno Rodrigues`,
     label: `Engineering Lead / Full-stack Software Engineer`,
-    image: `assets/avatar.jpg`,
+    image: `https://cv.nunorodrigues.tech/assets/avatar.jpg`,
     summary: `I am a passionate engineering lead / full-stack software engineer that loves his job.
 I have broad experience in building stable and scalable products / services that users love.
 
@@ -13,7 +13,7 @@ I love to learn, understand how things work and solve problems.
 I really like to design and build software.
 I also really enjoy helping people learn and grow.`,
     email: `nunomr@gmail.com`,
-    url: `https://cv.nunorodrigues.tech/`,
+    // url: `https://cv.nunorodrigues.tech/`,
     location: {
       countryCode: `PT`,
       country: `Portugal`,

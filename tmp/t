@@ -1,0 +1,5 @@
+npm i jsonresume-theme-even
+sudo curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/bin/yq
+sudo chmod +x /usr/bin/yq
+yq -p yaml -o json cv.yaml > ./generated/cv.json
+npx jsonresume-theme-even < ./generated/cv.json > ./generated/cv.html

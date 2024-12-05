@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en" style="">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Nuno Rodrigues</title>
+    <meta
+      name="description"
+      content="I am a passionate engineering lead / full-stack software engineer that loves his job. I have broad experience in building stable and scalable products / services that users love.
+I always have been very curious and enthusiastic about technology. I love to learn, understand how things work and solve problems. I really like to design and build software. I also really enjoy helping people learn and grow.
+"
+    />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --color-background-light: #ffffff;
+        --color-dimmed-light: #f3f4f5;
+        --color-primary-light: #191e23;
+        --color-secondary-light: #6c7781;
+        --color-accent-light: #0073aa;
+        --color-background-dark: #191e23;
+        --color-dimmed-dark: #23282d;
+        --color-primary-dark: #fbfbfc;
+        --color-secondary-dark: #ccd0d4;
+        --color-accent-dark: #00a0d2;
+        --color-background: var(--color-background-light);
+        --color-dimmed: var(--color-dimmed-light);
+        --color-primary: var(--color-primary-light);
+        --color-secondary: var(--color-secondary-light);
+        --color-accent: var(--color-accent-light);
+        --scale-ratio: 1.25;
+        --scale0: 1rem;
+        --scale1: calc(var(--scale0) * var(--scale-ratio));
+        --scale2: calc(var(--scale1) * var(--scale-ratio));
+        --scale3: calc(var(--scale2) * var(--scale-ratio));
+        --scale4: calc(var(--scale3) * var(--scale-ratio));
+        --scale5: calc(var(--scale4) * var(--scale-ratio));
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --color-background: var(--color-background-dark);
+          --color-dimmed: var(--color-dimmed-dark);
+          --color-primary: var(--color-primary-dark);
+          --color-secondary: var(--color-secondary-dark);
+          --color-accent: var(--color-accent-dark);
+        }
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-size: 14px;
+      }
+      body {
+        background: var(--color-background);
+        color: var(--color-primary);
+        display: grid;
+        font: 1em/1.5 Lato, sans-serif;
+        gap: 2em;
+        grid-template-columns: [full-start] 1fr [main-start side-start] minmax(min-content, 12em) [side-end content-start] minmax(
+            min-content,
+            36em
+          ) [main-end content-end] 1fr [full-end];
+        grid-template-rows: auto [content] 0;
+        margin-bottom: 4em;
+      }
+      body:before {
+        content: "";
+        grid-column: full;
+        grid-row: content;
+      }
+      ol,
+      ul {
+        padding-left: 1em;
+      }
+      :not(.icon-list, .tag-list) > li + li {
+        margin-top: 0.4em;
+      }
+      li::marker,
+      .network {
+        color: var(--color-secondary);
+      }
+      a {
+        color: var(--color-accent);
+        text-decoration: none;
+      }
+      a:focus,
+      a:hover {
+        text-decoration: underline;
+      }
+      h1,
+      h2,
+      h3,
+      h5 {
+        font-weight: 400;
+      }
+      h1,
+      h2,
+      h3 {
+        line-height: 1.2;
+      }
+      h1 {
+        font-size: var(--scale5);
+      }
+      h2 {
+        color: var(--color-secondary);
+        font-size: var(--scale4);
+      }
+      h3 {
+        color: var(--color-secondary);
+        font-size: var(--scale3);
+        grid-column: side;
+        margin-bottom: 1rem;
+      }
+      h4 {
+        font-size: var(--scale2);
+      }
+      h5 {
+        font-size: var(--scale1);
+      }
+      h6 {
+        font-size: var(--scale0);
+      }
+      blockquote {
+        border-left: 0.2em solid var(--color-dimmed);
+        padding-left: 1em;
+      }
+      cite {
+        color: var(--color-secondary);
+        font-style: inherit;
+      }
+      cite:before {
+        content: "— ";
+      }
+      svg {
+        margin-right: 0.2em;
+        vertical-align: text-bottom;
+      }
+      .masthead {
+        background: var(--color-dimmed);
+        display: inherit;
+        gap: inherit;
+        grid-column: full;
+        grid-template-columns: inherit;
+        padding: 4em 0;
+        text-align: center;
+      }
+      .masthead > *,
+      section {
+        grid-column: main;
+      }
+      .masthead > img {
+        border: 4px solid;
+        border-radius: 50%;
+        margin: 0 auto;
+        max-width: 12em;
+      }
+      article > * + *,
+      blockquote > * + *,
+      .timeline > div > * + * {
+        margin-top: 0.6em;
+      }
+      .meta {
+        color: var(--color-secondary);
+      }
+      .stack {
+        display: grid;
+        gap: 1.5em;
+      }
+      .icon-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4em 1em;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+      }
+      .grid-list {
+        display: grid;
+        gap: 1em;
+      }
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4em;
+        list-style: none;
+        padding: 0;
+      }
+      .tag-list > li {
+        background: var(--color-dimmed);
+        border-radius: 0.2em;
+        padding: 0.2em 0.6em;
+      }
+      .timeline > div {
+        position: relative;
+      }
+      .timeline > div:not(:last-child) {
+        padding-bottom: 1rem;
+      }
+      .timeline > div:not(:last-child):before {
+        content: "";
+        position: absolute;
+        top: 1rem;
+        left: -15px;
+        width: 2px;
+        height: 100%;
+        background: var(--color-secondary);
+      }
+      .timeline > div:not(:only-child):after {
+        content: "";
+        position: absolute;
+        top: 0.6rem;
+        left: -20px;
+        width: 8px;
+        height: 8px;
+        background: var(--color-secondary);
+        border: 2px solid var(--color-background);
+        border-radius: 50%;
+      }
+      @media print, (min-width: 48em) {
+        h3 {
+          text-align: right;
+          margin-bottom: inherit;
+        }
+        .masthead {
+          text-align: inherit;
+        }
+        .masthead > *,
+        section {
+          grid-column: content;
+        }
+        .masthead img {
+          grid-column: side;
+          grid-row: span 2;
+          max-width: 100%;
+        }
+        section {
+          display: contents;
+        }
+        .icon-list {
+          flex-direction: column;
+        }
+        .grid-list {
+          grid-template-columns: repeat(auto-fit, minmax(calc((100% - 1em) / 2), 1fr));
+        }
+      }
+      @media print {
+        .duration {
+          display: none;
+        }
+      }
+    </style>
+    <script type="module">
+      const pluralize = (num, str) => `${num} ${num === 1 ? str : str.concat("s")}`;
+
+      class TimeDuration extends HTMLElement {
+        connectedCallback() {
+          const [from, to] = this.querySelectorAll("time");
+          if (!from) return;
+
+          const startDate = new Date(from.dateTime || from.textContent);
+          const endDate = new Date(to ? to.dateTime || to.textContent : Date.now());
+          const diffDate = new Date(endDate - startDate);
+
+          const years = diffDate.getFullYear() - 1970;
+          const months = diffDate.getMonth();
+          const days = diffDate.getDate() - 1;
+
+          const segments = [
+            years && pluralize(years, "yr"),
+            months && pluralize(months, "mo"),
+            days && !years && !months && pluralize(days, "day"),
+          ].filter(Boolean);
+          if (!segments.length) return;
+
+          const duration = document.createElement("time");
+          duration.classList.add("duration");
+          duration.textContent = "· ".concat(segments.join(" "));
+
+          this.append(" ", duration);
+        }
+      }
+
+      customElements.define("time-duration", TimeDuration);
+    </script>
+  </head>
+  <body>
+    <header class="masthead">
+      <img src="assets/avatar.jpg" alt="" />
+      <div>
+        <h1>Nuno Rodrigues</h1>
+        <h2>Engineering Lead / Full-stack Software Engineer</h2>
+      </div>
+      <article>
+        <p>
+          I am a passionate engineering lead / full-stack software engineer that loves his job. I have broad experience
+          in building stable and scalable products / services that users love. I always have been very curious and
+          enthusiastic about technology. I love to learn, understand how things work and solve problems. I really like
+          to design and build software. I also really enjoy helping people learn and grow.
+        </p>
+      </article>
+      <ul class="icon-list">
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-map-pin"
+          >
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          Lisbon, Portugal
+        </li>
+
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-mail"
+          >
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          <a href="mailto:nunomr@gmail.com">nunomr@gmail.com</a>
+        </li>
+
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-link"
+          >
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+          <a href="https://cv.nunorodrigues.tech/">cv.nunorodrigues.tech</a>
+        </li>
+
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-github"
+          >
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+            ></path>
+          </svg>
+          <a href="https://github.com/NMFR">NMFR</a>
+          <span class="network">(github)</span>
+        </li>
+
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-linkedin"
+          >
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect x="2" y="9" width="4" height="12"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+          <a href="https://www.linkedin.com/in/nmfr">nmfr</a>
+          <span class="network">(linkedin)</span>
+        </li>
+      </ul>
+    </header>
+
+    <section id="work">
+      <h3>Work</h3>
+      <div class="stack">
+        <article>
+          <header>
+            <h4><a href="https://www.bp.com/">BP</a></h4>
+            <div class="meta"></div>
+          </header>
+          <div class="timeline">
+            <div>
+              <div>
+                <h5>Full-stack Software Engineer (contractor)</h5>
+                <div class="meta">
+                  <div>
+                    <time-duration><time datetime="2023-06-14">Jun 2023</time> – Present</time-duration>
+                  </div>
+                  <div>Remote</div>
+                </div>
+              </div>
+              <p>Helping BP create and build internal products in the data space.</p>
+
+              <ul>
+                <li>
+                  <p>
+                    Created a proof of concept application to manage resources utilization and predict / project future
+                    demand.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Upgraded a legacy Excel &quot;application&quot; with thousands of unique formulas to a modern
+                    application by building a code generator to facilitate the formula &quot;translation&quot;.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Helped build a data processing platform, built on top of Dagster, that defines data as code to
+                    increase consistency and reusability.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Improved the Dagster control and data plane communication from direct database access to a well
+                    defined GraphQL interface.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Helped implement a data pipeline execution abstraction that allows pipelines to be run in diverse
+                    compute environments (Kubernetes, AWS ECS, bare metal) with ease.
+                  </p>
+                </li>
+                <li><p>Key technologies: Python / Dagster / GraphQL / React / Terraform / .Net / Kubernetes</p></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h4><a href="https://www.mara.xyz/">Mara</a></h4>
+            <div class="meta"></div>
+          </header>
+          <div class="timeline">
+            <div>
+              <div>
+                <h5>Full-stack Software Engineer (contractor)</h5>
+                <div class="meta">
+                  <div>
+                    <time-duration
+                      ><time datetime="2022-11-10">Nov 2022</time> –
+                      <time datetime="2023-02-10">Feb 2023</time></time-duration
+                    >
+                  </div>
+                  <div>Remote</div>
+                </div>
+              </div>
+              <p>Helping Mara build a cryptocurrency exchange.</p>
+
+              <ul>
+                <li>
+                  <p>
+                    Helped set the foundation of a cryptocurrency exchange from the order matching engine to the
+                    delivery of real time order book updates to the UI.
+                  </p>
+                </li>
+                <li><p>Key technologies: Golang / gRCP / Kafka / React / serverless.</p></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h4><a href="https://deliveroo.co.uk/">Deliveroo</a></h4>
+            <div class="meta"></div>
+          </header>
+          <div class="timeline">
+            <div>
+              <div>
+                <h5>Senior Software Engineer (contractor)</h5>
+                <div class="meta">
+                  <div>
+                    <time-duration
+                      ><time datetime="2021-09-14">Sep 2021</time> –
+                      <time datetime="2022-09-14">Sep 2022</time></time-duration
+                    >
+                  </div>
+                  <div>Remote</div>
+                </div>
+              </div>
+              <p>
+                Deliveroo is a food takeout / groceries delivery service. I was part of the platform engineering team.
+                Responsible for designing, implementing and maintaining infrastructure abstractions. Enabling other
+                teams to easily deploy their services (containers), load balancers, databases, message queues, ...
+                Abstracting infrastructure details, cloud providers, logging, monitoring, ... so other teams can focus
+                only on their services and business goals.
+              </p>
+
+              <ul>
+                <li>
+                  <p>Created and maintained services using Golang and Deno.js to help collect and aggregate metrics.</p>
+                </li>
+                <li><p>Created a slack bot using Golang to manage low priority alerts.</p></li>
+                <li>
+                  <p>
+                    Created and maintained terraform modules that provided compute, network and storage abstractions.
+                  </p>
+                </li>
+                <li><p>Optimized autoscaling strategies.</p></li>
+                <li><p>Key technologies: Golang / Terraform / Kubernetes / AWS / Deno.js / Node.js.</p></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h4><a href="https://cloudmobility.io/">Cloudmobility (Mercedez-Benz AG)</a></h4>
+            <div class="meta"></div>
+          </header>
+          <div class="timeline">
+            <div>
+              <div>
+                <h5>Tech lead / Full stack developer</h5>
+                <div class="meta">
+                  <div>
+                    <time-duration
+                      ><time datetime="2019-03-12">Mar 2019</time> –
+                      <time datetime="2021-09-09">Sep 2021</time></time-duration
+                    >
+                  </div>
+                  <div>Remote</div>
+                </div>
+              </div>
+              <p>
+                Building an on premise cloud for Daimler / Mercedez-Benz AG. Tech lead of the Kubernetes multi tenant
+                services team. Helping break down product requirements. Designing and building services. Leading and
+                mentoring the tech team.
+              </p>
+
+              <ul>
+                <li><p>Implemented a Kubernetes hard multi-tenancy service.</p></li>
+                <li><p>Researched and designed cloud compute services.</p></li>
+                <li><p>Mentored team members.</p></li>
+                <li>
+                  <p>
+                    Key technologies: Golang / Java / Python / Swift, PostgreSQL / MongoDb, Docker / Kubernetes and
+                    React / Redux.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h4><a href="https://ki-challengers.com/">KI challengers</a></h4>
+            <div class="meta"></div>
+          </header>
+          <div class="timeline">
+            <div>
+              <div>
+                <h5>Tech lead / Full stack developer</h5>
+                <div class="meta">
+                  <div>
+                    <time-duration
+                      ><time datetime="2019-01-02">Jan 2019</time> –
+                      <time datetime="2021-09-09">Sep 2021</time></time-duration
+                    >
+                  </div>
+                  <div>Lisbon</div>
+                </div>
+              </div>
+              <p>
+                KI challengers is a tech company incubator, building companies, their tech products and teams. Most of
+                my focus was on building the Cloudmobility (Mercedez-Benz AG) company.
+              </p>
+
+              <ul>
+                <li>
+                  <p>
+                    Lead a team to create an internal application to collect data about the company so decisions could
+                    be made around facts.
+                  </p>
+                </li>
+                <li><p>Helped build an on premise cloud (Cloudmobility).</p></li>
+                <li><p>Key technologies: Golang / Rust, PostgreSQL, Kubernetes, Terraform and AWS / Azure.</p></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h4><a href="https://frames.news/">Frames™</a></h4>
+            <div class="meta"></div>
+          </header>
+          <div class="timeline">
+            <div>
+              <div>
+                <h5>Engineering lead</h5>
+                <div class="meta">
+                  <div>
+                    <time-duration
+                      ><time datetime="2016-05-01">May 2016</time> –
+                      <time datetime="2019-01-01">Jan 2019</time></time-duration
+                    >
+                  </div>
+                  <div>Lisbon (remote in the first year)</div>
+                </div>
+              </div>
+              <p>
+                Frames provides a service to online news media companies to automatically place beautiful, contextual
+                charts in their articles. Articles are automatically parsed and analyzed, the Frames curated charts
+                database is searched, if a chart is found that matches the context of the article it is automatically
+                placed in the article.
+              </p>
+
+              <ul>
+                <li>
+                  <p>
+                    Responsible for everything tech at Frames, from architecture to implementation of the full tech
+                    stack.
+                  </p>
+                </li>
+                <li><p>Leading and mentoring the tech team.</p></li>
+                <li><p>Helped create an incredible user experience.</p></li>
+                <li>
+                  <p>
+                    Key technologies: Node.js, React / Redux, PostgreSQL / Elasticsearch, Docker / Kubernetes and AWS.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h4><a href="https://observador.pt/">observador.pt</a></h4>
+            <div class="meta"></div>
+          </header>
+          <div class="timeline">
+            <div>
+              <div>
+                <h5>Full stack developer (contractor)</h5>
+                <div class="meta">
+                  <div>
+                    <time-duration
+                      ><time datetime="2015-08-01">Aug 2015</time> –
+                      <time datetime="2015-12-31">Dec 2015</time></time-duration
+                    >
+                  </div>
+                  <div>Lisbon</div>
+                </div>
+              </div>
+              <p>Implemented observador.pt online newspaper user comment system.</p>
+
+              <ul>
+                <li><p>Key technologies: React / Redux / Webpack, Golang.</p></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h4><a href="https://home.kpmg/">KPMG</a></h4>
+            <div class="meta"></div>
+          </header>
+          <div class="timeline">
+            <div>
+              <div>
+                <h5>Senior Software Engineer</h5>
+                <div class="meta">
+                  <div>
+                    <time-duration
+                      ><time datetime="2012-03-01">Mar 2012</time> –
+                      <time datetime="2016-06-01">Jun 2016</time></time-duration
+                    >
+                  </div>
+                  <div>Lisbon</div>
+                </div>
+              </div>
+              <p>
+                Worked in two KPMG consultancy projects. One for a UK based bank to build a complex financial product
+                subscription application. Another one for an insurance company to build a accident management system.
+              </p>
+
+              <ul>
+                <li>
+                  <p>
+                    Lead developer designing and implementing BPM processes, web interfaces and integration services.
+                  </p>
+                </li>
+                <li><p>Responsible for training / coaching junior developers.</p></li>
+                <li><p>Key technologies: JavaScript / IBM BPM.</p></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article>
+          <header>
+            <h4><a href="https://www.simplesolutions.pt/">Simple Solutions</a></h4>
+            <div class="meta"></div>
+          </header>
+          <div class="timeline">
+            <div>
+              <div>
+                <h5>Software Developer</h5>
+                <div class="meta">
+                  <div>
+                    <time-duration
+                      ><time datetime="2010-12-01">Dec 2010</time> –
+                      <time datetime="2012-02-28">Feb 2012</time></time-duration
+                    >
+                  </div>
+                  <div>Lisbon</div>
+                </div>
+              </div>
+              <p>Simple Solutions is a small consultancy company that provided tech services on the .Net stack.</p>
+
+              <ul>
+                <li><p>Key technologies: C#, ASP.Net, SQL Server, JavaScript, jQuery.</p></li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="education">
+      <h3>Education</h3>
+      <div class="stack">
+        <article>
+          <header>
+            <h4>
+              <a href="https://www.isel.pt/cursos/licenciaturas/engenharia-informatica-e-de-computadores">ISEL</a>
+            </h4>
+            <div class="meta">
+              <strong>Information Technology</strong>
+              <div>
+                <time-duration
+                  ><time datetime="2004-09-01">Sep 2004</time> –
+                  <time datetime="2010-06-01">Jun 2010</time></time-duration
+                >
+              </div>
+            </div>
+          </header>
+          <p>Bachelor + Master</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h3>Skills</h3>
+      <div class="grid-list">
+        <div>
+          <h4>Backend</h4>
+
+          <ul class="tag-list">
+            <li>Golang</li>
+            <li>Node.js</li>
+            <li>Deno</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Backend</h4>
+
+          <ul class="tag-list">
+            <li>.Net / C#</li>
+            <li>Java</li>
+            <li>Rust</li>
+            <li>Python</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Frontend</h4>
+
+          <ul class="tag-list">
+            <li>JavaScript / TypeScript</li>
+            <li>React</li>
+            <li>Redux</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Databases</h4>
+
+          <ul class="tag-list">
+            <li>PostgreSQL</li>
+            <li>Microsoft SQL Server</li>
+            <li>Elasticsearch</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Infrastructure</h4>
+
+          <ul class="tag-list">
+            <li>Docker</li>
+            <li>Kubernetes</li>
+            <li>Terraform</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Mobile</h4>
+
+          <ul class="tag-list">
+            <li>iOS Swift</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Cloud Providers</h4>
+
+          <ul class="tag-list">
+            <li>AWS</li>
+            <li>Google Cloud Platform</li>
+            <li>Azure</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="interests">
+      <h3>Interests</h3>
+      <div class="grid-list">
+        <div>
+          <h4>Software development</h4>
+        </div>
+
+        <div>
+          <h4>Anything tech</h4>
+        </div>
+
+        <div>
+          <h4>Open Source</h4>
+        </div>
+
+        <div>
+          <h4>Science</h4>
+        </div>
+
+        <div>
+          <h4>Movies / TV Series</h4>
+        </div>
+
+        <div>
+          <h4>Entrepreneurship</h4>
+        </div>
+
+        <div>
+          <h4>Gaming</h4>
+        </div>
+      </div>
+    </section>
+
+    <section id="references">
+      <h3>References</h3>
+      <div class="stack">
+        <blockquote>
+          <p>
+            I worked with Nuno for several months at Deliveroo. Our team focused on delivering abstractions for deciding
+            which primitives to run workloads on, networking and databases. Nuno was exceptional at delivering results
+            and was behind some great initiatives which largely helped our monitoring posture. He lead the charge in
+            investigating optimizations to our autoscaling strategies, built a non-urgent but high priority alerting
+            system, changed our development workflow to make more use of devcontainers with VS Code (which significantly
+            improved setup time), significantly improved our database monitoring with custom tooling and became our
+            go-to Kubernetes expert. Nuno has a keen focus on terse but high quality code and likes to take a data
+            driven approach to decision making, which makes him a great candidate for discussion around key decisions.
+            It was great working with Nuno - he's an excellent addition to any team!
+          </p>
+
+          <p>
+            <cite>Sanyia Saidova, Senior Software Engineer @ Deliveroo</cite>
+          </p>
+        </blockquote>
+
+        <blockquote>
+          <p>
+            Nuno is an experienced engineer who has been a pleasure to work with. He has a combination of qualities
+            valuable for any engineering team or project: broad technical expertise, good people skills, and passion
+            towards sharing his knowledge with others. He showed ability to contribute to and lead projects with high
+            degree of ambiguity, independently learning a new problem space and proactively reaching out for guidance
+            when necessary. Nuno engages well with customers and other stakeholders, showing humility and compassion. He
+            quickly became a part of our team, showed high degree of initiative and regularly solicited feedback.
+          </p>
+
+          <p>
+            <cite>Anton Tolchanov, Engineering Manager @ Deliveroo</cite>
+          </p>
+        </blockquote>
+
+        <blockquote>
+          <p>
+            Nuno carried the Frames product like no one else. From System Architecture to Quality Assurance, he handled
+            the stack and everyone working with it with an impressive attention to detail and maintainability. Making
+            sure the system scales and correctly responds the the rapid evolution of features is a number one priority
+            that makes the life, as Nuno's manager, very easy. Highly recommended.
+          </p>
+
+          <p>
+            <cite>Leo Xavier, CTO @ Observador, Founder @ Frames</cite>
+          </p>
+        </blockquote>
+
+        <blockquote>
+          <p>
+            Nuno is one of the best software engineers that I have worked with. He is highly dedicated, creative and
+            intelligent and as his team leader, I always trusted that he would always present the best solution for our
+            customer. He is a great team member, always available to help and coach other team members, even if it
+            requires an extra effort. Despite his great skills, Nuno is very humble and he is always trying to learn new
+            things. Nuno is a person that every project manager wants in his team. I feel very privileged to have met
+            Nuno and to have worked with him, it was a very enriching experience.
+          </p>
+
+          <p>
+            <cite>Andreia Melo, Manager @ KPMG</cite>
+          </p>
+        </blockquote>
+
+        <blockquote>
+          <p>
+            Nuno is an highly motivated and focused developer but this is not enough for him ! He is also good in
+            gathering business requirement, support, troubleshooting and everything else Murphy laws can throw in a
+            project.
+          </p>
+
+          <p>
+            <cite>Rui Madaleno, IT Architect @ Acoreana</cite>
+          </p>
+        </blockquote>
+
+        <blockquote>
+          <p>
+            Nuno is THE BEST software engineer I have ever had the pleasure of working with. Period. He is the best! We
+            worked on two big BPM projects. One of the projects was an award winning IBM BPM Application for the
+            Insurance industry. Probably the most advanced IBM BPM application worldwide (I would bet on it). Nuno was
+            the mastermind behind that awesome piece of technology. Top notch! He knows everything about software,
+            architecture, programming languages, he is incredibly talented, he coaches young developers, he loves his
+            code, he loves quality, he breathes software, and best of all he is funny as hell, the type that brings up
+            the vibe of a team and that makes you want to go to work the next day. I recommend him unconditionally to
+            any Software Architect role, any day. He's the best. Trust me, he's the man! I would hire him tomorrow
+            without a blink.
+          </p>
+
+          <p>
+            <cite>Pietro Casella, Senior Manager @ KPMG</cite>
+          </p>
+        </blockquote>
+
+        <blockquote>
+          <p>
+            Nuno is a highly skilled IT professional, a world-class developer. There are no unreachable goals, and
+            everything he delivers is developed with robust solutions for complex problems. He is technically the best
+            IT professional I ever worked. He is always ready to learn and improve his knowledge, and transfer that to
+            every team colleague. Actively helps in creating a good working environment.
+          </p>
+
+          <p>
+            <cite>Daniel Moura, Manager @ KPMG</cite>
+          </p>
+        </blockquote>
+
+        <blockquote>
+          <p>
+            It was an immense experience working with Nuno. One of the best professionals I have ever worked with. He is
+            the real deal. Extremely productive and intelligent with strong architecture analysis skills. He is always
+            available to help his colleagues and make us learn and evolve as professionals. This kind of availability is
+            extremely rare. On the personal level... the guy must be the most well-humored IT professional on the
+            planet! :)
+          </p>
+
+          <p>
+            <cite>Andre Vieira, Software developer @ KPMG</cite>
+          </p>
+        </blockquote>
+      </div>
+    </section>
+  </body>
+</html>
