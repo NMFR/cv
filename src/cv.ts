@@ -4,7 +4,7 @@ export const cv: CV = {
   basics: {
     name: `Nuno Rodrigues`,
     label: `Engineering Lead / Full-stack Software Engineer`,
-    image: `assets/avatar.jpg`,
+    image: `https://cv.nunorodrigues.tech/assets/avatar.jpg`,
     summary: `I am a passionate engineering lead / full-stack software engineer that loves his job.
 I have broad experience in building stable and scalable products / services that users love.
 
@@ -13,7 +13,7 @@ I love to learn, understand how things work and solve problems.
 I really like to design and build software.
 I also really enjoy helping people learn and grow.`,
     email: `nunomr@gmail.com`,
-    url: `https://cv.nunorodrigues.tech/`,
+    // url: `https://cv.nunorodrigues.tech/`,
     location: {
       countryCode: `PT`,
       country: `Portugal`,
@@ -100,7 +100,9 @@ Designing and building services.
 Leading and mentoring the tech team.`,
       highlights: [
         `Implemented a Kubernetes hard multi-tenancy service.`,
-        `Researched and designed cloud compute services.`,
+        `Built a proof of concept on how to improve the container runtime isolation by switching runc with gVisor or Firecracker or Kata.`,
+        `Implemented single sign on using OAuth flows to our Keycloak.`,
+        `Researched service meshes to provide out of the box container network observability, reliability and security.`,
         `Mentored team members.`,
         `Key technologies: Golang / Java / Python / Swift, PostgreSQL / MongoDb, Docker / Kubernetes and React / Redux.`,
       ],
@@ -135,6 +137,7 @@ if a chart is found that matches the context of the article it is automatically 
       highlights: [
         `Responsible for everything tech at Frames, from architecture to implementation of the full tech stack.`,
         `Leading and mentoring the tech team.`,
+        // `Implemented OAuth to allow different clients to be able to single sign on into our service.`,
         `Helped create an incredible user experience.`,
         `Key technologies: Node.js, React / Redux, PostgreSQL / Elasticsearch, Docker / Kubernetes and AWS.`,
       ],
