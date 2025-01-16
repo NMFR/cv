@@ -66,8 +66,13 @@ watch-html-and-diff:
 		if [[ "$$ATIME" != "$$LTIME" ]] ; then \
 			echo "change detected, generating image diff from 'https://cv.nunorodrigues.tech/'"; \
 			node src/html-to-image/index.js; \
-			magick compare -fuzz 1% generated/current.png generated/this.png generated/difference.png; \
-			echo "diff generated: 'generated/difference.png'"; \
+			( \
+				magick compare -fuzz 1% generated/current.hd.dark.png generated/new.hd.dark.png generated/difference.hd.dark.png & \
+				magick compare -fuzz 1% generated/current.hd.light.png generated/new.hd.light.png generated/difference.hd.light.png & \
+				magick compare -fuzz 1% generated/current.mobile.dark.png generated/new.mobile.dark.png generated/difference.mobile.dark.png & \
+				magick compare -fuzz 1% generated/current.mobile.light.png generated/new.mobile.light.png generated/difference.mobile.light.png & \
+			); \
+			echo "diff generated: 'generated/difference.*.png'"; \
 			LTIME=$$ATIME; \
 		fi; \
 		sleep 1; \

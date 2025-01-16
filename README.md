@@ -73,33 +73,40 @@ The [`spell-check-exclude.dic`](./spell-check-exclude.dic) dictionary file is us
 If [Hunspell](http://hunspell.github.io/) is reporting false spelling errors, add the words to this file to fix the errors.
 The file uses the format defined [here](https://man.archlinux.org/man/hunspell.5.en).
 
-## Diff
+## Visual diff
 
-If using the recommended IDE ([development container](https://code.visualstudio.com/docs/remote/containers)) or the [`docker-compose.yaml`](docker-compose.yaml) directly the diff container ([`Dockerfile.diff`](Dockerfile.diff)) is running and listening to changes on the [`generated/cv.html`](./generated/cv.html) output file.
-Any change to the output file will trigger a script that will produce an image difference between https://nmfr.github.io/cv and [`generated/cv.html`](./generated/cv.html).
+When using the recommended IDE ([development container](https://code.visualstudio.com/docs/remote/containers)) or the [`docker-compose.yaml`](docker-compose.yaml) directly, the diff container ([`Dockerfile.diff`](Dockerfile.diff)) will be running and listening to changes on the [`generated/cv.html`](./generated/cv.html) output file.
+Any change to the output file will trigger a script that produces image differences between https://nmfr.github.io/cv and [`generated/cv.html`](./generated/cv.html).
+These images allow the visualization of the differences being introduced by [`generated/cv.html`](./generated/cv.html).
 
-Here is what the script will do every time the [`generated/cv.html`](./generated/cv.html) file is changed / re generated:
+Multiple versions of images are generated:
 
--   Use [puppeteer](https://pptr.dev/) to take a screenshot of the current version of the CV present in https://nmfr.github.io/cv.
-    This screenshot is saved on the [`generated/current.png`](generated/current.png) file.
--   Use [puppeteer](https://pptr.dev/) to take a screenshot of the updated [`generated/cv.html`](./generated/cv.html).
-    This screenshot is saved on the [`generated/this.png`](generated/this.png) file.
--   Use [ImageMagick](https://imagemagick.org/index.php) to create an image with the difference between the two screenshots.
-    This image difference is saved on the [`generated/difference.png`](generated/difference.png) file.
+-   Resolution:
+    -   Mobile (portrait mode cell phone).
+    -   HD (desktop).
+-   Prefered color scheme:
+    -   Dark.
+    -   Light.
+
+The images are created by using [puppeteer](https://pptr.dev/) to take screenshots of the HTML pages.
+They are saved to the [generated/](generated) folder.
+Images prefixed with `current` are produced by takings screenshots from [https://nmfr.github.io/cv](https://nmfr.github.io/cv).
+Images prefixed with `new` are produced by takings screenshots from [`generated/cv.html`](./generated/cv.html).
+Images prefixed with `difference` show the difference between the `current` and the `new` image, the differences are outlined in <span style="color: red;">red</span>.
 
 Example:
 
--   https://nmfr.github.io/cv ([`generated/current.png`](generated/current.png)):
+-   https://nmfr.github.io/cv ([`generated/current.hd.light.png`](generated/current.hd.light.png)):
 
-    ![generated/current.png](examples/diff/current.png)
+    ![current.hd.light.png](examples/diff/current.hd.light.png)
 
--   [`generated/cv.html`](./generated/cv.html) ([`generated/this.png`](generated/this.png)):
+-   [`generated/cv.html`](./generated/cv.html) ([`generated/new.hd.light.png`](generated/new.hd.light.png)):
 
-    ![generated/this.png](examples/diff/this.png)
+    ![generated/new.hd.light.png](examples/diff/new.hd.light.png)
 
--   Difference ([`generated/difference.png`](generated/difference.png)):
+-   Difference ([`generated/difference.hd.light.png`](generated/difference.hd.light.png)):
 
-    ![generated/difference.png](examples/diff/difference.png)
+    ![generated/difference.hd.light.png](examples/diff/difference.hd.light.png)
 
 ## Continuous integration
 
