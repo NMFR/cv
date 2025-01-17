@@ -52,6 +52,29 @@ async function htmlToImage(url, imageFilename, viewport = HD_RESOLUTION, prefers
   }
 }
 
+async function htmlToPdf(url, imageFilename) {
+  const browser = await puppeteer.launch({ headless: true });
+
+  try {
+    const page = await browser.newPage();
+
+    await page.setViewport(HD_RESOLUTION);
+    await page.goto(url, { waitUntil: ["load", "domcontentloaded"] });
+    await scroll(page);
+    await page.pdf({
+      path: imageFilename,
+      margin: {
+        top: 15,
+        bottom: 15,
+        left: 15,
+        right: 15,
+      },
+    });
+  } finally {
+    await browser.close();
+  }
+}
+
 async function main() {
   const currentUrl = `https://cv.nunorodrigues.tech/`;
   const newUrl = `file://${path.resolve("./generated/cv.html")}`;
@@ -61,10 +84,12 @@ async function main() {
     htmlToImage(currentUrl, `generated/current.hd.light.png`, HD_RESOLUTION, LIGHT_COLOR_SCHEME),
     htmlToImage(currentUrl, `generated/current.mobile.dark.png`, MOBILE_RESOLUTION, DARK_COLOR_SCHEME),
     htmlToImage(currentUrl, `generated/current.mobile.light.png`, MOBILE_RESOLUTION, LIGHT_COLOR_SCHEME),
+    htmlToPdf(currentUrl, `generated/current.pdf`),
     htmlToImage(newUrl, `generated/new.hd.dark.png`, HD_RESOLUTION, DARK_COLOR_SCHEME),
     htmlToImage(newUrl, `generated/new.hd.light.png`, HD_RESOLUTION, LIGHT_COLOR_SCHEME),
     htmlToImage(newUrl, `generated/new.mobile.dark.png`, MOBILE_RESOLUTION, DARK_COLOR_SCHEME),
     htmlToImage(newUrl, `generated/new.mobile.light.png`, MOBILE_RESOLUTION, LIGHT_COLOR_SCHEME),
+    htmlToPdf(newUrl, `generated/new.pdf`),
   ]);
 }
 

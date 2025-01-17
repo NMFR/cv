@@ -41,6 +41,7 @@ jobs:
       - name: unit tests
         run: make container run="make test"
       - name: spell check
+        # spell-check will trigger `make generate-html` before it runs.
         run: make container run="make clean spell-check"
       - name: prepare gh-pages folder
         run: make prepare-gh-pages

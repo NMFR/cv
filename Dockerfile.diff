@@ -8,8 +8,9 @@ USER root
 
 RUN apt-get update && \
   # Install ImageMagick build dependencies.
+  # ghostscript is required for magick PDF to image conversion.
   # TODO: lock_versions to ensure deterministic behaviour.
-  apt-get install -y autoconf pkg-config build-essential libpng-dev && \
+  apt-get install -y autoconf pkg-config build-essential libpng-dev ghostscript && \
   apt-get clean && \
   apt-get autoremove && \
   rm -rf /var/lib/apt/lists/* && \

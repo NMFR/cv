@@ -71,7 +71,10 @@ watch-html-and-diff:
 				magick compare -fuzz 1% generated/current.hd.light.png generated/new.hd.light.png generated/difference.hd.light.png & \
 				magick compare -fuzz 1% generated/current.mobile.dark.png generated/new.mobile.dark.png generated/difference.mobile.dark.png & \
 				magick compare -fuzz 1% generated/current.mobile.light.png generated/new.mobile.light.png generated/difference.mobile.light.png & \
+				magick -density 300 generated/current.pdf -quality 100 -append -background none -alpha off generated/current.pdf.png & \
+				magick -density 300 generated/new.pdf -quality 100 -append -background none -alpha off generated/new.pdf.png \
 			); \
+			magick compare -fuzz 1% generated/current.pdf.png generated/new.pdf.png generated/difference.pdf.png; \
 			echo "diff generated: 'generated/difference.*.png'"; \
 			LTIME=$$ATIME; \
 		fi; \
