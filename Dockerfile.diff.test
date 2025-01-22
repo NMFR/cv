@@ -1,5 +1,5 @@
 # Base stage, holds common tools used in the dev-container and ci stages.
-FROM docker.io/denoland/deno:debian-1.46.3@sha256:b2a4dc2b3b101ef0b9d60075706b2e83f1f8ad017c008cb9f178a11b5b45a89d AS base
+FROM docker.io/denoland/deno:debian-2.1.7@sha256:e5ee37d73f071d9bc93f9e7b8e65bb14a0efd7478c103bf91d9ac7b199089f14 AS base
 
 # Fix: https://github.com/hadolint/hadolint/wiki/DL4006
 # Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
@@ -97,6 +97,7 @@ RUN \
   xdg-utils && \
   # Clean up apt update and install unused artifacts.
   apt-get clean && \
+  apt-get autoremove && \
   rm -rf /var/lib/apt/lists/* && \
   # Download and install chrome:
   mkdir -p /tmp/chrome && \
@@ -128,6 +129,7 @@ RUN apt-get update && \
   zsh && \
   # Clean up apt update and install unused artifacts.
   apt-get clean && \
+  apt-get autoremove && \
   rm -rf /var/lib/apt/lists/* && \
   # Set zsh as the default shell for the root user.
   chsh -s $(which zsh) && \
