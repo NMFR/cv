@@ -1,3 +1,9 @@
+# Non root user details.
+ARG USER_ID=1000
+ARG USER_NAME=dev
+ARG GROUP_ID=${USER_ID}
+ARG GROUP_NAME=${USER_NAME}
+
 # Base stage, holds common tools used in the dev-container and ci stages.
 FROM docker.io/denoland/deno:debian-2.1.7@sha256:e5ee37d73f071d9bc93f9e7b8e65bb14a0efd7478c103bf91d9ac7b199089f14 AS base
 
@@ -20,12 +26,6 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 # ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_x86_64 /usr/local/bin/dumb-init
 # RUN chmod +x /usr/local/bin/dumb-init
 # ENTRYPOINT ["dumb-init", "--"]
-
-# Non root user.
-ARG USER_ID=1000
-ARG USER_NAME=dev
-ARG GROUP_ID=${USER_ID}
-ARG GROUP_NAME=${USER_NAME}
 
 RUN \
   # Create the non root user and group.
@@ -109,7 +109,39 @@ RUN \
 
 USER ${USER_NAME}
 
+# ImageMagick builder stage, used to build the magick binary.
+# magick is used in the dev-container stage for HTML visual diff tool by
+# comparing screenshots of the current version of the CV with the in progress version.
+FROM docker.io/debian:stable-20250113-slim@sha256:b5ace515e78743215a1b101a6f17e59ed74b17132139ca3af3c37e605205e973 AS magick-builder
+
+RUN apt-get update && \
+  # Install ImageMagick build dependencies.
+  # TODO: lock_versions to ensure deterministic behaviour.
+  apt-get install -y \
+  autoconf \
+  pkg-config \
+  build-essential \
+  libpng-dev \
+  # Install curl, needed to download the magick release.
+  curl && \
+  # Clean up apt update and install unused artifacts.
+  apt-get clean && \
+  apt-get autoremove && \
+  rm -rf /var/lib/apt/lists/* && \
+  # Build ImageMagick from source.
+  curl -sL "https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-39.tar.gz" -o /tmp/ImageMagick.tar.gz && \
+  tar xzf /tmp/ImageMagick.tar.gz --directory /tmp && \
+  mkdir -p /tmp/ImageMagick && \
+  cd /tmp/ImageMagick && \
+  sh /tmp/ImageMagick-7.1.1-39/configure --prefix=/usr/local --with-bzlib=yes --with-fontconfig=yes --with-freetype=yes --with-gslib=yes --with-gvc=yes --with-jpeg=yes --with-jp2=yes --with-png=yes --with-tiff=yes --with-xml=yes --with-gs-font-dir=yes --disable-shared --enable-delegate-build && \
+  make -j && \
+  make install && \
+  rm -rf /tmp/*
+
 FROM base AS dev-container
+
+# Copy the magick binary from the magick-builder stage.
+COPY --from=magick-builder /usr/local/bin/magick /usr/local/bin/magick
 
 USER root
 
@@ -119,6 +151,10 @@ RUN apt-get update && \
   # Install tools and dependencies.
   # TODO: lock_versions to ensure deterministic behaviour
   apt-get install -y --no-install-recommends \
+  # Install libgomp1, a shared library required to run magick.
+  libgomp1 \
+  # Install ghostscript, required by magick to run magick convert pdf to png.
+  ghostscript \
   # Install git, used for version control.
   git \
   # Install less, used to improve the shell read experience for bigger files.
