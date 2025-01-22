@@ -1,0 +1,149 @@
+# Base stage, holds common tools used in the dev-container and ci stages.
+FROM docker.io/denoland/deno:debian-1.46.3@sha256:b2a4dc2b3b101ef0b9d60075706b2e83f1f8ad017c008cb9f178a11b5b45a89d AS base
+
+# Fix: https://github.com/hadolint/hadolint/wiki/DL4006
+# Fix: https://github.com/koalaman/shellcheck/wiki/SC3014
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+ENV DENO_DIR /deno
+
+WORKDIR /opt/app
+
+# Configure default locale (important for chrome-headless-shell).
+ENV LANG=en_US.UTF-8
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
+
+# If running Docker >= 1.13.0 use docker run's --init arg to reap zombie processes, otherwise
+# uncomment the following lines to have `dumb-init` as PID 1
+# ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_x86_64 /usr/local/bin/dumb-init
+# RUN chmod +x /usr/local/bin/dumb-init
+# ENTRYPOINT ["dumb-init", "--"]
+
+# Non root user.
+ARG USER_ID=1000
+ARG USER_NAME=dev
+ARG GROUP_ID=${USER_ID}
+ARG GROUP_NAME=${USER_NAME}
+
+RUN \
+  # Create the non root user and group.
+  groupadd --gid ${GROUP_ID} ${GROUP_NAME} && \
+  useradd --uid ${USER_ID} --gid ${GROUP_ID} --create-home ${USER_NAME} && \
+  # Make the development user the owner of the /opt/app and ${DENO_DIR} folders and their contents.
+  chown -R -c ${USER_NAME} /opt/app && \
+  mkdir -p ${DENO_DIR} && \
+  chown -R -c ${USER_NAME} ${DENO_DIR} && \
+  # Install tools and dependencies.
+  # TODO: lock_versions to ensure deterministic behaviour
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  # Install hunspell, used as a spell checker.
+  hunspell \
+  # Install make, used as a task runner.
+  make \
+  # Install tidy, used to format HTML files to valid XML so Hunspell can parse them correctly.
+  tidy \
+  # Install curl, used as a HTTP client CLI.
+  curl \
+  # Install public trusted certificate authoraties (needed for HTTPS requests).
+  ca-certificates \
+  # Install unzip, used as a decompresser (needed to unpack chrome binary).
+  unzip \
+  # Install Chrome dependencies (https://pptr.dev/troubleshooting#chrome-doesnt-launch-on-linux).
+  fonts-ipafont-gothic \
+  fonts-wqy-zenhei \
+  fonts-thai-tlwg \
+  fonts-khmeros \
+  fonts-kacst \
+  fonts-freefont-ttf \
+  fonts-liberation \
+  dbus \
+  dbus-x11 \
+  libxss1 \
+  libasound2 \
+  libatk-bridge2.0-0 \
+  libatk1.0-0 \
+  libc6 \
+  libcairo2 \
+  libcups2 \
+  libdbus-1-3 \
+  libexpat1 \
+  libfontconfig1 \
+  libgbm1 \
+  libgcc1 \
+  libglib2.0-0 \
+  libgtk-3-0 \
+  libnspr4 \
+  libnss3 \
+  libpango-1.0-0 \
+  libpangocairo-1.0-0 \
+  libstdc++6 \
+  libx11-6 \
+  libx11-xcb1 \
+  libxcb1 \
+  libxcomposite1 \
+  libxcursor1 \
+  libxdamage1 \
+  libxext6 \
+  libxfixes3 \
+  libxi6 \
+  libxrandr2 \
+  libxrender1 \
+  libxss1 \
+  libxtst6 \
+  lsb-release \
+  xdg-utils && \
+  # Clean up apt update and install unused artifacts.
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* && \
+  # Download and install chrome:
+  mkdir -p /tmp/chrome && \
+  curl -sL https://storage.googleapis.com/chrome-for-testing-public/129.0.6668.100/linux64/chrome-linux64.zip -o /tmp/chrome/chrome-linux64.zip && \
+  mkdir -p /opt/google/chrome && \
+  unzip /tmp/chrome/chrome-linux64.zip -d /opt/google/chrome && \
+  ln -s /opt/google/chrome/chrome-linux64/chrome /usr/bin/google-chrome-stable && \
+  rm -Rf /tmp/chrome
+
+USER ${USER_NAME}
+
+FROM base AS dev-container
+
+USER root
+
+ENV GIT_EDITOR="code --wait"
+
+RUN apt-get update && \
+  # Install tools and dependencies.
+  # TODO: lock_versions to ensure deterministic behaviour
+  apt-get install -y --no-install-recommends \
+  # Install git, used for version control.
+  git \
+  # Install less, used to improve the shell read experience for bigger files.
+  less \
+  # Install sudo, used to allow the dev user to gain root level privileges.
+  sudo \
+  # Install zsh, a more modern shell in the development environment.
+  zsh && \
+  # Clean up apt update and install unused artifacts.
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* && \
+  # Set zsh as the default shell for the root user.
+  chsh -s $(which zsh) && \
+  # Install Oh My Zsh (to improve the development shell experience) for the root user.
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+  # Set zsh as the default shell for the development (non root) user.
+  chsh -s $(which zsh) ${USER_NAME} && \
+  # Allow the development user to assume root privileges via sudo.
+  adduser ${USER_NAME} sudo && \
+  echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER ${USER_NAME}
+
+# Install Oh My Zsh for the development user.
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+CMD [ "bash", "-c", "echo 'Dev container started, sleeping' &&  while :; do sleep 1; done;" ]
+
+FROM base AS ci
