@@ -144,8 +144,10 @@ RUN apt-get update && \
 
 FROM base AS dev-container
 
-# Copy the magick binary from the magick-builder stage.
+# Copy the magick binary and config files from the magick-builder stage.
 COPY --from=magick-builder /usr/local/bin/magick /usr/local/bin/magick
+COPY --from=magick-builder /usr/local/share/ImageMagick-7/ /usr/local/share/ImageMagick-7/
+COPY --from=magick-builder /usr/local/etc/ImageMagick-7/ /usr/local/etc/ImageMagick-7/
 
 USER root
 
