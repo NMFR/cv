@@ -6,12 +6,6 @@ services:
       dockerfile: ./Dockerfile
       context: .
       target: dev-container
-    volumes:
-      - .:/opt/app
-  html-diff:
-    container_name: html-diff
-    build:
-      dockerfile: ./Dockerfile.diff
-      context: .
+    init: true
     volumes:
       - .:/opt/app
