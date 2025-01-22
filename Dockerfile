@@ -109,6 +109,10 @@ RUN \
 
 USER ${USER_NAME}
 
+# Install deno.json dependencies.
+COPY deno.json deno.lock ./
+RUN deno install
+
 # ImageMagick builder stage, used to build the magick binary.
 # magick is used in the dev-container stage for HTML visual diff tool by
 # comparing screenshots of the current version of the CV with the in progress version.
