@@ -166,6 +166,8 @@ RUN apt-get update && \
   ghostscript \
   # Install git, used for version control.
   git \
+  # Install ssh, required for git pull / push and other git remote operations.
+  openssh-client \
   # Install less, used to improve the shell read experience for bigger files.
   less \
   # Install sudo, used to allow the dev user to gain root level privileges.
