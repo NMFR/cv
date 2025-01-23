@@ -1,9 +1,8 @@
 .DEFAULT_GOAL := help
 
 SHELL := /bin/bash
+PWD := $(shell pwd)
 CI_CONTAINER_IMAGE_NAME ?= nmfr/cv
-
-export PROJECT_ROOT=$(shell pwd)
 
 # make help # Display available commands.
 # Only comments starting with "# make " will be printed.
