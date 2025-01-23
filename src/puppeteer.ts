@@ -33,11 +33,12 @@ export async function htmlToPdf(url: string, pdfPath: string, browser: puppeteer
 
   try {
     const page = await browserInstance.newPage();
+    const margin = 30;
 
     await page.goto(url, { waitUntil: ["load", "domcontentloaded"] });
     await page.pdf({
       path: pdfPath,
-      margin: { top: 15, bottom: 15, left: 15, right: 15 },
+      margin: { top: margin, bottom: margin, left: margin, right: margin },
     });
   } finally {
     if (browser === null) {

@@ -15,7 +15,7 @@ help:
 test:
 	@deno test
 
-# make clean # Clean up the generated files.
+# make clean # Clean up the generated files (`./generated/`).
 .PHONY: clean
 clean:
 	@rm -rf generated
@@ -31,6 +31,24 @@ generate-html: clean
 # convert the cv.html to cv.pdf
 # missing the --deny-read="/home/dev/.ssh" due to root read bug (https://github.com/denoland/deno/issues/27622).
 	deno run --allow-read --allow-write="/tmp/,${PWD}/generated/" --allow-run="/usr/bin/google-chrome-stable" --allow-net --allow-env --allow-sys="homedir" src/html-to-pdf.ts "file://${PWD}/generated/cv.html" generated/cv.pdf
+
+# make generate-html-with-diff # Generate the CV in HTML format and generate the visual difference between the deployed version (`https://cv.nunorodrigues.tech/`) and the current changes (`./generated/*`).
+.PHONY: generate-html-with-diff
+generate-html-with-diff: generate-html
+	echo "generating image diff"; \
+	deno run --allow-read --allow-write="/tmp/,${PWD}/generated/" --allow-run="/usr/bin/google-chrome-stable" --allow-net --allow-env --allow-sys="homedir" src/diff.ts; \
+	( \
+		magick compare -fuzz 1% generated/current.hd.dark.png generated/new.hd.dark.png generated/difference.hd.dark.png & \
+		magick compare -fuzz 1% generated/current.hd.light.png generated/new.hd.light.png generated/difference.hd.light.png & \
+		magick compare -fuzz 1% generated/current.mobile.dark.png generated/new.mobile.dark.png generated/difference.mobile.dark.png & \
+		magick compare -fuzz 1% generated/current.mobile.light.png generated/new.mobile.light.png generated/difference.mobile.light.png & \
+		magick -density 300 generated/current.pdf -quality 100 -append -background none -alpha off generated/current.pdf.png & \
+		magick -density 300 generated/new.pdf -quality 100 -append -background none -alpha off generated/new.pdf.png \
+	); \
+	# Wait 1 second for the *.pdf.png files to flush. \
+	sleep 1; \
+	magick compare -fuzz 1% generated/current.pdf.png generated/new.pdf.png generated/difference.pdf.png; \
+	echo "diff generated: 'generated/difference.*.png'";
 
 # make spell-check # Spell check the CV HTML file.
 .PHONY: spell-check
@@ -57,24 +75,6 @@ format-spell-check-exclude-file:
 .PHONY: prepare-gh-pages
 prepare-gh-pages:
 	cp generated/cv.html gh-pages/index.html
-
-# make generate-html-with-diff # Generate the CV in HTML format and generate the visual difference from the `https://cv.nunorodrigues.tech/` deployed version of the CV.
-.PHONY: generate-html-with-diff
-generate-html-with-diff: generate-html
-	echo "generating image diff"; \
-	deno run --allow-read --allow-write="/tmp/,${PWD}/generated/" --allow-run="/usr/bin/google-chrome-stable" --allow-net --allow-env --allow-sys="homedir" src/diff.ts; \
-	( \
-		magick compare -fuzz 1% generated/current.hd.dark.png generated/new.hd.dark.png generated/difference.hd.dark.png & \
-		magick compare -fuzz 1% generated/current.hd.light.png generated/new.hd.light.png generated/difference.hd.light.png & \
-		magick compare -fuzz 1% generated/current.mobile.dark.png generated/new.mobile.dark.png generated/difference.mobile.dark.png & \
-		magick compare -fuzz 1% generated/current.mobile.light.png generated/new.mobile.light.png generated/difference.mobile.light.png & \
-		magick -density 300 generated/current.pdf -quality 100 -append -background none -alpha off generated/current.pdf.png & \
-		magick -density 300 generated/new.pdf -quality 100 -append -background none -alpha off generated/new.pdf.png \
-	); \
-	# Wait 1 second for the *.pdf.png files to flush. \
-	sleep 1; \
-	magick compare -fuzz 1% generated/current.pdf.png generated/new.pdf.png generated/difference.pdf.png; \
-	echo "diff generated: 'generated/difference.*.png'";
 
 # make container run="<command>" # Run a command from inside the container. Examples: `make container run="make spell-check"`.
 .PHONY: container
