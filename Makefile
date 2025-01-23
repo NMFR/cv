@@ -83,4 +83,4 @@ container:
 # If caching is enabled attempt to pull the container from the registry to fill the cache before the build.
 	[[ "$$USE_CONTAINER_CACHE" == "true" ]] && (docker pull $(CI_CONTAINER_IMAGE_NAME)) || true
 	docker build --target ci --tag $(CI_CONTAINER_IMAGE_NAME) --cache-from=$(CI_CONTAINER_IMAGE_NAME) --build-arg BUILDKIT_INLINE_CACHE=1 .
-	docker run -v "$(CURDIR):/opt/app" $(CI_CONTAINER_IMAGE_NAME) $(run)
+	docker run --init -v "$(CURDIR):/opt/app" $(CI_CONTAINER_IMAGE_NAME) $(run)
