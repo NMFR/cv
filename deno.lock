@@ -1,9 +1,9 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@std/assert@^1.0.11": "1.0.11",
+    "jsr:@std/assert@^1.0.6": "1.0.11",
     "jsr:@std/internal@^1.0.5": "1.0.5",
-    "npm:puppeteer@24.1.1": "24.1.1_devtools-protocol@0.0.1380148"
+    "npm:puppeteer@23.5.3": "23.5.3_devtools-protocol@0.0.1342118"
   },
   "jsr": {
     "@std/assert@1.0.11": {
@@ -28,8 +28,8 @@
     "@babel/helper-validator-identifier@7.25.9": {
       "integrity": "sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ=="
     },
-    "@puppeteer/browsers@2.7.0": {
-      "integrity": "sha512-bO61XnTuopsz9kvtfqhVbH6LTM1koxK0IlBR+yuVrM2LB7mk8+5o1w18l5zqd5cs8xlf+ntgambqRqGifMDjog==",
+    "@puppeteer/browsers@2.4.0": {
+      "integrity": "sha512-x8J1csfIygOwf6D6qUAZ0ASk3z63zPb7wkNeHRerCMh82qWKUrOgkuP005AJC8lDL6/evtXETGEJVcwykKT4/g==",
       "dependencies": [
         "debug",
         "extract-zip",
@@ -126,11 +126,12 @@
     "callsites@3.1.0": {
       "integrity": "sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ=="
     },
-    "chromium-bidi@1.1.0_devtools-protocol@0.0.1380148": {
-      "integrity": "sha512-HislCEczCuamWm3+55Lig9XKmMF13K+BGKum9rwtDAzgUAHT4h5jNwhDmD4U20VoVUG8ujnv9UZ89qiIf5uF8w==",
+    "chromium-bidi@0.8.0_devtools-protocol@0.0.1342118": {
+      "integrity": "sha512-uJydbGdTw0DEUjhoogGveneJVWX/9YuqkWePzMmkBYwtdAqo5d3J/ovNKFr+/2hWXYmYCr6it8mSSTIj6SS6Ug==",
       "dependencies": [
         "devtools-protocol",
         "mitt",
+        "urlpattern-polyfill",
         "zod"
       ]
     },
@@ -177,8 +178,8 @@
         "esprima"
       ]
     },
-    "devtools-protocol@0.0.1380148": {
-      "integrity": "sha512-1CJABgqLxbYxVI+uJY/UDUHJtJ0KZTSjNYJYKqd9FRoXT33WDakDHNxRapMEgzeJ/C3rcs01+avshMnPmKQbvA=="
+    "devtools-protocol@0.0.1342118": {
+      "integrity": "sha512-75fMas7PkYNDTmDyb6PRJCH7ILmHLp+BhrZGeMsa4bCh40DTxgCz2NRy5UDzII4C5KuD0oBMZ9vXKhEl6UD/3w=="
     },
     "emoji-regex@8.0.0": {
       "integrity": "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A=="
@@ -394,8 +395,8 @@
         "once"
       ]
     },
-    "puppeteer-core@24.1.1_devtools-protocol@0.0.1380148": {
-      "integrity": "sha512-7FF3gq6bpIsbq3I8mfbodXh3DCzXagoz3l2eGv1cXooYU4g0P4mcHQVHuBD4iSZPXNg8WjzlP5kmRwK9UvwF0A==",
+    "puppeteer-core@23.5.3_devtools-protocol@0.0.1342118": {
+      "integrity": "sha512-V58MZD/B3CwkYsqSEQlHKbavMJptF04fzhMdUpiCRCmUVhwZNwSGEPhaiZ1f8I3ABQUirg3VNhXVB6Z1ubHXtQ==",
       "dependencies": [
         "@puppeteer/browsers",
         "chromium-bidi",
@@ -405,8 +406,8 @@
         "ws"
       ]
     },
-    "puppeteer@24.1.1_devtools-protocol@0.0.1380148": {
-      "integrity": "sha512-fuhceZ5HZuDXVuaMIRxUuDHfCJLmK0pXh8FlzVQ0/+OApStevxZhU5kAVeYFOEqeCF5OoAyZjcWbdQK27xW/9A==",
+    "puppeteer@23.5.3_devtools-protocol@0.0.1342118": {
+      "integrity": "sha512-FghmfBsr/UUpe48OiCg1gV3W4vVfQJKjQehbF07SjnQvEpWcvPTah1nykfGWdOQQ1ydJPIXcajzWN7fliCU3zw==",
       "dependencies": [
         "@puppeteer/browsers",
         "chromium-bidi",
@@ -517,6 +518,9 @@
     "undici-types@6.19.8": {
       "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
     },
+    "urlpattern-polyfill@10.0.0": {
+      "integrity": "sha512-H/A06tKD7sS1O1X2SshBVeA5FLycRpjqiBeqGKmBwBDBy28EnRjORxTNe269KSSr5un5qyWi1iL61wLxpd+ZOg=="
+    },
     "wrap-ansi@7.0.0": {
       "integrity": "sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==",
       "dependencies": [
@@ -556,14 +560,14 @@
         "fd-slicer"
       ]
     },
-    "zod@3.24.1": {
-      "integrity": "sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A=="
+    "zod@3.23.8": {
+      "integrity": "sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g=="
     }
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/assert@^1.0.11",
-      "npm:puppeteer@24.1.1"
+      "jsr:@std/assert@^1.0.6",
+      "npm:puppeteer@23.5.3"
     ]
   }
 }

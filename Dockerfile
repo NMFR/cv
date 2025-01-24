@@ -104,7 +104,7 @@ RUN \
   rm -rf /var/lib/apt/lists/* && \
   # Download and install chrome:
   mkdir -p /tmp/chrome && \
-  curl -sL https://storage.googleapis.com/chrome-for-testing-public/132.0.6834.110/linux64/chrome-linux64.zip -o /tmp/chrome/chrome-linux64.zip && \
+  curl -sL https://storage.googleapis.com/chrome-for-testing-public/129.0.6668.100/linux64/chrome-linux64.zip -o /tmp/chrome/chrome-linux64.zip && \
   mkdir -p /opt/google/chrome && \
   unzip /tmp/chrome/chrome-linux64.zip -d /opt/google/chrome && \
   ln -s /opt/google/chrome/chrome-linux64/chrome /usr/bin/google-chrome-stable && \
