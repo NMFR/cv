@@ -13,7 +13,7 @@ env:
 
 jobs:
   cache-ci-container-image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       packages: write
     steps:
@@ -28,7 +28,7 @@ jobs:
         run: docker push $CI_CONTAINER_IMAGE_NAME
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     concurrency: ci-${{ github.ref }}
     needs: cache-ci-container-image
     permissions:
