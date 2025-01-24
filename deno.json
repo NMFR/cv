@@ -1,4 +1,7 @@
 {
   "fmt": { "lineWidth": 120 },
-  "imports": { "@std/assert": "jsr:@std/assert@^1.0.6" }
+  "imports": {
+    "@std/assert": "jsr:@std/assert@^1.0.6",
+    "puppeteer": "npm:puppeteer@23.5.3"
+  }
 }

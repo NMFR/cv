@@ -13,7 +13,7 @@ env:
 
 jobs:
   cache-ci-container-image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       packages: write
     steps:
@@ -28,7 +28,7 @@ jobs:
         run: docker push $CI_CONTAINER_IMAGE_NAME
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     concurrency: ci-${{ github.ref }}
     needs: cache-ci-container-image
     permissions:
@@ -38,9 +38,13 @@ jobs:
       - name: docker login
         continue-on-error: true
         run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ${CI_CONTAINER_REGISTRY} -u ${GITHUB_ACTOR} --password-stdin)
+      # Needed so the container has permission to create files in the `./generated/` folder.
+      - name: container user repository root permissions
+        run: chmod o+rw .
       - name: unit tests
         run: make container run="make test"
       - name: spell check
+        # spell-check will trigger `make generate-html` before it runs.
         run: make container run="make clean spell-check"
       - name: prepare gh-pages folder
         run: make prepare-gh-pages

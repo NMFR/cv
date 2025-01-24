@@ -1,9 +1,8 @@
 .DEFAULT_GOAL := help
 
 SHELL := /bin/bash
+PWD := $(shell pwd)
 CI_CONTAINER_IMAGE_NAME ?= nmfr/cv
-
-export PROJECT_ROOT=$(shell pwd)
 
 # make help # Display available commands.
 # Only comments starting with "# make " will be printed.
@@ -16,7 +15,7 @@ help:
 test:
 	@deno test
 
-# make clean # Clean up the generated files.
+# make clean # Clean up the generated files (`./generated/`).
 .PHONY: clean
 clean:
 	@rm -rf generated
@@ -29,6 +28,27 @@ generate-html: clean
 	ln -s ${PWD}/gh-pages/* ${PWD}/generated/
 	deno run --allow-read=src/render/html/css/,src/render/html/icons/ src/render-html.ts > ./generated/cv.html
 	deno fmt --unstable-html ./generated/cv.html
+# convert the cv.html to cv.pdf
+# missing the --deny-read="/home/dev/.ssh" due to root read bug (https://github.com/denoland/deno/issues/27622).
+	deno run --allow-read --allow-write="/tmp/,${PWD}/generated/" --allow-run="/usr/bin/google-chrome-stable" --allow-net --allow-env --allow-sys="homedir" src/html-to-pdf.ts "file://${PWD}/generated/cv.html" generated/cv.pdf
+
+# make generate-html-with-diff # Generate the CV in HTML format and generate the visual difference between the deployed version (`https://cv.nunorodrigues.tech/`) and the current changes (`./generated/*`).
+.PHONY: generate-html-with-diff
+generate-html-with-diff: generate-html
+	echo "generating image diff"; \
+	deno run --allow-read --allow-write="/tmp/,${PWD}/generated/" --allow-run="/usr/bin/google-chrome-stable" --allow-net --allow-env --allow-sys="homedir" src/diff.ts; \
+	( \
+		magick compare -fuzz 1% generated/current.hd.dark.png generated/new.hd.dark.png generated/difference.hd.dark.png & \
+		magick compare -fuzz 1% generated/current.hd.light.png generated/new.hd.light.png generated/difference.hd.light.png & \
+		magick compare -fuzz 1% generated/current.mobile.dark.png generated/new.mobile.dark.png generated/difference.mobile.dark.png & \
+		magick compare -fuzz 1% generated/current.mobile.light.png generated/new.mobile.light.png generated/difference.mobile.light.png & \
+		magick -density 300 generated/current.pdf -quality 100 -append -background none -alpha off generated/current.pdf.png & \
+		magick -density 300 generated/new.pdf -quality 100 -append -background none -alpha off generated/new.pdf.png \
+	); \
+	# Wait 1 second for the *.pdf.png files to flush. \
+	sleep 1; \
+	magick compare -fuzz 1% generated/current.pdf.png generated/new.pdf.png generated/difference.pdf.png; \
+	echo "diff generated: 'generated/difference.*.png'";
 
 # make spell-check # Spell check the CV HTML file.
 .PHONY: spell-check
@@ -56,32 +76,10 @@ format-spell-check-exclude-file:
 prepare-gh-pages:
 	cp generated/cv.html gh-pages/index.html
 
-# make watch-html-and-diff # Watch the './genereted/cv.html' file for changes and calculate the image difference from the `https://cv.nunorodrigues.tech/` deployed version of the CV. The difference is a file saved in `./generated/difference.png`. This requires `node`, `puppeteer` and `magick` to be installed. Use the Dockerfile.diff container to run this.
-.PHONY: watch-html-and-diff
-watch-html-and-diff:
-	@LTIME=`0`; \
-	while true ; do \
-		ATIME=`stat -c %Z /opt/app/generated/cv.html || echo "0"`; \
-		echo "checking if 'generated/cv.html' changed, ATIME: $$ATIME"; \
-		if [[ "$$ATIME" != "$$LTIME" ]] ; then \
-			echo "change detected, generating image diff from 'https://cv.nunorodrigues.tech/'"; \
-			node src/html-to-image/index.js; \
-			( \
-				magick compare -fuzz 1% generated/current.hd.dark.png generated/new.hd.dark.png generated/difference.hd.dark.png & \
-				magick compare -fuzz 1% generated/current.hd.light.png generated/new.hd.light.png generated/difference.hd.light.png & \
-				magick compare -fuzz 1% generated/current.mobile.dark.png generated/new.mobile.dark.png generated/difference.mobile.dark.png & \
-				magick compare -fuzz 1% generated/current.mobile.light.png generated/new.mobile.light.png generated/difference.mobile.light.png & \
-			); \
-			echo "diff generated: 'generated/difference.*.png'"; \
-			LTIME=$$ATIME; \
-		fi; \
-		sleep 1; \
-	done;
-
 # make container run="<command>" # Run a command from inside the container. Examples: `make container run="make spell-check"`.
 .PHONY: container
 container:
 # If caching is enabled attempt to pull the container from the registry to fill the cache before the build.
 	[[ "$$USE_CONTAINER_CACHE" == "true" ]] && (docker pull $(CI_CONTAINER_IMAGE_NAME)) || true
 	docker build --target ci --tag $(CI_CONTAINER_IMAGE_NAME) --cache-from=$(CI_CONTAINER_IMAGE_NAME) --build-arg BUILDKIT_INLINE_CACHE=1 .
-	docker run -v "$(CURDIR):/opt/app" $(CI_CONTAINER_IMAGE_NAME) $(run)
+	docker run --init -v "$(CURDIR):/opt/app" $(CI_CONTAINER_IMAGE_NAME) $(run)
