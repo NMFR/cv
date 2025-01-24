@@ -1,5 +1,6 @@
 import { htmlToPdf } from "./puppeteer.ts";
 
+// Convert HTML into a PDF.
 async function main() {
   const htmlUrl = Deno.args[0];
   const pdfPath = Deno.args[1];

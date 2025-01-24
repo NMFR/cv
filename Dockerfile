@@ -6,6 +6,7 @@ FROM docker.io/denoland/deno:debian-2.1.7@sha256:e5ee37d73f071d9bc93f9e7b8e65bb1
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Reset the entrypoint, the parent image configured a entrypoint for the deno CLI that it is unused in our use case.
+# This is needed for the `--init` docker run flag so tini can run as PID 1.
 ENTRYPOINT []
 
 ENV DENO_DIR /deno

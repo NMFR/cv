@@ -1,6 +1,7 @@
 import { htmlToImage, htmlToPdf, RESOLUTION } from "./puppeteer.ts";
 
-// Generate screenshots and PDFs of `https://cv.nunorodrigues.tech/` and `generated/cv.html` for visual comparison.
+// Generate screenshots and PDFs of `https://cv.nunorodrigues.tech/` and `generated/cv.html` to be used for visual comparison.
+// Note this script only generates screenshots and PDFs from HTML. The visual comparison is done elsewhere.
 async function main() {
   const basePath = new URL(`../generated`, import.meta.url).pathname;
 
