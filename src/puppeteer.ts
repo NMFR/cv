@@ -33,8 +33,7 @@ export async function newBrowser() {
     headless: true,
     // Run chrome in no sandbox mode to workaround the `No usable sandbox!` error when running in Github Actions.
     // Since we only use chrome for HTML generated from this repository this should be relatively safe.
-    // args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    // args: ["--font-render-hinting=none"],
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 }
 
