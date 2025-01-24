@@ -74,7 +74,7 @@ format-spell-check-exclude-file:
 # make prepare-gh-pages # Prepare the gh-pages folder to be deployed. This will copy the generated CV to the gh-pages folder making sure the HTML file is renamed to "index.html". Note that this command expects the contents of the `generated` folder to already be generated.
 .PHONY: prepare-gh-pages
 prepare-gh-pages:
-	cp generated/cv.html gh-pages/index.html
+	find generated/* -depth -type f -o -type d | xargs -I % cp -n % gh-pages/
 
 # make container run="<command>" # Run a command from inside the container. Examples: `make container run="make spell-check"`.
 .PHONY: container
