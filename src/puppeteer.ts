@@ -27,9 +27,15 @@ async function scrollToBottom(page: puppeteer.Page) {
     });
   });
 }
+export async function newBrowser() {
+  return await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+}
 
 export async function htmlToPdf(url: string, pdfPath: string, browser: puppeteer.Browser | null = null) {
-  const browserInstance = browser || await puppeteer.launch({ headless: true });
+  const browserInstance = browser || await newBrowser();
 
   try {
     const page = await browserInstance.newPage();
@@ -54,7 +60,7 @@ export async function htmlToImage(
   prefersColorScheme: ColorScheme = `light`,
   browser: puppeteer.Browser | null = null,
 ) {
-  const browserInstance = browser || await puppeteer.launch({ headless: true });
+  const browserInstance = browser || await newBrowser();
 
   try {
     const page = await browserInstance.newPage();

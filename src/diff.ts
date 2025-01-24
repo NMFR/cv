@@ -1,5 +1,4 @@
-import puppeteer from "puppeteer";
-import { htmlToImage, htmlToPdf, RESOLUTION } from "./puppeteer.ts";
+import { htmlToImage, htmlToPdf, newBrowser, RESOLUTION } from "./puppeteer.ts";
 
 // Generate screenshots and PDFs of `https://cv.nunorodrigues.tech/` and `generated/cv.html` for visual comparison.
 async function main() {
@@ -8,7 +7,7 @@ async function main() {
   const currentUrl = `https://cv.nunorodrigues.tech/`;
   const newUrl = `file://${basePath}/cv.html`;
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await newBrowser();
 
   try {
     await Promise.all([
