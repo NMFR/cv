@@ -19,11 +19,9 @@ jobs:
       - name: docker login
         continue-on-error: true
         run: (echo ${{ secrets.GITHUB_TOKEN }} | docker login ${CI_CONTAINER_REGISTRY} -u ${GITHUB_ACTOR} --password-stdin)
-      - name: test
-        run: id && pwd && ls -lHa && mkdir -p test && ls -lHa && chmod o+rw test && ls -lHa && chown 1000 test && ls -lHa
       # Needed so the container has permission to create files in the `./generated/` folder.
-      - name: Make the container user the owner of the repository root
-        run: chown 1000 .
+      - name: container user repository root permissions
+        run: chmod o+rw .
       - name: unit tests
         run: make container run="make test"
       - name: spell check
