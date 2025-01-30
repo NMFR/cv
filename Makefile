@@ -75,6 +75,7 @@ format-spell-check-exclude-file:
 .PHONY: prepare-gh-pages
 prepare-gh-pages:
 	find generated/* -depth -type f -o -type d | xargs -I % cp -n % gh-pages/
+	mv gh-pages/cv.html gh-pages/index.html
 
 # make container run="<command>" # Run a command from inside the container. Examples: `make container run="make spell-check"`.
 .PHONY: container
