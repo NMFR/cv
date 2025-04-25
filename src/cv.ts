@@ -237,6 +237,13 @@ if a chart is found that matches the context of the article it is automatically 
   ],
   references: [
     {
+      reference: `Nuno was a software engineer in my data platform team at BP.
+Nuno successfully implemented a GraphQL server and client in Python to streamline the control plane and data planes communication.
+Nuno was also able to contribute to AKS auto-provisioning and auto-scaling to save cluster cloud cost.
+I appreciate Nuno's enthusiasm, hard work and flexibility.`,
+      name: `Jian Jiao, Head of Data Engineering and Data Management @ BP`,
+    },
+    {
       reference: `I worked with Nuno for several months at Deliveroo.
 Our team focused on delivering abstractions for deciding which primitives to run workloads on, networking and databases.
 Nuno was exceptional at delivering results and was behind some great initiatives which largely helped our monitoring posture.
