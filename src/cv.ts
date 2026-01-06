@@ -47,11 +47,7 @@ I also really enjoy helping people learn and grow.`,
         `Drove the creation and evangelization of Golang best practices and guidelines.`,
         `Introduced an API first methodology with code generation from Open API specs.`,
         `Decreased service QA test dependencies by introducing API mock generation from Open API specs.`,
-
-        `Raised awareness of failure scenarios in asynchronous flows and how to make them more resilient and self healing.`,
-
-        `Helped improve asynchronous architecture.`,
-        `Successfully helped design and implement two new central services that other teams would depend on.`,
+        `Designed and contributed to the implementation of two new central services that other teams depend on.`,
         `Key technologies: Golang / Kafka / MongoDB / Kubernetes`,
       ],
     },
